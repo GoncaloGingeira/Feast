@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:feast/homepage.dart';
+import 'package:feast/searchpage.dart';
+import 'package:feast/postpage.dart';
+import 'package:feast/notifpage.dart';
+import 'package:feast/profilepage.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,277 +27,66 @@ class MyApp extends StatelessWidget {
         ),
         textTheme: const TextTheme(),
       ),
-      home: const MyHomePage(),
+      home: const BottomTabBar(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? homekey});
+class BottomTabBar extends StatefulWidget {
+  const BottomTabBar({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _BottomTabBarState createState() => _BottomTabBarState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _BottomTabBarState extends State<BottomTabBar> {
+  int _index = 0;
+  final screens = [
+    HomePage(),
+    SearchPage(),
+    PostPage(),
+    NotifPage(),
+    ProfilePage(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true, // Center the title
-        title: const Text(
-          'Feast', // Display 'Feast' as the app bar title
-          style: TextStyle(color: Colors.black),
-        ),
-      ),
-      body: Column(
-        children: [
-          const SizedBox(height: 20),
-          Center(
-            child: Container(
-              width: 400,
-              height: 80,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: const Offset(0, 3), // changes position of shadow
-                  ),
-                ],
+        body: screens[_index],
+        bottomNavigationBar: BottomNavigationBar(
+            currentIndex: _index,
+            onTap: (value) {
+              print(value);
+              setState(() {
+                _index = value;
+              });
+            },
+            backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+            selectedItemColor: Colors.blue, // Set the selected item color
+            unselectedItemColor: Colors.red, // Set the unselected item color
+            showUnselectedLabels: true, // Show labels for unselected items
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Boxicons.bx_home_circle),
+                label: 'Home',
               ),
-              child: Row(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.fastfood,
-                    ),
-                  ),
-                  Center(
-                    child: Container(
-                      width: 0.5, // Width of the vertical bar
-                      height: 30, // Height of the vertical bar
-                      color: Colors.black, // Color of the vertical bar
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        "Frango Assado",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        "Duração 30 mins",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                        ),
-                      ),
-                      Text(
-                        "Tags: Italian",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+              BottomNavigationBarItem(
+                icon: Icon(Boxicons.bx_search),
+                label: 'Search',
               ),
-            ),
-          ),
-          const SizedBox(height: 30),
-          Center(
-            child: Container(
-              width: 400,
-              height: 80,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: const Offset(0, 3), // changes position of shadow
-                  ),
-                ],
+              BottomNavigationBarItem(
+                icon: Icon(Boxicons.bxs_plus_circle),
+                label: 'Post',
               ),
-              child: Row(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.fastfood,
-                    ),
-                  ),
-                  Center(
-                    child: Container(
-                      width: 0.5, // Width of the vertical bar
-                      height: 30, // Height of the vertical bar
-                      color: Colors.black, // Color of the vertical bar
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        "Frango Assado",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        "Duração 30 mins",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                        ),
-                      ),
-                      Text(
-                        "Tags: Italian",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+              BottomNavigationBarItem(
+                icon: Icon(Boxicons.bx_bell),
+                label: 'Notifs',
               ),
-            ),
-          ),
-          const SizedBox(height: 30),
-          Center(
-            child: Container(
-              width: 400,
-              height: 80,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: const Offset(0, 3), // changes position of shadow
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.fastfood,
-                    ),
-                  ),
-                  Center(
-                    child: Container(
-                      width: 0.5, // Width of the vertical bar
-                      height: 30, // Height of the vertical bar
-                      color: Colors.black, // Color of the vertical bar
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        "Frango Assado",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        "Duração 30 mins",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                        ),
-                      ),
-                      Text(
-                        "Tags: Italian",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              color: Colors.black,
-              width: 0.5,
-            ),
-          ),
-        ),
-        child: BottomAppBar(
-          color: const Color.fromARGB(
-              255, 246, 240, 232), // set the color of the BottomAppBar to blue
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.home),
-              ), //HomeButton
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.search),
-              ), //SearchButton
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.add_box),
-              ), //PostButton
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.notifications),
-              ), //NotifButton
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.person),
-              ), //ProfileButton
-            ],
-          ),
-        ),
-      ),
-    );
+              BottomNavigationBarItem(
+                icon: Icon(Boxicons.bxs_user),
+                label: 'Profile',
+              )
+            ]));
   }
 }
