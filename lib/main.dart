@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:feast/homepage.dart';
+import 'package:feast/searchpage.dart';
+import 'package:feast/postpage.dart';
+import 'package:feast/notifpage.dart';
+import 'package:feast/profilepage.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,209 +19,75 @@ class MyApp extends StatelessWidget {
       title: 'Feast',
       theme: ThemeData(
         useMaterial3: true,
-        scaffoldBackgroundColor: const Color(0xFFF6F1E9), // Set the background color
-        appBarTheme: AppBarTheme(
-          backgroundColor: const Color(0xFFF6F1E9), // Set app bar background color
+        scaffoldBackgroundColor: const Color.fromARGB(
+            255, 246, 240, 232), // Set the background color
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color.fromARGB(
+              255, 246, 240, 232), // Set app bar background color
         ),
         textTheme: const TextTheme(),
       ),
-      home: const MyHomePage(),
+      home: const BottomTabBar(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key});
+class BottomTabBar extends StatefulWidget {
+  const BottomTabBar({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _BottomTabBarState createState() => _BottomTabBarState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _BottomTabBarState extends State<BottomTabBar> {
+  int _index = 0;
+  final screens = [
+    HomePage(),
+    SearchPage(),
+    PostPage(),
+    NotifPage(),
+    ProfilePage(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true, // Center the title
-        title: Text(
-          'Feast', // Display 'Feast' as the app bar title
-          style: TextStyle(color: Colors.black),
-        ),
-      ),
-      body: Column(
-        children: [
-          SizedBox(height: 20),
-          Center(
-            child: Container(
-              width: 400,
-              height: 80,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
+        body: screens[_index],
+        bottomNavigationBar: BottomNavigationBar(
+            currentIndex: _index,
+            onTap: (value) {
+              print(value);
+              setState(() {
+                _index = value;
+              });
+            },
+            backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+            selectedItemColor: Colors.blue, // Set the selected item color
+            unselectedItemColor: Colors.red, // Set the unselected item color
+            showUnselectedLabels: true, // Show labels for unselected items
+            elevation: 10.0,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Boxicons.bx_home_circle),
+                label: 'Home',
               ),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.fastfood,
-                    ),
-                  ),
-                  Center(
-                    child: Container(
-                      width: 0.5, // Width of the vertical bar
-                      height: 30, // Height of the vertical bar
-                      color: Colors.black, // Color of the vertical bar
-                    ),
-                  ),
-                  SizedBox(width: 15,),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 10,),
-                      Text(
-                        "Frango Assado",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        "Duração 30 mins",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                        ),
-                      ),
-                      Text(
-                        "Tags: Italian",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+              BottomNavigationBarItem(
+                icon: Icon(Boxicons.bx_search),
+                label: 'Search',
               ),
-
-            ),
-          ),
-          SizedBox(height: 30),
-          Center(
-            child: Container(
-              width: 400,
-              height: 80,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
+              BottomNavigationBarItem(
+                icon: Icon(Boxicons.bxs_plus_circle),
+                label: 'Post',
               ),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.fastfood,
-                    ),
-                  ),
-                  Center(
-                    child: Container(
-                      width: 0.5, // Width of the vertical bar
-                      height: 30, // Height of the vertical bar
-                      color: Colors.black, // Color of the vertical bar
-                    ),
-                  ),
-                  SizedBox(width: 15,),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 10,),
-                      Text(
-                        "Frango Assado",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        "Duração 30 mins",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                        ),
-                      ),
-                      Text(
-                        "Tags: Italian",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+              BottomNavigationBarItem(
+                icon: Icon(Boxicons.bx_bell),
+                label: 'Notifs',
               ),
-            ),
-          ),
-          SizedBox(height: 30),
-          Center(
-            child: Container(
-              width: 400,
-              height: 80,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.fastfood,
-                    ),
-                  ),
-                  Center(
-                    child: Container(
-                      width: 0.5, // Width of the vertical bar
-                      height: 30, // Height of the vertical bar
-                      color: Colors.black, // Color of the vertical bar
-                    ),
-                  ),
-                  SizedBox(width: 15,),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 10,),
-                      Text(
-                        "Frango Assado",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        "Duração 30 mins",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                        ),
-                      ),
-                      Text(
-                        "Tags: Italian",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+              BottomNavigationBarItem(
+                icon: Icon(Boxicons.bxs_user),
+                label: 'Profile',
+              )
+            ]));
   }
 }
