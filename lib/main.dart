@@ -66,6 +66,7 @@ class _BottomTabBarState extends State<BottomTabBar> {
             selectedItemColor: Colors.blue, // Set the selected item color
             unselectedItemColor: Colors.red, // Set the unselected item color
             showUnselectedLabels: true, // Show labels for unselected items
+            elevation: 10.0,
             items: const [
               BottomNavigationBarItem(
                 icon: Icon(Boxicons.bx_home_circle),
