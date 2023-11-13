@@ -123,7 +123,7 @@ class _MyDietPageState extends State<MyDietPage> {
         width: 90,
         height: 125,
         decoration: BoxDecoration(
-          color: Colors.white, // You can customize the color
+          color: Colors.white,
           borderRadius: BorderRadius.circular(15),
         ),
         child: Column(
@@ -157,7 +157,7 @@ class _MyDietPageState extends State<MyDietPage> {
         width: 90,
         height: 125,
         decoration: BoxDecoration(
-          color: Colors.white, // You can customize the color
+          color: Colors.white,
           borderRadius: BorderRadius.circular(15),
         ),
         child: Column(
@@ -190,7 +190,7 @@ class _MyDietPageState extends State<MyDietPage> {
         width: 90,
         height: 125,
         decoration: BoxDecoration(
-          color: Colors.white, // You can customize the color
+          color: Colors.white,
           borderRadius: BorderRadius.circular(15),
         ),
         child: Column(
@@ -223,7 +223,7 @@ class _MyDietPageState extends State<MyDietPage> {
         width: 90,
         height: 125,
         decoration: BoxDecoration(
-          color: Colors.white, // You can customize the color
+          color: Colors.white,
           borderRadius: BorderRadius.circular(15),
         ),
         child: Column(
