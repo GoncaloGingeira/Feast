@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:feast/my_profile.dart';
 import 'package:feast/homepage.dart';
 import 'package:feast/searchpage.dart';
 import 'package:feast/postpage.dart';
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Feast',
       theme: ThemeData(
+        fontFamily: 'CustomFont1',
         useMaterial3: true,
         scaffoldBackgroundColor: const Color.fromARGB(
             255, 246, 240, 232), // Set the background color
