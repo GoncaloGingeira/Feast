@@ -1,0 +1,50 @@
+{
+    "id": "scrambled-eggs",
+    "name": "Scrambled Eggs",
+    "rating": 4.4,
+    "estimatedTime": 10,
+    "servings": 2,
+    "calories": 148,
+    "ingredients": [
+        {
+            "name": "Eggs",
+            "quantity": 4,
+            "unit": "",
+            "notes": ""
+        },
+        {
+            "name": "Butter",
+            "quantity": 1,
+            "unit": "tbsp",
+            "notes": ""
+        },
+        {
+            "name": "Salt",
+            "quantity": 1,
+            "unit": "pinch",
+            "notes": ""
+        },
+        {
+            "name": "Pepper",
+            "quantity": 1,
+            "unit": "pinch",
+            "notes": ""
+        },
+        {
+            "name": "Milk",
+            "quantity": 2,
+            "unit": "tbsp",
+            "notes": "optional"
+        }
+    ],
+    "instructions": [
+        "Crack the eggs into a bowl and whisk until the yolks and whites are fully combined.",
+        "Add the butter to a non-stick pan and heat over medium heat until melted.",
+        "Pour the eggs into the pan and let them cook for about 30 seconds without stirring.",
+        "Using a spatula, gently push the eggs from the edges of the pan towards the center, allowing the uncooked eggs to flow to the edges.",
+        "Repeat the previous step until the eggs are mostly set but still slightly runny.",
+        "Add the salt, pepper, and milk (if using) to the eggs and stir until fully combined.",
+        "Continue cooking the eggs, stirring occasionally, until they reach your desired level of doneness.",
+        "Serve immediately."
+    ]
+}

@@ -62,9 +62,10 @@ class _BottomTabBarState extends State<BottomTabBar> {
                 _index = value;
               });
             },
-            backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-            selectedItemColor: Colors.blue, // Set the selected item color
-            unselectedItemColor: Colors.red, // Set the unselected item color
+            selectedItemColor:
+                Color.fromARGB(255, 230, 184, 1), // Set the selected item color
+            unselectedItemColor: Color.fromARGB(
+                255, 73, 27, 12), // Set the unselected item color
             showUnselectedLabels: true, // Show labels for unselected items
             elevation: 10.0,
             items: const [
