@@ -18,7 +18,13 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/
   fonts:
-    - family: CustomFont
+    - family: CustomFont1
       fonts:
-         # - asset: fonts/DINNeueRoman-Test-Regular-BF641a670a4ff3d.ttf
+        - asset: fonts/hussarbd.otf
+
+    - family: CustomFont2
+      fonts:
+        - asset: fonts/Poppins-Light.otf
