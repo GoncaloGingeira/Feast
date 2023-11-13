@@ -22,6 +22,8 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+    - assets/recipes/
+    - assets/recipes/recipe_list.json
   fonts:
     - family: CustomFont1
       fonts:

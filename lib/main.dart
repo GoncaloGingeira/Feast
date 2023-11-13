@@ -4,7 +4,6 @@ import 'package:feast/homepage.dart';
 import 'package:feast/searchpage.dart';
 import 'package:feast/postpage.dart';
 import 'package:feast/notifpage.dart';
-import 'package:feast/profilepage.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 
 void main() {
@@ -49,7 +48,7 @@ class _BottomTabBarState extends State<BottomTabBar> {
     SearchPage(),
     PostPage(),
     NotifPage(),
-    ProfilePage(),
+    MyProfilePage(),
   ];
 
   @override
