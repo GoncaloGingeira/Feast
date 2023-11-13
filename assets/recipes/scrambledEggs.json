@@ -1,10 +1,15 @@
 {
     "id": "scrambled-eggs",
     "name": "Scrambled Eggs",
-    "rating": 4.4,
-    "estimatedTime": 10,
-    "servings": 2,
-    "calories": 148,
+    "rating": "4.4",
+    "estimatedTime": "10",
+    "servings": "2",
+    "calories": "148",
+    "tags": [
+        "breakfast",
+        "eggs",
+        "quick"
+    ],
     "ingredients": [
         {
             "name": "Eggs",
