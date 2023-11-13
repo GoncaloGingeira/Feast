@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:io'; // Import the dart:io library
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:path/path.dart'; // Import the path library
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -8,23 +12,41 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Map<String, String>> recipes = [
-    {
-      'name': 'Frango Assado',
-      'duration': 'Duração 30 mins',
-      'tags': 'Tags: Italian',
-    },
-    {
-      'name': 'Frango Assado 2',
-      'duration': 'Duração 30 mins',
-      'tags': 'Tags: Italian',
-    },
-    {
-      'name': 'Frango Assado 3',
-      'duration': 'Duração 30 mins',
-      'tags': 'Tags: Italian',
-    },
-  ];
+  List<Map<String, String>> recipes = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadRecipeFiles();
+  }
+
+  Future<void> loadRecipeFiles() async {
+    try {
+      // Get the directory path for the 'assets/recipes' folder
+      String directoryPath = 'assets/';
+      // Remove the 'Directory' and 'listSync' calls
+
+      // Get a list of files using 'rootBundle'
+      List<String> filenames = await rootBundle
+          .loadStructuredData<List<String>>(directoryPath, (jsonStr) async {
+        // Convert the JSON string to a List<String> containing filenames
+        return json.decode(jsonStr);
+      });
+
+      // Load and parse each file
+      for (String filename in filenames) {
+        String jsonString =
+            await rootBundle.loadString('$directoryPath/$filename');
+        Map<String, String> recipe = json.decode(jsonString);
+        recipes.add(recipe);
+      }
+
+      // Update the state with the loaded recipes
+      setState(() {});
+    } catch (e) {
+      print('Error loading recipes: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
