@@ -19,6 +19,7 @@ class _PostPageState extends State<PostPage> {
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: 20),
           Container(
@@ -39,11 +40,7 @@ class _PostPageState extends State<PostPage> {
                   ))
                 ],
               )),
-          Container(
-            height: 1, // Height of the divider
-            color: Colors.purple[100], // Color of the divider
-            margin: EdgeInsets.all(15), // Adjust vertical margin
-          ),
+          divider(),
           Column(
             children: [
               inputBox(context, 'Servings', 'Enter number of servings'),
@@ -51,17 +48,33 @@ class _PostPageState extends State<PostPage> {
               inputBox(context, 'Est. Time', 'Enter the estimated time'),
             ],
           ),
-          Container(
-            height: 1, // Height of the divider
-            color: Colors.purple[100], // Color of the divider
-            margin: EdgeInsets.all(15), // Adjust vertical margin
-          ),
+          divider(),
+          header('Ingredients'),
+          inputBox(context, 'Add Ingredient', '')
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         child: const Text('Post'),
       ),
+    );
+  }
+
+  Widget header(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20, bottom: 10),
+      child: Text(
+        title,
+        style: Theme.of(context).textTheme.titleMedium, // Use headline style
+      ),
+    );
+  }
+
+  Widget divider() {
+    return Container(
+      height: 1, // Height of the divider
+      color: Colors.purple[100], // Color of the divider
+      margin: EdgeInsets.all(15), // Adjust vertical margin
     );
   }
 
