@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         ),
         textTheme: const TextTheme(),
       ),
-      home: const BottomTabBar(),
+      home: const LoginPage(), // Display the login page initially
       debugShowCheckedModeBanner: false,
     );
   }
@@ -54,42 +54,137 @@ class _BottomTabBarState extends State<BottomTabBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: screens[_index],
-        bottomNavigationBar: BottomNavigationBar(
-            currentIndex: _index,
-            onTap: (value) {
-              print(value);
-              setState(() {
-                _index = value;
-              });
-            },
-            selectedItemColor:
-                Color.fromARGB(255, 230, 184, 1), // Set the selected item color
-            unselectedItemColor: Color.fromARGB(
-                255, 73, 27, 12), // Set the unselected item color
-            showUnselectedLabels: true, // Show labels for unselected items
-            elevation: 10.0,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Boxicons.bx_home_circle),
-                label: 'Home',
+      body: screens[_index],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _index,
+        onTap: (value) {
+          print(value);
+          setState(() {
+            _index = value;
+          });
+        },
+        selectedItemColor:
+            Color.fromARGB(255, 230, 184, 1), // Set the selected item color
+        unselectedItemColor:
+            Color.fromARGB(255, 73, 27, 12), // Set the unselected item color
+        showUnselectedLabels: true, // Show labels for unselected items
+        elevation: 10.0,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Boxicons.bx_home_circle),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Boxicons.bx_search),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Boxicons.bxs_plus_circle),
+            label: 'Post',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Boxicons.bx_bell),
+            label: 'Notifs',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Boxicons.bxs_user),
+            label: 'Profile',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _showError = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Image.asset(
+          'assets/app-logo.png', // Replace with your app logo asset
+          height: 90, // Adjust the height to make it bigger
+        ),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextField(
+                controller: _usernameController,
+                decoration: const InputDecoration(
+                  labelText: 'Username',
+                ),
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Boxicons.bx_search),
-                label: 'Search',
+              const SizedBox(height: 16.0),
+              TextField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  labelText: 'Password',
+                ),
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Boxicons.bxs_plus_circle),
-                label: 'Post',
+              const SizedBox(height: 8.0),
+              _showError
+                  ? const Text(
+                      'Username or password incorrect. Please try again.',
+                      style: TextStyle(color: Colors.red, fontSize: 12.0),
+                    )
+                  : Container(),
+              const SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: () {
+                  String username = _usernameController.text;
+                  String password = _passwordController.text;
+
+                  if (username == "ana123" && password == "12345") {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const BottomTabBar()),
+                    );
+                  } else {
+                    setState(() {
+                      _showError = true;
+                    });
+                  }
+                },
+                child: const Text('Login'),
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Boxicons.bx_bell),
-                label: 'Notifs',
+              const SizedBox(height: 8.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      // Navigate to the forgot password page
+                    },
+                    child: const Text(
+                      'Forget Password?',
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                ],
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Boxicons.bxs_user),
-                label: 'Profile',
-              )
-            ]));
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

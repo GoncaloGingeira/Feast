@@ -1,5 +1,6 @@
 import 'package:feast/my_diet.dart';
 import 'package:flutter/material.dart';
+import 'settings.dart';
 
 class MyProfilePage extends StatefulWidget {
   const MyProfilePage({Key? key});
@@ -13,7 +14,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child :Column(
+        child: Column(
           children: <Widget>[
             Container(
                 color: const Color.fromARGB(255, 81, 35, 19),
@@ -21,7 +22,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 width: double.infinity,
                 child: Column(
                   children: [
-                    SizedBox(height: 55,),
+                    SizedBox(
+                      height: 55,
+                    ),
                     Row(
                       children: [
                         SizedBox(width: 20),
@@ -86,8 +89,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                       ],
                     ),
                   ],
-                )
-            ),
+                )),
             SizedBox(
               height: 40,
             ),
@@ -169,9 +171,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
 
   Widget _buildSquareTR() {
     return GestureDetector(
-      onTap: () {
-
-      },
+      onTap: () {},
       child: Container(
         width: 150,
         height: 150,
@@ -262,7 +262,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MyDietPage(key: widget.key,)),
+          MaterialPageRoute(
+              builder: (context) => MyDietPage(
+                    key: widget.key,
+                  )),
         );
       },
       child: Container(
@@ -288,8 +291,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
             SizedBox(
               width: 75,
               height: 75,
-              child: Image.asset(
-                  'assets/diet-png.png'),
+              child: Image.asset('assets/diet-png.png'),
             ),
             SizedBox(
               height: 13,
@@ -309,7 +311,14 @@ class _MyProfilePageState extends State<MyProfilePage> {
 
   Widget _buildSquareB() {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SettingsPage(),
+          ),
+        );
+      },
       child: Container(
         width: 150,
         height: 150,
@@ -333,8 +342,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
             SizedBox(
               width: 75,
               height: 75,
-              child: Image.asset(
-                  'assets/app-settings-png.png'),
+              child: Image.asset('assets/app-settings-png.png'),
             ),
             SizedBox(
               height: 13,
