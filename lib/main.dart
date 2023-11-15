@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         ),
         textTheme: const TextTheme(),
       ),
-      home: LoginPage(), // Display the login page initially
+      home: const LoginPage(), // Display the login page initially
       debugShowCheckedModeBanner: false,
     );
   }
@@ -100,12 +100,13 @@ class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   bool _showError = false;
 
   @override
@@ -119,62 +120,61 @@ class _LoginPageState extends State<LoginPage> {
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextField(
                 controller: _usernameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Username',
                 ),
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               TextField(
                 controller: _passwordController,
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Password',
                 ),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               _showError
-                  ? Text(
+                  ? const Text(
                       'Username or password incorrect. Please try again.',
                       style: TextStyle(color: Colors.red, fontSize: 12.0),
                     )
                   : Container(),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () {
-                  // Validation logic - replace with your authentication logic
                   String username = _usernameController.text;
                   String password = _passwordController.text;
 
                   if (username == "ana123" && password == "12345") {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => BottomTabBar()),
+                      MaterialPageRoute(
+                          builder: (context) => const BottomTabBar()),
                     );
                   } else {
-                    // Show an error message
                     setState(() {
                       _showError = true;
                     });
                   }
                 },
-                child: Text('Login'),
+                child: const Text('Login'),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton(
                     onPressed: () {
-                      print("Forget Password?");
+                      // Navigate to the forgot password page
                     },
-                    child: Text(
+                    child: const Text(
                       'Forget Password?',
                       style: TextStyle(color: Colors.blue),
                     ),
