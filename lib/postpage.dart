@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 class PostPage extends StatefulWidget {
   PostPage({Key? key}) : super(key: key);
@@ -9,55 +12,288 @@ class PostPage extends StatefulWidget {
 }
 
 class _PostPageState extends State<PostPage> {
+  int _currentValue = 2;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:
-            const Text('Create Recipe', style: TextStyle(color: Colors.black)),
-        actions: [postButton(context)],
+        toolbarHeight: 100.0,
+        title: const Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Create Recipe', style: TextStyle(color: Colors.black)),
+          ],
+        ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 20),
-          Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(12)),
-              child: Row(
-                children: [
-                  const Text('Name:'),
-                  const SizedBox(width: 10),
-                  Expanded(
-                      child: TextFormField(
-                    decoration: const InputDecoration(
-                      hintText: 'Enter the recipe name',
-                      border: InputBorder.none,
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12)),
+                child: Row(
+                  children: [
+                    const Text('Name :'),
+                    const SizedBox(width: 10),
+                    Expanded(
+                        child: TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: 'What do you call the recipe?',
+                        border: InputBorder.none,
+                      ),
+                    ))
+                  ],
+                )),
+            divider(),
+            Column(
+              children: [
+                Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12)),
+                    child: Row(
+                      children: [
+                        const Text('👥 Servings'),
+                        const SizedBox(width: 150),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              _showNumberSelection(context,
+                                  (int selectedValue) {
+                                setState(() {
+                                  _currentValue = selectedValue;
+                                });
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 5), // Adjust button padding
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '$_currentValue',
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Color.fromARGB(255, 81, 35, 19),
+                                  ),
+                                ),
+                                const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Color.fromARGB(255, 81, 35, 19),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ) // Number button
+                      ],
+                    )),
+                const SizedBox(height: 10), // Add space between the boxes
+                numInputBox(context, '⏳ Est. Time (min.)', 'How long to make?'),
+              ],
+            ),
+            divider(),
+            header('🍱 Ingredients'),
+            Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12)),
+                child: Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        _showIngredientAdd(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 5), // Adjust button padding
+                      ),
+                      child: Icon(Icons.add),
                     ),
-                  ))
-                ],
-              )),
-          divider(),
-          Column(
-            children: [
-              inputBox(context, 'Servings', 'Enter number of servings'),
-              SizedBox(height: 10),
-              inputBox(context, 'Est. Time', 'Enter the estimated time'),
-            ],
-          ),
-          divider(),
-          header('Ingredients'),
-          inputBox(context, 'Add Ingredient', '')
-        ],
+                  ],
+                )),
+            const SizedBox(height: 10),
+            header('📋 Steps'),
+            addInput('Add Step', () {}),
+            const SizedBox(height: 10),
+            header('📸 Photos'),
+            Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12)),
+                child: Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 5), // Adjust button padding
+                      ),
+                      child: Icon(Icons.abc_outlined),
+                    ),
+                  ],
+                )),
+            const SizedBox(height: 10),
+            header('Tags'),
+            addInput('Add Tag', () {}),
+          ],
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Text('Post'),
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.all(16.0),
+        color: const Color.fromARGB(255, 246, 240, 232),
+        child: ElevatedButton(
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            print('Recipe posted');
+          },
+          child: const Text(
+            'POST',
+            style: TextStyle(
+              fontSize: 15,
+              color: Color.fromARGB(255, 81, 35, 19),
+            ),
+          ),
+        ),
       ),
     );
+  }
+
+  void _showIngredientAdd(BuildContext context) async {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setModalState) {
+            return Container(
+                height: 200.0,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.all(8),
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 5), // Adjust button padding
+                        ),
+                        child: const Text('Done'),
+                      ),
+                    ),
+                    Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12)),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.search),
+                            const SizedBox(width: 10),
+                            Expanded(
+                                child: TextFormField(
+                              decoration: const InputDecoration(
+                                hintText: 'Ingredient',
+                                border: InputBorder.none,
+                              ),
+                            ))
+                          ],
+                        )),
+                    //  TODO
+                  ],
+                ));
+          });
+        });
+  }
+
+  void _showNumberSelection(
+      BuildContext context, void Function(int) callback) async {
+    int? value = await showModalBottomSheet<int>(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setModalState) {
+            return Container(
+              height: 200.0,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20.0),
+                    topRight: Radius.circular(20.0),
+                  ),
+                ),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      NumberPicker(
+                        value: _currentValue,
+                        minValue: 0,
+                        maxValue: 20,
+                        onChanged: (value) {
+                          setModalState(() {
+                            _currentValue = value;
+                            callback(value);
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+
+    if (value != null) {
+      callback(value);
+    }
+  }
+
+  Widget addInput(String addButtonText, void Function() onPressedAction) {
+    return Container(
+        margin: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(12)),
+        child: Row(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                onPressedAction();
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 10, vertical: 5), // Adjust button padding
+              ),
+              child: Icon(Icons.add),
+            ),
+          ],
+        ));
   }
 
   Widget header(String title) {
@@ -105,7 +341,7 @@ class _PostPageState extends State<PostPage> {
     );
   }
 
-  Widget inputBox(
+  Widget numInputBox(
       BuildContext context, String inputName, String inputDescription) {
     return Container(
         margin: const EdgeInsets.symmetric(horizontal: 20),
