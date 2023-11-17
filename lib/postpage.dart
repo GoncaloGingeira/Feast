@@ -31,9 +31,13 @@ class _PostPageState extends State<PostPage> {
   // TODO Data to be converted to json
   Map<String, dynamic> data = {
     'name': '',
-    'servings': 2,
+    'servings': 2, // Default value
+    'time': 0, // In minutes
     'ingredients': [],
+    'steps': [],
   };
+
+  var timeController = TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +46,12 @@ class _PostPageState extends State<PostPage> {
     if (data['ingredients'] != null && data['ingredients'] is List) {
       ingredientWidgets = List.generate(
         data['ingredients'].length,
-            (index) {
+        (index) {
           Map ingredient = data['ingredients'][index];
-          if (ingredient != null && ingredient['name'] is String && ingredient['quantity'] is String && ingredient['unit'] is String){
+          if (ingredient != null &&
+              ingredient['name'] is String &&
+              ingredient['quantity'] is String &&
+              ingredient['unit'] is String) {
             return IngredientWidget(
               name: ingredient['name'],
               quantity: ingredient['quantity'],
@@ -120,6 +127,10 @@ class _PostPageState extends State<PostPage> {
                                   (int selectedValue) {
                                 setState(() {
                                   _currentValue = selectedValue;
+                                  data.update(
+                                      'servings',
+                                          (value) => selectedValue);
+                                  //Todo
                                 });
                               });
                             },
@@ -173,20 +184,47 @@ class _PostPageState extends State<PostPage> {
                       ),
                       child: Icon(Icons.add),
                     ),
-                    // TODO add ingredients
-                    ingredientWidgets.length > 0 ? Expanded(
-                      child: ListView(
-                        shrinkWrap: true,
-                        children: ingredientWidgets,
-                      ),
-                    ) : SizedBox.shrink(),
-
-
+                    ingredientWidgets.length > 0
+                        ? Expanded(
+                            child: ListView(
+                              shrinkWrap: true,
+                              children: ingredientWidgets,
+                            ),
+                          )
+                        : SizedBox.shrink(),
                   ],
                 )),
             const SizedBox(height: 10),
             header('📋 Steps'),
-            addInput('Add Step', () {}),
+            Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12)),
+                child: Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        _showStepAdd(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 5), // Adjust button padding
+                      ),
+                      child: Icon(Icons.add),
+                    ),
+                    ingredientWidgets.length > 0
+                        ? Expanded(
+                            child: ListView(
+                              shrinkWrap: true,
+                              children: ingredientWidgets,
+                            ),
+                          )
+                        : SizedBox.shrink(),
+                  ],
+                )),
             const SizedBox(height: 10),
             header('📸 Photos'),
             Container(
@@ -220,6 +258,8 @@ class _PostPageState extends State<PostPage> {
         child: ElevatedButton(
           onPressed: () {
             HapticFeedback.lightImpact();
+            data.update('time', (value) => timeController.text);
+            // TODO: Transform data into json
             print('Recipe posted');
           },
           child: const Text(
@@ -234,9 +274,8 @@ class _PostPageState extends State<PostPage> {
     );
   }
 
-  void _showIngredientAdd(BuildContext context) async {
-    final nameController = TextEditingController();
-    final amountController = TextEditingController();
+  void _showStepAdd(BuildContext context) {
+    final stepController = TextEditingController();
     showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -244,7 +283,7 @@ class _PostPageState extends State<PostPage> {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setModalState) {
             return Padding(
-              padding:EdgeInsets.only(
+              padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom),
               child: Container(
                   height: 300.0,
@@ -257,18 +296,117 @@ class _PostPageState extends State<PostPage> {
                         padding: const EdgeInsets.all(8),
                         child: ElevatedButton(
                           onPressed: () {
-                            data.update('ingredients', (value) => value! + [
-                                  {
-                                    'name': nameController.text,
-                                    'quantity': amountController.text,
-                                    'unit': currentUnit,
-                                  }
-                                ]);
-                            print(data);
-                            setState(() {
+                            if (stepController.text.isNotEmpty) {
+                              data.update(
+                                  'steps',
+                                  (value) =>
+                                      value! + [stepController.text]);
+                              print(data);
+                              setState(() {});
+                              setModalState(() {});
+                              Navigator.pop(context);
+                            } else {
+                              const snackBar = SnackBar(
+                                content: Text('Please fill in all fields'),
+                                duration: Duration(seconds: 1),
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                              Navigator.pop(context);
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 5), // Adjust button padding
+                          ),
+                          child: const Text('Done'),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.mode_edit),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: TextFormField(
+                                  controller: stepController,
+                                  maxLines: null, // Allow multiple lines
+                                  keyboardType: TextInputType.multiline,
+                                  decoration: const InputDecoration(
+                                    hintText: 'Step',
+                                    border: InputBorder.none,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  )),
+            );
+          });
+        });
+  }
 
-                            });
-                            setModalState((){});
+  void _showIngredientAdd(BuildContext context) async {
+    final nameController = TextEditingController();
+    final amountController = TextEditingController();
+    showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setModalState) {
+            return Padding(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: Container(
+                  height: 300.0,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.all(8),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (nameController.text.isNotEmpty &&
+                                amountController.text.isNotEmpty) {
+                              data.update(
+                                  'ingredients',
+                                  (value) =>
+                                      value! +
+                                      [
+                                        {
+                                          'name': nameController.text,
+                                          'quantity': amountController.text,
+                                          'unit': currentUnit,
+                                        }
+                                      ]);
+                              print(data);
+                              setState(() {});
+                              setModalState(() {});
+                              Navigator.pop(context);
+                            } else {
+                              const snackBar = SnackBar(
+                                content: Text('Please fill in all fields'),
+                                duration: Duration(seconds: 1),
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                              Navigator.pop(context);
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(
@@ -311,13 +449,13 @@ class _PostPageState extends State<PostPage> {
                               const SizedBox(width: 7),
                               Expanded(
                                   child: TextFormField(
-                                    controller: amountController,
-                                    keyboardType: TextInputType.number,
-                                    decoration: const InputDecoration(
-                                      hintText: 'Quantity',
-                                      border: InputBorder.none,
-                                    ),
-                                  )),
+                                controller: amountController,
+                                keyboardType: TextInputType.number,
+                                decoration: const InputDecoration(
+                                  hintText: 'Quantity',
+                                  border: InputBorder.none,
+                                ),
+                              )),
                               Container(
                                 width: 90,
                                 child: DropdownButton(
@@ -332,7 +470,8 @@ class _PostPageState extends State<PostPage> {
                                   items: weightUnits.map((String items) {
                                     return DropdownMenuItem(
                                       value: items,
-                                      child: Text(items, style: TextStyle(fontSize: 12)),
+                                      child: Text(items,
+                                          style: TextStyle(fontSize: 12)),
                                     );
                                   }).toList(),
                                   // After selecting the desired option,it will
@@ -344,7 +483,6 @@ class _PostPageState extends State<PostPage> {
                                   },
                                 ),
                               ),
-
                             ],
                           )),
                       //  TODO
@@ -483,6 +621,7 @@ class _PostPageState extends State<PostPage> {
             const SizedBox(width: 10),
             Expanded(
                 child: TextFormField(
+                  controller: timeController,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 hintText: inputDescription,
@@ -494,52 +633,55 @@ class _PostPageState extends State<PostPage> {
   }
 }
 
-class IngredientWidget extends StatelessWidget{
+class IngredientWidget extends StatelessWidget {
   final int index;
   final String name;
   final String quantity;
   final String unit;
   final Function(int) onDelete;
 
-  IngredientWidget({required this.name, required this.quantity, required this.unit, required this.index, required this.onDelete});
+  IngredientWidget(
+      {required this.name,
+      required this.quantity,
+      required this.unit,
+      required this.index,
+      required this.onDelete});
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
-        final RenderBox button = context.findRenderObject() as RenderBox;
-        final Offset offset = button.localToGlobal(Offset.zero);
-        final RelativeRect position = RelativeRect.fromRect(
-          Rect.fromPoints(
-            offset,
-            offset.translate(button.size.width - 70, button.size.height),
-          ),
-          Offset.zero & MediaQuery.of(context).size,
-        );
-        showMenu(
-        context: context,
-        position: position,
-        items: [
-          const PopupMenuItem(
-            value: 'delete',
-            child: Text('Delete'),
-          ),
-        ],
-        elevation: 8.0,
-        ).then((value) {
-          if (value == 'delete') {
-            // Handle delete action
-            onDelete(index);
-            print('Deleting item at index $index');
-          }
-        });
-      },
-      style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(
-            horizontal: 10,
-            vertical: 5), // Adjust button padding
-      ),
-      child: Text('$name $quantity $unit')
-    );
+        onPressed: () {
+          final RenderBox button = context.findRenderObject() as RenderBox;
+          final Offset offset = button.localToGlobal(Offset.zero);
+          final RelativeRect position = RelativeRect.fromRect(
+            Rect.fromPoints(
+              offset,
+              offset.translate(button.size.width - 70, button.size.height),
+            ),
+            Offset.zero & MediaQuery.of(context).size,
+          );
+          showMenu(
+            context: context,
+            position: position,
+            items: [
+              const PopupMenuItem(
+                value: 'delete',
+                child: Text('Delete'),
+              ),
+            ],
+            elevation: 8.0,
+          ).then((value) {
+            if (value == 'delete') {
+              // Handle delete action
+              onDelete(index);
+              print('Deleting item at index $index');
+            }
+          });
+        },
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(
+              horizontal: 10, vertical: 5), // Adjust button padding
+        ),
+        child: Text('$name ($quantity $unit)'));
   }
 }
