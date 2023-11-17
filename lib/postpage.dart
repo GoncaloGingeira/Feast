@@ -26,16 +26,46 @@ class _PostPageState extends State<PostPage> {
   ];
 
   int _currentValue = 2;
-  String dropdownvalue = 'grams';
+  String currentUnit = 'grams';
 
   // TODO Data to be converted to json
   Map<String, dynamic> data = {
     'name': '',
     'servings': 2,
+    'ingredients': [],
   };
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> ingredientWidgets = [];
+
+    if (data['ingredients'] != null && data['ingredients'] is List) {
+      ingredientWidgets = List.generate(
+        data['ingredients'].length,
+            (index) {
+          Map ingredient = data['ingredients'][index];
+          if (ingredient != null && ingredient['name'] is String && ingredient['quantity'] is String && ingredient['unit'] is String){
+            return IngredientWidget(
+              name: ingredient['name'],
+              quantity: ingredient['quantity'],
+              unit: ingredient['unit'],
+              index: index,
+              onDelete: (int index) {
+                setState(() {
+                  data['ingredients'].removeAt(index);
+                });
+              },
+            );
+          } else {
+            // Handle the case when an ingredient is null or not a List with at least 3 elements
+            return SizedBox.shrink(); // or any other placeholder widget
+          }
+        },
+      );
+    } else {
+      // Handle the case when 'ingredients' is null or not a List
+      print('Ingredients data is missing or not a List');
+    }
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 100.0,
@@ -143,6 +173,15 @@ class _PostPageState extends State<PostPage> {
                       ),
                       child: Icon(Icons.add),
                     ),
+                    // TODO add ingredients
+                    ingredientWidgets.length > 0 ? Expanded(
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: ingredientWidgets,
+                      ),
+                    ) : SizedBox.shrink(),
+
+
                   ],
                 )),
             const SizedBox(height: 10),
@@ -196,6 +235,8 @@ class _PostPageState extends State<PostPage> {
   }
 
   void _showIngredientAdd(BuildContext context) async {
+    final nameController = TextEditingController();
+    final amountController = TextEditingController();
     showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -215,7 +256,20 @@ class _PostPageState extends State<PostPage> {
                         margin: const EdgeInsets.symmetric(horizontal: 20),
                         padding: const EdgeInsets.all(8),
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            data.update('ingredients', (value) => value! + [
+                                  {
+                                    'name': nameController.text,
+                                    'quantity': amountController.text,
+                                    'unit': currentUnit,
+                                  }
+                                ]);
+                            print(data);
+                            setState(() {
+
+                            });
+                            setModalState((){});
+                          },
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10,
@@ -236,6 +290,7 @@ class _PostPageState extends State<PostPage> {
                               const SizedBox(width: 10),
                               Expanded(
                                   child: TextFormField(
+                                controller: nameController,
                                 decoration: const InputDecoration(
                                   hintText: 'Ingredient',
                                   border: InputBorder.none,
@@ -256,6 +311,7 @@ class _PostPageState extends State<PostPage> {
                               const SizedBox(width: 7),
                               Expanded(
                                   child: TextFormField(
+                                    controller: amountController,
                                     keyboardType: TextInputType.number,
                                     decoration: const InputDecoration(
                                       hintText: 'Quantity',
@@ -267,7 +323,7 @@ class _PostPageState extends State<PostPage> {
                                 child: DropdownButton(
                                   isExpanded: true,
                                   // Initial Value
-                                  value: dropdownvalue,
+                                  value: currentUnit,
 
                                   // Down Arrow Icon
                                   icon: const Icon(Icons.arrow_drop_down),
@@ -276,14 +332,14 @@ class _PostPageState extends State<PostPage> {
                                   items: weightUnits.map((String items) {
                                     return DropdownMenuItem(
                                       value: items,
-                                      child: Text(items),
+                                      child: Text(items, style: TextStyle(fontSize: 12)),
                                     );
                                   }).toList(),
                                   // After selecting the desired option,it will
                                   // change button value to selected value
                                   onChanged: (String? newValue) {
                                     setModalState(() {
-                                      dropdownvalue = newValue!;
+                                      currentUnit = newValue!;
                                     });
                                   },
                                 ),
@@ -435,5 +491,55 @@ class _PostPageState extends State<PostPage> {
             ))
           ],
         ));
+  }
+}
+
+class IngredientWidget extends StatelessWidget{
+  final int index;
+  final String name;
+  final String quantity;
+  final String unit;
+  final Function(int) onDelete;
+
+  IngredientWidget({required this.name, required this.quantity, required this.unit, required this.index, required this.onDelete});
+
+  @override
+  Widget build(BuildContext context){
+    return ElevatedButton(
+      onPressed: () {
+        final RenderBox button = context.findRenderObject() as RenderBox;
+        final Offset offset = button.localToGlobal(Offset.zero);
+        final RelativeRect position = RelativeRect.fromRect(
+          Rect.fromPoints(
+            offset,
+            offset.translate(button.size.width - 70, button.size.height),
+          ),
+          Offset.zero & MediaQuery.of(context).size,
+        );
+        showMenu(
+        context: context,
+        position: position,
+        items: [
+          const PopupMenuItem(
+            value: 'delete',
+            child: Text('Delete'),
+          ),
+        ],
+        elevation: 8.0,
+        ).then((value) {
+          if (value == 'delete') {
+            // Handle delete action
+            onDelete(index);
+            print('Deleting item at index $index');
+          }
+        });
+      },
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 5), // Adjust button padding
+      ),
+      child: Text('$name $quantity $unit')
+    );
   }
 }
