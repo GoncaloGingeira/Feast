@@ -12,7 +12,27 @@ class PostPage extends StatefulWidget {
 }
 
 class _PostPageState extends State<PostPage> {
+  var weightUnits = [
+    'grams',
+    'kilograms',
+    'pounds',
+    'ounces',
+    'milliliters',
+    'liters',
+    'teaspoons',
+    'tablespoons',
+    'cups',
+    'fluid ounces',
+  ];
+
   int _currentValue = 2;
+  String dropdownvalue = 'grams';
+
+  // TODO Data to be converted to json
+  Map<String, dynamic> data = {
+    'name': '',
+    'servings': 2,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -177,51 +197,104 @@ class _PostPageState extends State<PostPage> {
 
   void _showIngredientAdd(BuildContext context) async {
     showModalBottomSheet(
+        isScrollControlled: true,
         context: context,
         builder: (BuildContext context) {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setModalState) {
-            return Container(
-                height: 200.0,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 20),
-                      padding: const EdgeInsets.all(8),
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 5), // Adjust button padding
-                        ),
-                        child: const Text('Done'),
-                      ),
-                    ),
-                    Container(
+            return Padding(
+              padding:EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: Container(
+                  height: 300.0,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
                         margin: const EdgeInsets.symmetric(horizontal: 20),
                         padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12)),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.search),
-                            const SizedBox(width: 10),
-                            Expanded(
-                                child: TextFormField(
-                              decoration: const InputDecoration(
-                                hintText: 'Ingredient',
-                                border: InputBorder.none,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 5), // Adjust button padding
+                          ),
+                          child: const Text('Done'),
+                        ),
+                      ),
+                      Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 20),
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12)),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.search),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                  child: TextFormField(
+                                decoration: const InputDecoration(
+                                  hintText: 'Ingredient',
+                                  border: InputBorder.none,
+                                ),
+                              ))
+                            ],
+                          )),
+                      const SizedBox(height: 10),
+                      Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 20),
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12)),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.scale),
+                              const SizedBox(width: 7),
+                              Expanded(
+                                  child: TextFormField(
+                                    keyboardType: TextInputType.number,
+                                    decoration: const InputDecoration(
+                                      hintText: 'Quantity',
+                                      border: InputBorder.none,
+                                    ),
+                                  )),
+                              Container(
+                                width: 90,
+                                child: DropdownButton(
+                                  isExpanded: true,
+                                  // Initial Value
+                                  value: dropdownvalue,
+
+                                  // Down Arrow Icon
+                                  icon: const Icon(Icons.arrow_drop_down),
+
+                                  // Array list of items
+                                  items: weightUnits.map((String items) {
+                                    return DropdownMenuItem(
+                                      value: items,
+                                      child: Text(items),
+                                    );
+                                  }).toList(),
+                                  // After selecting the desired option,it will
+                                  // change button value to selected value
+                                  onChanged: (String? newValue) {
+                                    setModalState(() {
+                                      dropdownvalue = newValue!;
+                                    });
+                                  },
+                                ),
                               ),
-                            ))
-                          ],
-                        )),
-                    //  TODO
-                  ],
-                ));
+
+                            ],
+                          )),
+                      //  TODO
+                    ],
+                  )),
+            );
           });
         });
   }
