@@ -2,42 +2,43 @@
     "id": "scrambled-eggs",
     "name": "Scrambled Eggs",
     "rating": 4.4,
-    "estimatedTime": 10,
+    "time": 10,
     "servings": 2,
-    "calories": 148,
+    "numOfCalories": 148,
+    "photo": "assets/recipes/recipe-images/scrambled-eggs.png",
+    "tags": [
+        "breakfast",
+        "eggs",
+        "quick"
+    ],
     "ingredients": [
         {
             "name": "Eggs",
             "quantity": 4,
-            "unit": "",
-            "notes": ""
+            "unit": ""
         },
         {
             "name": "Butter",
             "quantity": 1,
-            "unit": "tbsp",
-            "notes": ""
+            "unit": "tbsp"
         },
         {
             "name": "Salt",
             "quantity": 1,
-            "unit": "pinch",
-            "notes": ""
+            "unit": "pinch"
         },
         {
             "name": "Pepper",
             "quantity": 1,
-            "unit": "pinch",
-            "notes": ""
+            "unit": "pinch"
         },
         {
             "name": "Milk",
             "quantity": 2,
-            "unit": "tbsp",
-            "notes": "optional"
+            "unit": "tbsp"
         }
     ],
-    "instructions": [
+    "steps": [
         "Crack the eggs into a bowl and whisk until the yolks and whites are fully combined.",
         "Add the butter to a non-stick pan and heat over medium heat until melted.",
         "Pour the eggs into the pan and let them cook for about 30 seconds without stirring.",
