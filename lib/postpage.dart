@@ -1,10 +1,13 @@
 import 'dart:async';
 
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'dart:convert';
-import 'package:dotted_border/dotted_border.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 class PostPage extends StatefulWidget {
   PostPage({Key? key}) : super(key: key);
@@ -29,22 +32,43 @@ class _PostPageState extends State<PostPage> {
 
   int _currentValue = 2;
   String currentUnit = 'grams';
+  final GlobalKey _imageKey = GlobalKey();
 
   // TODO Data to be converted to json
   Map<String, dynamic> data = {
     'name': '',
     'servings': 2, // Default value
-    'time': 0, // In minutes
+    'time': '', // In minutes
     'ingredients': [],
     'steps': [],
+    'tags': [],
+    'photo': '',
   };
 
   var timeController = TextEditingController(text: '');
+  var nameController = TextEditingController(text: '');
+
+
+  File? _imageFile;
+
+  Future<void> _getImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null) {
+        _imageFile = File(pickedFile.path);
+        data['photo'] = pickedFile.path;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+
     List<Widget> ingredientWidgets = [];
     List<Widget> stepsWidgets = [];
+    List<Widget> tagsWidgets = [];
 
     if (data['ingredients'] != null && data['ingredients'] is List) {
       ingredientWidgets = List.generate(
@@ -105,6 +129,34 @@ class _PostPageState extends State<PostPage> {
       print('Ingredients data is missing or not a List');
     }
 
+    if(data['tags'] != null && data['tags'] is List) {
+      tagsWidgets = List.generate(
+        data['tags'].length,
+        (index) {
+          String tag = data['tags'][index];
+          if (tag != null && tag is String) {
+            return IngredientWidget(
+              name: tag,
+              quantity: "",
+              unit: "",
+              index: index,
+              onDelete: (int index) {
+                setState(() {
+                  data['tags'].removeAt(index);
+                });
+              },
+            );
+          } else {
+            // Handle the case when an ingredient is null or not a List with at least 3 elements
+            return SizedBox.shrink(); // or any other placeholder widget
+          }
+        },
+      );
+    } else {
+      // Handle the case when 'ingredients' is null or not a List
+      print('Ingredients data is missing or not a List');
+    }
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 100.0,
@@ -132,6 +184,7 @@ class _PostPageState extends State<PostPage> {
                     const SizedBox(width: 10),
                     Expanded(
                         child: TextFormField(
+                      controller: nameController,
                       decoration: const InputDecoration(
                         hintText: 'What do you call the recipe?',
                         border: InputBorder.none,
@@ -160,8 +213,7 @@ class _PostPageState extends State<PostPage> {
                                 setState(() {
                                   _currentValue = selectedValue;
                                   data.update(
-                                      'servings',
-                                          (value) => selectedValue);
+                                      'servings', (value) => selectedValue);
                                   //Todo
                                 });
                               });
@@ -238,7 +290,7 @@ class _PostPageState extends State<PostPage> {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        _showStepAdd(context);
+                        _showStepAdd(context, 'steps', 'Step');
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
@@ -258,7 +310,81 @@ class _PostPageState extends State<PostPage> {
                   ],
                 )),
             const SizedBox(height: 10),
-            header('📸 Photos'),
+            header('📸 Photo'),
+            Row(
+              children: [
+                const SizedBox(width: 20),
+                Center(
+                  child: _imageFile == null
+                      ? ElevatedButton(
+                          onPressed: _getImage,
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50.0),
+                            ),
+                          ),
+                          child: Container(
+                            width: 100.0,
+                            height: 100.0,
+                            alignment: Alignment.center,
+                            child: const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.camera_alt),
+                                SizedBox(height: 8.0),
+                                Text("Add Cover Photo",
+                                    textAlign: TextAlign.center),
+                              ],
+                            ),
+                          ),
+                        )
+                      : GestureDetector(
+                        onTap: () {
+                          final RenderBox button = _imageKey.currentContext!.findRenderObject() as RenderBox;
+                          final Offset offset = button.localToGlobal(Offset.zero);
+                          final RelativeRect position = RelativeRect.fromRect(
+                            Rect.fromPoints(
+                              offset,
+                              offset.translate(button.size.width + 70, button.size.height),
+                            ),
+                            Offset.zero & MediaQuery.of(context).size,
+                          );
+                          showMenu(
+                            context: context,
+                            position: position,
+                            items: [
+                              const PopupMenuItem(
+                                value: 'delete',
+                                child: Text('Delete'),
+                              ),
+                            ],
+                            elevation: 8.0,
+                          ).then((value) {
+                            if (value == 'delete') {
+                              // Handle delete action
+                              setState(() {
+                                _imageFile = null;
+                              });
+                            }
+                          });
+                        },
+                        child: ClipRRect(
+                          key: _imageKey,
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(12.0)),
+                          child: Image.file(
+                            _imageFile!,
+                            width: 100.0,
+                            height: 100.0,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            header('🏷️ Tags'),
             Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 padding: const EdgeInsets.all(8),
@@ -269,29 +395,25 @@ class _PostPageState extends State<PostPage> {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        
-                        // Add your onPressed logic here
+                        _showStepAdd(context, 'tags', 'Tag');
                       },
-                      style: ElevatedButton.styleFrom(),
-                      child: Container(
-                        width: 100.0, // Adjust the size as needed
-                        height: 100.0,
-                        alignment: Alignment.center,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.camera_alt),
-                            SizedBox(height: 8.0),
-                            Text("Add Cover Image", textAlign: TextAlign.center),
-                          ],
-                        ),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 5), // Adjust button padding
                       ),
+                      child: Icon(Icons.add),
                     ),
+                    tagsWidgets.length > 0
+                        ? Expanded(
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: tagsWidgets,
+                      ),
+                    )
+                        : SizedBox.shrink(),
                   ],
                 )),
-            const SizedBox(height: 10),
-            header('Tags'),
-            addInput('Add Tag', () {}),
           ],
         ),
       ),
@@ -301,12 +423,44 @@ class _PostPageState extends State<PostPage> {
         child: ElevatedButton(
           onPressed: () {
             HapticFeedback.lightImpact();
-            data.update('time', (value) => timeController.text);
+            if(data['name'] == '' || data['time'] == '' || data['ingredients'].length == 0 || data['steps'].length == 0 || data['tags'].length == 0 || data['photo'] == '') {
+              const snackBar = SnackBar(
+                content: Text('Please fill in all fields'),
+                duration: Duration(seconds: 1),
+              );
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(snackBar);
+              return;
+            }
             // TODO: Transform data into json
+            data['name'] = nameController.text;
+            data['time'] = timeController.text;
             String jsonString = json.encode(data);
+            saveJsonToFile(jsonString);
             print(jsonString);
             print('Recipe posted');
-          },
+
+            // Clear all fields
+            setState(() {
+              nameController = TextEditingController(text: '');
+              timeController = TextEditingController(text: '');
+              data['name'] = '';
+              data['servings'] = 2;
+              data['time'] = '';
+              data['ingredients'] = [];
+              data['steps'] = [];
+              data['tags'] = [];
+              data['photo'] = '';
+              _imageFile = null;
+              _currentValue = 2;
+            });
+            const snackBar = SnackBar(
+              content: Text('Recipe posted!'),
+              duration: Duration(seconds: 1),
+            );
+            ScaffoldMessenger.of(context)
+                .showSnackBar(snackBar);
+            },
           child: const Text(
             'POST',
             style: TextStyle(
@@ -319,7 +473,28 @@ class _PostPageState extends State<PostPage> {
     );
   }
 
-  void _showStepAdd(BuildContext context) {
+  String generateHash(String data) {
+    List<int> bytes = utf8.encode(data);
+    Digest digest = sha256.convert(bytes);
+    return digest.toString();
+  }
+
+  Future<void> saveJsonToFile(String jsonString) async {
+    try {
+      final Directory directory = await getApplicationDocumentsDirectory();
+      String hash = generateHash(jsonString);
+      final File file = File('${directory.path}/$hash.json');
+
+      // Write the JSON string to the file
+      await file.writeAsString(jsonString);
+
+      print('JSON saved to file: ${file.path}');
+    } catch (e) {
+      print('Error saving JSON to file: $e');
+    }
+  }
+
+  void _showStepAdd(BuildContext context, String dataValue, String hintText) {
     final stepController = TextEditingController();
     showModalBottomSheet(
         isScrollControlled: true,
@@ -343,13 +518,10 @@ class _PostPageState extends State<PostPage> {
                           onPressed: () {
                             if (stepController.text.isNotEmpty) {
                               //String newStep = (data['steps'].length + 1).toString() + '. ' + stepController.text;
-                              data.update(
-                                  'steps',
-                                  (value) =>
-                                      value! + [stepController.text]);
+                              data.update(dataValue,
+                                  (value) => value! + [stepController.text]);
                               setState(() {});
                               setModalState(() {});
-                              print(data);
                               Navigator.pop(context);
                             } else {
                               const snackBar = SnackBar(
@@ -369,7 +541,7 @@ class _PostPageState extends State<PostPage> {
                           child: const Text('Done'),
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: 10),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
@@ -381,14 +553,14 @@ class _PostPageState extends State<PostPage> {
                           child: Row(
                             children: [
                               const Icon(Icons.mode_edit),
-                              const SizedBox(width: 10),
+                              SizedBox(width: 10),
                               Expanded(
                                 child: TextFormField(
                                   controller: stepController,
                                   maxLines: null, // Allow multiple lines
                                   keyboardType: TextInputType.multiline,
-                                  decoration: const InputDecoration(
-                                    hintText: 'Step',
+                                  decoration: InputDecoration(
+                                    hintText: hintText,
                                     border: InputBorder.none,
                                   ),
                                 ),
@@ -563,7 +735,7 @@ class _PostPageState extends State<PostPage> {
                     children: <Widget>[
                       NumberPicker(
                         value: _currentValue,
-                        minValue: 0,
+                        minValue: 1,
                         maxValue: 20,
                         onChanged: (value) {
                           setModalState(() {
@@ -632,6 +804,7 @@ class _PostPageState extends State<PostPage> {
       onPressed: () {
         // Add your button's onPressed action here
         print('Post button pressed');
+        saveJsonToFile(json.encode(data));
       },
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
@@ -667,7 +840,7 @@ class _PostPageState extends State<PostPage> {
             const SizedBox(width: 10),
             Expanded(
                 child: TextFormField(
-                  controller: timeController,
+              controller: timeController,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 hintText: inputDescription,
@@ -696,12 +869,9 @@ class IngredientWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Text text;
-    if(quantity != "" && unit != "")
-    {
+    if (quantity != "" && unit != "") {
       text = Text('$name ($quantity $unit)');
-    }
-    else
-    {
+    } else {
       text = Text(name);
     }
     return ElevatedButton(
@@ -737,8 +907,6 @@ class IngredientWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(
               horizontal: 10, vertical: 5), // Adjust button padding
         ),
-
-        child: text
-    );
+        child: text);
   }
 }

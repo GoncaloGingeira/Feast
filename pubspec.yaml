@@ -16,6 +16,8 @@ dependencies:
   flutter_number_picker: ^1.0.1
   dotted_border: ^2.0.0+1
   image_picker: ^1.0.4
+  path_provider: ^2.1.1
+  crypto: ^3.0.3
 
 dev_dependencies:
   flutter_test:
