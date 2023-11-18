@@ -8,6 +8,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'dart:math';
 
 class PostPage extends StatefulWidget {
   PostPage({Key? key}) : super(key: key);
@@ -33,9 +34,11 @@ class _PostPageState extends State<PostPage> {
   int _currentValue = 2;
   String currentUnit = 'grams';
   final GlobalKey _imageKey = GlobalKey();
+  Random random = Random();
 
   // TODO Data to be converted to json
   Map<String, dynamic> data = {
+    'id': '',
     'name': '',
     'servings': 2, // Default value
     'time': '', // In minutes
@@ -43,6 +46,8 @@ class _PostPageState extends State<PostPage> {
     'steps': [],
     'tags': [],
     'photo': '',
+    'rating': 5.0,
+    'numbOfCalories': 0,
   };
 
   var timeController = TextEditingController(text: '');
@@ -423,6 +428,8 @@ class _PostPageState extends State<PostPage> {
         child: ElevatedButton(
           onPressed: () {
             HapticFeedback.lightImpact();
+            data['name'] = nameController.text;
+            data['time'] = timeController.text;
             if(data['name'] == '' || data['time'] == '' || data['ingredients'].length == 0 || data['steps'].length == 0 || data['tags'].length == 0 || data['photo'] == '') {
               const snackBar = SnackBar(
                 content: Text('Please fill in all fields'),
@@ -433,8 +440,6 @@ class _PostPageState extends State<PostPage> {
               return;
             }
             // TODO: Transform data into json
-            data['name'] = nameController.text;
-            data['time'] = timeController.text;
             String jsonString = json.encode(data);
             saveJsonToFile(jsonString);
             print(jsonString);
@@ -451,6 +456,7 @@ class _PostPageState extends State<PostPage> {
               data['steps'] = [];
               data['tags'] = [];
               data['photo'] = '';
+              data['numbOfCalories'] = 150 + random.nextInt(1000 - 150 + 1); // Random number between 150 and 1000
               _imageFile = null;
               _currentValue = 2;
             });

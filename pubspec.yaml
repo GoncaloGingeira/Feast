@@ -30,6 +30,7 @@ flutter:
     - assets/
     - assets/recipes/
     - assets/recipes/recipe_list.json
+    - assets/recipes/recipe-images/
   fonts:
     - family: CustomFont1
       fonts:
