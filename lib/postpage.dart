@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'dart:convert';
+import 'package:dotted_border/dotted_border.dart';
 
 class PostPage extends StatefulWidget {
   PostPage({Key? key}) : super(key: key);
@@ -42,6 +44,7 @@ class _PostPageState extends State<PostPage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> ingredientWidgets = [];
+    List<Widget> stepsWidgets = [];
 
     if (data['ingredients'] != null && data['ingredients'] is List) {
       ingredientWidgets = List.generate(
@@ -73,6 +76,35 @@ class _PostPageState extends State<PostPage> {
       // Handle the case when 'ingredients' is null or not a List
       print('Ingredients data is missing or not a List');
     }
+
+    if (data['steps'] != null && data['steps'] is List) {
+      stepsWidgets = List.generate(
+        data['steps'].length,
+        (index) {
+          String step = data['steps'][index];
+          if (step != null && step is String) {
+            return IngredientWidget(
+              name: "${index + 1}. $step",
+              quantity: "",
+              unit: "",
+              index: index,
+              onDelete: (int index) {
+                setState(() {
+                  data['steps'].removeAt(index);
+                });
+              },
+            );
+          } else {
+            // Handle the case when an ingredient is null or not a List with at least 3 elements
+            return SizedBox.shrink(); // or any other placeholder widget
+          }
+        },
+      );
+    } else {
+      // Handle the case when 'ingredients' is null or not a List
+      print('Ingredients data is missing or not a List');
+    }
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 100.0,
@@ -215,11 +247,11 @@ class _PostPageState extends State<PostPage> {
                       ),
                       child: Icon(Icons.add),
                     ),
-                    ingredientWidgets.length > 0
+                    stepsWidgets.length > 0
                         ? Expanded(
                             child: ListView(
                               shrinkWrap: true,
-                              children: ingredientWidgets,
+                              children: stepsWidgets,
                             ),
                           )
                         : SizedBox.shrink(),
@@ -236,13 +268,24 @@ class _PostPageState extends State<PostPage> {
                 child: Row(
                   children: [
                     ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 5), // Adjust button padding
+                      onPressed: () {
+                        
+                        // Add your onPressed logic here
+                      },
+                      style: ElevatedButton.styleFrom(),
+                      child: Container(
+                        width: 100.0, // Adjust the size as needed
+                        height: 100.0,
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.camera_alt),
+                            SizedBox(height: 8.0),
+                            Text("Add Cover Image", textAlign: TextAlign.center),
+                          ],
+                        ),
                       ),
-                      child: Icon(Icons.abc_outlined),
                     ),
                   ],
                 )),
@@ -260,6 +303,8 @@ class _PostPageState extends State<PostPage> {
             HapticFeedback.lightImpact();
             data.update('time', (value) => timeController.text);
             // TODO: Transform data into json
+            String jsonString = json.encode(data);
+            print(jsonString);
             print('Recipe posted');
           },
           child: const Text(
@@ -297,13 +342,14 @@ class _PostPageState extends State<PostPage> {
                         child: ElevatedButton(
                           onPressed: () {
                             if (stepController.text.isNotEmpty) {
+                              //String newStep = (data['steps'].length + 1).toString() + '. ' + stepController.text;
                               data.update(
                                   'steps',
                                   (value) =>
                                       value! + [stepController.text]);
-                              print(data);
                               setState(() {});
                               setModalState(() {});
+                              print(data);
                               Navigator.pop(context);
                             } else {
                               const snackBar = SnackBar(
@@ -649,6 +695,15 @@ class IngredientWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Text text;
+    if(quantity != "" && unit != "")
+    {
+      text = Text('$name ($quantity $unit)');
+    }
+    else
+    {
+      text = Text(name);
+    }
     return ElevatedButton(
         onPressed: () {
           final RenderBox button = context.findRenderObject() as RenderBox;
@@ -682,6 +737,8 @@ class IngredientWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(
               horizontal: 10, vertical: 5), // Adjust button padding
         ),
-        child: Text('$name ($quantity $unit)'));
+
+        child: text
+    );
   }
 }
