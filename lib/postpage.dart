@@ -182,7 +182,16 @@ class _PostPageState extends State<PostPage> {
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(12)),
+                    borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
                 child: Row(
                   children: [
                     const Text('Name :'),
@@ -205,7 +214,16 @@ class _PostPageState extends State<PostPage> {
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(12)),
+                        borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],),
+
                     child: Row(
                       children: [
                         const Text('👥 Servings'),
@@ -259,7 +277,15 @@ class _PostPageState extends State<PostPage> {
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(12)),
+                    borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],),
                 child: Row(
                   children: [
                     ElevatedButton(
@@ -290,7 +316,15 @@ class _PostPageState extends State<PostPage> {
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(12)),
+                    borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],),
                 child: Row(
                   children: [
                     ElevatedButton(
@@ -395,7 +429,16 @@ class _PostPageState extends State<PostPage> {
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(12)),
+                    borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
                 child: Row(
                   children: [
                     ElevatedButton(
@@ -839,7 +882,15 @@ class _PostPageState extends State<PostPage> {
         margin: const EdgeInsets.symmetric(horizontal: 20),
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(12)),
+            color: Colors.white, borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],),
         child: Row(
           children: [
             Text('$inputName :'),

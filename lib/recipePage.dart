@@ -30,6 +30,7 @@ class _RecipePageState extends State<RecipePage> {
           ),
           actions: [
             IconButton(
+              iconSize: 35.0,
               icon: const Icon(Icons.bookmark_border),
               onPressed: () {
                 // Add save functionality
@@ -47,6 +48,9 @@ class _RecipePageState extends State<RecipePage> {
         ),
         body: Column(
           children: [
+            const SizedBox(
+              height: 7,
+            ),
             Center(
               child: Stack(
                 alignment: Alignment.topLeft,
@@ -62,6 +66,7 @@ class _RecipePageState extends State<RecipePage> {
                         width: 2, // Adjust the border width
                       ),
                     ),
+
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       // Adjust the border radius
@@ -124,14 +129,22 @@ class _RecipePageState extends State<RecipePage> {
                 Container(
                     padding: const EdgeInsets.all(10.0),
                     decoration: BoxDecoration(
-                      color: Colors.lightGreen,
-                      borderRadius: BorderRadius.circular(10),
+                      color: const Color.fromRGBO(255, 132, 0, 1),
+                      borderRadius: BorderRadius.circular(18),
                       border: Border.all(
                         color: Colors.black, // Adjust the border color
                         width: 2, // Adjust the border width
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
                     ),
-                    child: IntrinsicWidth(
+                    child: const IntrinsicWidth(
                       child: Row(
                         children: [
                           Icon(Icons.play_arrow),
@@ -144,11 +157,19 @@ class _RecipePageState extends State<RecipePage> {
                   padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(18),
                     border: Border.all(
                       color: Colors.black, // Adjust the border color
                       width: 2, // Adjust the border width
                     ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 1,
+                        blurRadius: 5,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
                   ),
                   child: Row(
                     children: [
@@ -162,11 +183,19 @@ class _RecipePageState extends State<RecipePage> {
                   padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(18),
                     border: Border.all(
                       color: Colors.black, // Adjust the border color
                       width: 2, // Adjust the border width
                     ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 1,
+                        blurRadius: 5,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
                   ),
                   child: Row(
                     children: [
@@ -190,16 +219,26 @@ class _RecipePageState extends State<RecipePage> {
               height: 10,
             ),
             Container(
-              width: 400, // Adjust the width as needed
-              height: 300, // Adjust the height as needed
+              width: 400,
+              // Adjust the width as needed
+              height: 300,
+              // Adjust the height as needed
               padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(18),
                 border: Border.all(
                   color: Colors.black, // Adjust the border color
                   width: 2, // Adjust the border width
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
               ),
               child: SingleChildScrollView(
                 child: Column(
@@ -233,11 +272,19 @@ class _RecipePageState extends State<RecipePage> {
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(18),
         border: Border.all(
           color: Colors.black, // Adjust the border color
           width: 2, // Adjust the border width
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
       child: Column(
         children: [
