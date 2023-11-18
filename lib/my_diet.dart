@@ -156,7 +156,7 @@ class _MyDietPageState extends State<MyDietPage> {
             child: Text(
               'CONFIRM',
               style: TextStyle(
-                fontSize: 15,
+                fontSize: 13,
                 color: const Color.fromARGB(255, 81, 35, 19),
               ),
             ),

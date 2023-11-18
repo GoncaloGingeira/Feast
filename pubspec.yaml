@@ -12,6 +12,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_boxicons: ^3.0.0
   path: ^1.8.0
+  path_provider: ^2.1.1
 
 dev_dependencies:
   flutter_test:
@@ -22,6 +23,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+    - assets/myfridge.json
   fonts:
     - family: CustomFont1
       fonts:

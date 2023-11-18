@@ -1,4 +1,5 @@
 import 'package:feast/my_diet.dart';
+import 'package:feast/digital_fridge.dart';
 import 'package:flutter/material.dart';
 
 class MyProfilePage extends StatefulWidget {
@@ -170,7 +171,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
   Widget _buildSquareTR() {
     return GestureDetector(
       onTap: () {
-
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => DigitalFridgePage(key: widget.key,)),
+        );
       },
       child: Container(
         width: 150,
