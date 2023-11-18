@@ -28,6 +28,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+    - assets/myfridge.json
     - assets/recipes/
     - assets/recipes/recipe_list.json
     - assets/recipes/recipe-images/
