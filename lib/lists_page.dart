@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:feast/recipe.dart'; // Assuming there is a Recipe class in recipe.dart
+import 'package:flutter/services.dart';
+import 'package:feast/recipe.dart';
 import 'dart:convert';
 
 class ListsPage extends StatelessWidget {
@@ -9,20 +10,30 @@ class ListsPage extends StatelessWidget {
     "Dinner recipes"
   ];
 
-  ListsPage();
+  ListsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Recipe Lists"),
+        title: const Text("Recipe Lists"),
       ),
       body: ListView.builder(
         itemCount: predefinedLists.length,
         itemBuilder: (context, index) {
           String list = predefinedLists[index];
 
+          IconData icon = Icons.list;
+          if (list == "Favorites") {
+            icon = Icons.favorite;
+          } else if (list == "For her") {
+            icon = Icons.person;
+          } else if (list == "Dinner recipes") {
+            icon = Icons.dinner_dining;
+          }
+
           return ListTile(
+            leading: Icon(icon),
             title: Text(list),
             onTap: () {
               Navigator.push(
@@ -42,57 +53,117 @@ class ListsPage extends StatelessWidget {
 class RecipesInListPage extends StatelessWidget {
   final String listName;
 
-  RecipesInListPage(this.listName);
+  const RecipesInListPage(this.listName, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Load recipe filenames from recipe_list.json
-    List<String> recipeFilenames = loadRecipeFilenames();
+    return FutureBuilder<List<Recipe>>(
+      future: loadRecipes(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator(); // Replace with your loading indicator
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else {
+          List<Recipe> recipesInList =
+              filterRecipesByList(listName, snapshot.data!);
 
-    // Filter recipes based on the listName
-    List<Recipe> recipesInList = filterRecipesByList(listName, recipeFilenames);
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(listName),
+            ),
+            body: ListView.builder(
+              itemCount: recipesInList.length,
+              itemBuilder: (context, index) {
+                Recipe recipe = recipesInList[index];
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(listName),
-      ),
-      body: ListView.builder(
-        itemCount: recipesInList.length,
-        itemBuilder: (context, index) {
-          Recipe recipe = recipesInList[index];
-
-          return ListTile(
-            title: Text(recipe.name),
-            // Add more details or actions as needed
+                return buildRecipeCard(recipe);
+              },
+            ),
           );
-        },
-      ),
+        }
+      },
     );
   }
 
-  // Load recipe filenames from recipe_list.json
-  List<String> loadRecipeFilenames() {
-    // Load content of recipe_list.json;
+  Future<List<Recipe>> loadRecipes() async {
     String recipeListJson =
-        "recipe_list.json"; // Change this to your actual method of loading the content
-    return List<String>.from(json.decode(recipeListJson));
+        await rootBundle.loadString('assets/recipes/recipe_list.json');
+    List<String> recipeFilenames =
+        List<String>.from(json.decode(recipeListJson));
+
+    List<Recipe> recipes = [];
+    for (String filename in recipeFilenames) {
+      String recipeJson =
+          await rootBundle.loadString('assets/recipes/$filename');
+      Map<String, dynamic> recipeMap = json.decode(recipeJson);
+      recipes.add(Recipe.fromJson(recipeMap));
+    }
+
+    return recipes;
   }
 
-  // Filter recipes based on the listName
-  List<Recipe> filterRecipesByList(
-      String listName, List<String> allRecipeFilenames) {
-    return allRecipeFilenames
-        .map((filename) => loadRecipeFromFilename(filename))
+  List<Recipe> filterRecipesByList(String listName, List<Recipe> allRecipes) {
+    return allRecipes
         .where((recipe) => recipe.lists.contains(listName))
         .toList();
   }
 
-  // Load a Recipe from a JSON file
-  Recipe loadRecipeFromFilename(String filename) {
-    // Load content of the recipe file
-    String recipeJson =
-        filename; // Change this to your actual method of loading the content
-    Map<String, dynamic> recipeMap = json.decode(recipeJson);
-    return Recipe.fromJson(recipeMap);
+  Widget buildRecipeCard(Recipe recipe) {
+    return GestureDetector(
+      child: Center(
+        child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 10),
+          padding: const EdgeInsets.all(10),
+          width: 400,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.fastfood,
+              ),
+              const SizedBox(
+                width: 15,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      recipe.name,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 2,
+                    ),
+                    Text(
+                      'Duration: ${recipe.estimatedTime} minutes',
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

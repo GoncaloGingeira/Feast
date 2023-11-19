@@ -1,15 +1,16 @@
 {
     "id": "chicken-alfredo",
     "name": "Chicken Alfredo",
-    "rating": "4.8",
-    "estimatedTime": "30",
-    "servings": "4",
-    "calories": "450",
+    "rating": 4.8,
+    "estimatedTime": 30,
+    "servings": 4,
+    "numOfCalories": 450,
     "tags": [
       "italian",
       "pasta",
       "chicken"
     ],
+    "photoPath": "",
     "ingredients": [
       {
         "name": "Fettuccine Pasta",
@@ -66,7 +67,7 @@
         "notes": "chopped, for garnish"
       }
     ],
-    "instructions": [
+    "steps": [
       "Cook the fettuccine pasta according to package instructions. Drain.",
       "Season chicken breasts with salt and pepper. Cook in a skillet until no longer pink. Slice into strips.",
       "In a separate pan, melt butter. Add minced garlic and cook until fragrant.",
@@ -75,7 +76,7 @@
       "Garnish with chopped parsley. Serve hot and enjoy!"
     ],
     "lists":[
-      
+      "Dinner recipes"
     ]
   }
   

@@ -1,15 +1,16 @@
 {
     "id": "spaghetti-bolognese",
     "name": "Spaghetti Bolognese",
-    "rating": "4.6",
-    "estimatedTime": "45",
-    "servings": "6",
-    "calories": "380",
+    "rating": 4.6,
+    "estimatedTime": 45,
+    "servings": 6,
+    "numOfCalories": 380,
     "tags": [
       "italian",
       "pasta",
       "meat"
     ],
+    "photoPath": "",
     "ingredients": [
       {
         "name": "Ground Beef",
@@ -84,7 +85,7 @@
         "notes": "grated, for serving"
       }
     ],
-    "instructions": [
+    "steps": [
       "In a large skillet, brown the ground beef over medium heat. Drain excess fat.",
       "Add the chopped onion and minced garlic to the skillet. Cook until the onion is soft and translucent.",
       "Stir in the tomato paste, crushed tomatoes, red wine (if using), oregano, basil, salt, and black pepper.",
@@ -94,7 +95,7 @@
       "Enjoy your delicious Spaghetti Bolognese!"
     ],
     "lists":[
-      
+      "Favorites"
     ]
   }
   

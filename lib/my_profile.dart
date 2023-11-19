@@ -176,7 +176,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => DigitalFridgePage(key: widget.key,)),
+          MaterialPageRoute(
+              builder: (context) => DigitalFridgePage(
+                    key: widget.key,
+                  )),
         );
       },
       child: Container(

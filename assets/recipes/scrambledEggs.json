@@ -2,10 +2,10 @@
     "id": "scrambled-eggs",
     "name": "Scrambled Eggs",
     "rating": 4.4,
-    "time": 10,
+    "estimatedTime": 10,
     "servings": 2,
     "numOfCalories": 148,
-    "photo": "assets/recipes/recipe-images/scrambled-eggs.png",
+    "photoPath": "assets/recipes/recipe-images/scrambled-eggs.png",
     "tags": [
         "breakfast",
         "eggs",
@@ -49,6 +49,6 @@
         "Serve immediately."
     ],
     "lists":[
-      
+      "For her"
     ]
 }

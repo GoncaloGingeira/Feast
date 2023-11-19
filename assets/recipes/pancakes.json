@@ -1,11 +1,12 @@
 {
     "id": "pancakes",
     "name": "Pancakes",
-    "rating": "4.8",
-    "estimatedTime": "20",
-    "servings": "4",
-    "calories": "210",
+    "rating": 4.8,
+    "estimatedTime": 20,
+    "servings": 4,
+    "numOfCalories": 210,
     "tags": ["breakfast" , "vegetarian"],
+    "photoPath": "",
     "ingredients": [
       {
         "name": "All-Purpose Flour",
@@ -50,7 +51,7 @@
         "notes": "melted"
       }
     ],
-    "instructions": [
+    "steps": [
       "In a large mixing bowl, whisk together the flour, baking powder, sugar, and salt.",
       "In a separate bowl, whisk together the milk, egg, and melted butter.",
       "Pour the wet ingredients into the dry ingredients and stir until just combined. Do not overmix; a few lumps are okay.",
@@ -60,6 +61,6 @@
       "Serve warm with your favorite toppings."
     ],
     "lists":[
-      
+      "Favorites"
     ]
   }

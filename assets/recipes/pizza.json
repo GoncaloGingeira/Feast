@@ -1,15 +1,16 @@
 {
     "id": "margherita-pizza",
     "name": "Margherita Pizza",
-    "rating": "4.7",
-    "estimatedTime": "20",
-    "servings": "2",
-    "calories": "300",
+    "rating": 4.7,
+    "estimatedTime": 20,
+    "servings": 2,
+    "numOfCalories": 300,
     "tags": [
       "italian",
       "pizza",
       "vegetarian"
     ],
+    "photoPath": "",
     "ingredients": [
       {
         "name": "Pizza Dough",
@@ -53,7 +54,7 @@
         "notes": "to taste"
       }
     ],
-    "instructions": [
+    "steps": [
       "Preheat oven to 475°F (245°C).",
       "Roll out pizza dough on a floured surface. Transfer to a baking sheet or pizza stone.",
       "Brush olive oil over the dough. Arrange tomato and mozzarella slices on top.",
@@ -62,7 +63,7 @@
       "Slice and serve your delicious Margherita Pizza!"
     ],
     "lists":[
-      
+      "Dinner recipes"
     ]
   }
   
