@@ -4,13 +4,7 @@ import 'package:feast/recipe.dart';
 import 'dart:convert';
 
 class ListsPage extends StatelessWidget {
-  final List<String> predefinedLists = [
-    "Favorites",
-    "For her",
-    "Dinner recipes"
-  ];
-
-  ListsPage({super.key});
+  const ListsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,33 +12,65 @@ class ListsPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Recipe Lists"),
       ),
-      body: ListView.builder(
-        itemCount: predefinedLists.length,
-        itemBuilder: (context, index) {
-          String list = predefinedLists[index];
+      body: FutureBuilder<List<String>>(
+        future: loadLists(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            List<String> lists = snapshot.data!;
+            return ListView.builder(
+              itemCount: lists.length,
+              itemBuilder: (context, index) {
+                String list = lists[index];
+                IconData icon = Icons.list;
 
-          IconData icon = Icons.list;
-          if (list == "Favorites") {
-            icon = Icons.favorite;
-          } else if (list == "For her") {
-            icon = Icons.person;
-          } else if (list == "Dinner recipes") {
-            icon = Icons.dinner_dining;
+                if (list == "Favorites") {
+                  icon = Icons.favorite;
+                } else if (list == "For her") {
+                  icon = Icons.person;
+                } else if (list == "Dinner recipes") {
+                  icon = Icons.dinner_dining;
+                }
+
+                return ListTile(
+                  leading: Icon(icon),
+                  title: Text(list),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RecipesInListPage(list),
+                      ),
+                    );
+                  },
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: () {
+                      removeList(context, list);
+                    },
+                  ),
+                );
+              },
+            );
           }
-
-          return ListTile(
-            leading: Icon(icon),
-            title: Text(list),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => RecipesInListPage(list),
-                ),
-              );
-            },
-          );
         },
+      ),
+    );
+  }
+
+  Future<List<String>> loadLists() async {
+    String listsJson = await rootBundle.loadString('assets/recipes/lists.json');
+    List<String> lists = List<String>.from(json.decode(listsJson));
+    return lists;
+  }
+
+  void removeList(BuildContext context, String list) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('$list removed'),
       ),
     );
   }
@@ -61,7 +87,7 @@ class RecipesInListPage extends StatelessWidget {
       future: loadRecipes(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator(); // Replace with your loading indicator
+          return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
