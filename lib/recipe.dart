@@ -7,6 +7,7 @@ class Recipe {
   int numOfCalories;
   List<dynamic> ingredients;
   List<String> instructions;
+  List<String> lists;
 
   Recipe({
     required this.id,
@@ -17,6 +18,7 @@ class Recipe {
     required this.numOfCalories,
     required this.ingredients,
     required this.instructions,
+    required this.lists,
   });
 
   factory Recipe.fromJson(Map<String, dynamic> json) {
@@ -28,6 +30,7 @@ class Recipe {
         servings: json['servings'],
         numOfCalories: json['numOfCalories'],
         ingredients: json['ingredients'].cast<String>(),
-        instructions: json['instructions'].cast<String>());
+        instructions: json['instructions'].cast<String>(),
+        lists: json['lists'].cast<String>());
   }
 }

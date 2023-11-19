@@ -1,3 +1,4 @@
+import 'package:feast/lists_page.dart';
 import 'package:feast/my_diet.dart';
 import 'package:flutter/material.dart';
 import 'settings.dart';
@@ -215,7 +216,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
 
   Widget _buildSquareML() {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ListsPage()),
+        );
+      },
       child: Container(
         width: 150,
         height: 150,
