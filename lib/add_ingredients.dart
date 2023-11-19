@@ -15,7 +15,8 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
   List<String> ingredientTypes = [];
   String selectedIngredientType = 'Vegetables';
   TextEditingController searchController = TextEditingController();
-  List<dynamic> ingredientsToAdd = [];
+  List<String> selectedIngredients = [];
+  Map<String, bool> ingredientSelectionState = {};
 
 
   @override
@@ -37,6 +38,18 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
       regionsData = data['regions'];
       for (var region in regionsData) {
         ingredientTypes.add(region['name']);
+      }
+    });
+  }
+
+  void _toggleIngredientSelection(String ingredient) {
+    setState(() {
+      if (selectedIngredients.contains(ingredient)) {
+        selectedIngredients.remove(ingredient);
+        ingredientSelectionState[ingredient] = false;
+      } else {
+        selectedIngredients.add(ingredient);
+        ingredientSelectionState[ingredient] = true;
       }
     });
   }
@@ -104,6 +117,8 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
                     children: [
                       TextField(
                         controller: searchController,
+                        cursorColor: const Color.fromARGB(255, 81, 35, 19),
+
                         style: TextStyle(
                           color: const Color.fromARGB(255, 81, 35, 19),
                         ),
@@ -180,15 +195,13 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
                 ? Column(
                   children: [
                     SizedBox(height: 100,),
-                    Center(
-                      child: Container(
-                        child: Text(
-                          'There are no ingredients that \n match your search.',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: const Color.fromARGB(255, 81, 35, 19),
-                          ),
+                    Container(
+                      child: Text(
+                        'There are no ingredients that \n match your search.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: const Color.fromARGB(255, 81, 35, 19),
                         ),
                       ),
                     ),
@@ -208,65 +221,110 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
                     )
                   ],
                 )
-                 :Wrap(
-                  spacing: 8.0,
-                  runSpacing: 8.0,
-                  children: (searchController.text.isEmpty &&
-                      selectedIngredientType.isNotEmpty)
-                      ? _getIngredientsByType(selectedIngredientType)
-                      .map((ingredient) {
-                    return GestureDetector(
-                      onTap: () {
-                        // Add logic to add the ingredient to the new list
-                        // For example:
-                        // _addIngredientToList(ingredient);
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(10.0),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: const Color.fromARGB(255, 81, 35, 19),
-                            width: 1.0,
+                 : Align(
+                  alignment: Alignment.center,
+                  child: Wrap(
+                    spacing: 15.0,
+                    runSpacing: 8.0,
+                    children: (searchController.text.isEmpty &&
+                        selectedIngredientType.isNotEmpty)
+                        ? _getIngredientsByType(selectedIngredientType)
+                        .map((ingredient) {
+                      return GestureDetector(
+                        onTap: () {
+                          _toggleIngredientSelection(ingredient);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: const Color.fromARGB(255, 81, 35, 19),
+                              width: 1.0,
+                            ),
+                            borderRadius: BorderRadius.circular(30.0),
                           ),
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                        child: Text(
-                          ingredient,
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: const Color.fromARGB(255, 81, 35, 19),
-                          ),
-                        ),
-                      ),
-                    );
-                  }).toList()
-                      : filteredIngredients.map((ingredient) {
-                    return GestureDetector(
-                      onTap: () {
-                        // Add logic to add the ingredient to the new list
-                        // For example:
-                        // _addIngredientToList(ingredient);
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(10.0),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: const Color.fromARGB(255, 81, 35, 19),
-                            width: 1.0,
-                          ),
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                        child: Text(
-                          ingredient,
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: const Color.fromARGB(255, 81, 35, 19),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                ingredient,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: const Color.fromARGB(255, 81, 35, 19),
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Container(
+                                width: 20,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: const Color.fromARGB(255, 81, 35, 19),
+                                    width: 1.0,
+                                  ),
+                                ),
+                                child: Center(
+                                  child: ingredientSelectionState.containsKey(ingredient) &&
+                                      ingredientSelectionState[ingredient] == true
+                                      ? Icon(Icons.check, color: const Color.fromARGB(255, 81, 35, 19), size: 16,)
+                                      : null,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                    );
-                  }).toList(),
-                ),
+                      );
+                    }).toList()
+                        : filteredIngredients.map((ingredient) {
+                      return GestureDetector(
+                        onTap: () {
+                          _toggleIngredientSelection(ingredient);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: const Color.fromARGB(255, 81, 35, 19),
+                              width: 1.0,
+                            ),
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                ingredient,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: const Color.fromARGB(255, 81, 35, 19),
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Container(
+                                width: 20,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: const Color.fromARGB(255, 81, 35, 19),
+                                    width: 1.0,
+                                  ),
+                                ),
+                                child: Center(
+                                  child: ingredientSelectionState.containsKey(ingredient) &&
+                                      ingredientSelectionState[ingredient] == true
+                                      ? Icon(Icons.check, color: const Color.fromARGB(255, 81, 35, 19), size: 16,)
+                                      : null,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                )
               ],
             ),
           ),
@@ -276,6 +334,7 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
           color: Color.fromARGB(255, 246, 240, 232),
           child: ElevatedButton(
             onPressed: () {
+              _confirmSelection();
               Navigator.pop(context);
             },
             child: Text(
@@ -289,5 +348,9 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
         ),
       ),
     );
+  }
+
+  void _confirmSelection() {
+    //guardar no json
   }
 }
