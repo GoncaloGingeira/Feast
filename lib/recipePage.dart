@@ -312,7 +312,6 @@ class _RecipePageState extends State<RecipePage> {
       return GestureDetector(
         onTap: () {
           setState(() {
-            // TODO Update rate in recipe JSON
             _currentRate = index + 1;
           });
         },
