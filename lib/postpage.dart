@@ -10,6 +10,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:math';
 
+import 'add_ingredients.dart';
+import 'add_ingredients_post.dart';
+
 class PostPage extends StatefulWidget {
   PostPage({Key? key}) : super(key: key);
 
@@ -290,8 +293,27 @@ class _PostPageState extends State<PostPage> {
                 child: Row(
                   children: [
                     ElevatedButton(
-                      onPressed: () {
-                        _showIngredientAdd(context);
+                      onPressed: () async {
+                        // TODO replace with gongagamer search
+                        //_showIngredientAdd(context);
+                        var result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const AddIngredientsPagePost()),
+                        );
+                        data.update(
+                            'ingredients',
+                                (value) =>
+                            value! +
+                                [
+                                  {
+                                    'name': result[0],
+                                    'quantity': result[1],
+                                    'unit': result[2],
+                                  }
+                                ]);
+                        setState(() {
+
+                        });
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
