@@ -1,78 +1,65 @@
 {
-    "id": "chicken-alfredo",
-    "name": "Chicken Alfredo",
-    "rating": "4.8",
-    "estimatedTime": "30",
-    "servings": "4",
-    "calories": "450",
-    "tags": [
-      "italian",
-      "pasta",
-      "chicken"
-    ],
-    "ingredients": [
-      {
-        "name": "Fettuccine Pasta",
-        "quantity": 1,
-        "unit": "lb",
-        "notes": ""
-      },
-      {
-        "name": "Chicken Breast",
-        "quantity": 1,
-        "unit": "lb",
-        "notes": "boneless, skinless"
-      },
-      {
-        "name": "Heavy Cream",
-        "quantity": 2,
-        "unit": "cups",
-        "notes": ""
-      },
-      {
-        "name": "Parmesan Cheese",
-        "quantity": 1,
-        "unit": "cup",
-        "notes": "grated"
-      },
-      {
-        "name": "Garlic",
-        "quantity": 3,
-        "unit": "cloves",
-        "notes": "minced"
-      },
-      {
-        "name": "Butter",
-        "quantity": 1,
-        "unit": "cup",
-        "notes": ""
-      },
-      {
-        "name": "Salt",
-        "quantity": 1,
-        "unit": "tsp",
-        "notes": "to taste"
-      },
-      {
-        "name": "Black Pepper",
-        "quantity": 1,
-        "unit": "tsp",
-        "notes": "to taste"
-      },
-      {
-        "name": "Parsley",
-        "quantity": 2,
-        "unit": "tbsp",
-        "notes": "chopped, for garnish"
-      }
-    ],
-    "instructions": [
-      "Cook the fettuccine pasta according to package instructions. Drain.",
-      "Season chicken breasts with salt and pepper. Cook in a skillet until no longer pink. Slice into strips.",
-      "In a separate pan, melt butter. Add minced garlic and cook until fragrant.",
-      "Pour in heavy cream and bring to a simmer. Stir in grated Parmesan cheese until smooth.",
-      "Add cooked pasta and chicken strips to the sauce. Toss to coat evenly.",
-      "Garnish with chopped parsley. Serve hot and enjoy!"
-    ]
-  }
-  
+  "id": "chicken-alfredo",
+  "name": "Chicken Alfredo",
+  "rating": 4.8,
+  "time": 30,
+  "servings": 4,
+  "numOfCalories": 450,
+  "photo": "assets/recipes/recipe-images/chicken-alfredo.png",
+  "tags": ["italian", "pasta", "chicken"],
+  "ingredients": [
+    {
+      "name": "Fettuccine Pasta",
+      "quantity": 1,
+      "unit": "lb"
+    },
+    {
+      "name": "Chicken Breast",
+      "quantity": 1,
+      "unit": "lb"
+    },
+    {
+      "name": "Heavy Cream",
+      "quantity": 2,
+      "unit": "cups"
+    },
+    {
+      "name": "Parmesan Cheese",
+      "quantity": 1,
+      "unit": "cup"
+    },
+    {
+      "name": "Garlic",
+      "quantity": 3,
+      "unit": "cloves"
+    },
+    {
+      "name": "Butter",
+      "quantity": 1,
+      "unit": "cup"
+    },
+    {
+      "name": "Salt",
+      "quantity": 1,
+      "unit": "tsp"
+    },
+    {
+      "name": "Black Pepper",
+      "quantity": 1,
+      "unit": "tsp"
+    },
+    {
+      "name": "Parsley",
+      "quantity": 2,
+      "unit": "tbsp"
+    }
+  ],
+  "steps": [
+    "Cook the fettuccine pasta according to package instructions. Drain.",
+    "Season chicken breasts with salt and pepper. Cook in a skillet until no longer pink. Slice into strips.",
+    "In a separate pan, melt butter. Add minced garlic and cook until fragrant.",
+    "Pour in heavy cream and bring to a simmer. Stir in grated Parmesan cheese until smooth.",
+    "Add cooked pasta and chicken strips to the sauce. Toss to coat evenly.",
+    "Garnish with chopped parsley. Serve hot and enjoy!"
+  ]
+}

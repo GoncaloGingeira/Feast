@@ -1,3 +1,4 @@
+import 'package:feast/recipeExecute.dart';
 import 'package:flutter/material.dart';
 import 'package:feast/recipe.dart';
 import 'package:feast/recipePage.dart';
@@ -144,13 +145,25 @@ class _RecipePageState extends State<RecipePage> {
                         ),
                       ],
                     ),
-                    child: const IntrinsicWidth(
-                      child: Row(
-                        children: [
-                          Icon(Icons.play_arrow),
-                          SizedBox(width: 8),
-                          Text('Start'),
-                        ],
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RecipeExecutePage(
+                              recipe: widget.recipe,
+                            ),
+                          ),
+                        );
+                      },
+                      child: const IntrinsicWidth(
+                        child: Row(
+                          children: [
+                            Icon(Icons.play_arrow),
+                            SizedBox(width: 8),
+                            Text('Start'),
+                          ],
+                        ),
                       ),
                     )),
                 Container(
@@ -197,7 +210,7 @@ class _RecipePageState extends State<RecipePage> {
                       ),
                     ],
                   ),
-                  child: Row(
+                  child: const Row(
                     children: [
                       Text('Rate : '),
                       SizedBox(width: 8),
@@ -214,7 +227,7 @@ class _RecipePageState extends State<RecipePage> {
             const SizedBox(
               height: 10,
             ),
-            Text('Ingredients : '),
+            const Text('Ingredients : '),
             const SizedBox(
               height: 10,
             ),
@@ -289,7 +302,7 @@ class _RecipePageState extends State<RecipePage> {
       child: Column(
         children: [
           Icon(icon),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(text),
         ],
       ),

@@ -1,71 +1,60 @@
 {
-    "id": "grilled-salmon",
-    "name": "Grilled Salmon with Lemon Herb Butter",
-    "rating": "4.9",
-    "estimatedTime": "25",
-    "servings": "4",
-    "calories": "320",
-    "tags": [
-      "pescatarian",
-      "seafood",
-      "grilled"
-    ],
-    "ingredients": [
-      {
-        "name": "Salmon Fillets",
-        "quantity": 4,
-        "unit": "",
-        "notes": ""
-      },
-      {
-        "name": "Lemon",
-        "quantity": 1,
-        "unit": "",
-        "notes": "sliced"
-      },
-      {
-        "name": "Fresh Dill",
-        "quantity": 2,
-        "unit": "tbsp",
-        "notes": "chopped"
-      },
-      {
-        "name": "Butter",
-        "quantity": 4,
-        "unit": "tbsp",
-        "notes": ""
-      },
-      {
-        "name": "Garlic",
-        "quantity": 2,
-        "unit": "cloves",
-        "notes": "minced"
-      },
-      {
-        "name": "Olive Oil",
-        "quantity": 2,
-        "unit": "tbsp"
-      },
-      {
-        "name": "Salt",
-        "quantity": 1,
-        "unit": "tsp",
-        "notes": "to taste"
-      },
-      {
-        "name": "Black Pepper",
-        "quantity": 1,
-        "unit": "tsp",
-        "notes": "to taste"
-      }
-    ],
-    "instructions": [
-      "Preheat the grill to medium-high heat.",
-      "Season salmon fillets with salt, black pepper, and a drizzle of olive oil.",
-      "Place lemon slices on top of each fillet. Grill for 4-5 minutes per side or until salmon is cooked through.",
-      "In a small saucepan, melt butter. Add minced garlic and chopped dill. Cook until fragrant.",
-      "Spoon the lemon herb butter over the grilled salmon before serving.",
-      "Serve hot with your favorite side dishes. Enjoy your Grilled Salmon with Lemon Herb Butter!"
-    ]
-  }
-  
+  "id": "grilled-salmon",
+  "name": "Grilled Salmon with Lemon Herb Butter",
+  "rating": 4.9,
+  "time": 25,
+  "servings": 4,
+  "numOfCalories": 320,
+  "photo": "assets/recipes/recipe-images/grilled-salmon.png",
+  "tags": ["pescatarian", "seafood", "grilled"],
+  "ingredients": [
+    {
+      "name": "Salmon Fillets",
+      "quantity": 4,
+      "unit": ""
+    },
+    {
+      "name": "Lemon",
+      "quantity": 1,
+      "unit": ""
+    },
+    {
+      "name": "Fresh Dill",
+      "quantity": 2,
+      "unit": "tbsp"
+    },
+    {
+      "name": "Butter",
+      "quantity": 4,
+      "unit": "tbsp"
+    },
+    {
+      "name": "Garlic",
+      "quantity": 2,
+      "unit": "cloves"
+    },
+    {
+      "name": "Olive Oil",
+      "quantity": 2,
+      "unit": "tbsp"
+    },
+    {
+      "name": "Salt",
+      "quantity": 1,
+      "unit": "tsp"
+    },
+    {
+      "name": "Black Pepper",
+      "quantity": 1,
+      "unit": "tsp"
+    }
+  ],
+  "steps": [
+    "Preheat the grill to medium-high heat.",
+    "Season salmon fillets with salt, black pepper, and a drizzle of olive oil.",
+    "Place lemon slices on top of each fillet. Grill for 4-5 minutes per side or until salmon is cooked through.",
+    "In a small saucepan, melt butter. Add minced garlic and chopped dill. Cook until fragrant.",
+    "Spoon the lemon herb butter over the grilled salmon before serving.",
+    "Serve hot with your favorite side dishes. Enjoy your Grilled Salmon with Lemon Herb Butter!"
+  ]
+}
