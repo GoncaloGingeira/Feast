@@ -35,7 +35,7 @@ class _ListsPageState extends State<ListsPage> {
         });
       } else {
         String listsJson =
-            await rootBundle.loadString('assets/recipes/lists.json');
+        await rootBundle.loadString('assets/recipes/lists.json');
         List<String> loadedLists = List<String>.from(json.decode(listsJson));
 
         setState(() {
@@ -58,6 +58,27 @@ class _ListsPageState extends State<ListsPage> {
         itemBuilder: (context, index) {
           String list = lists[index];
           IconData icon = Icons.list;
+
+          if(index == 0){
+            return ListTile(
+              leading: Icon(icon),
+              title: Text('To Try'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RecipesInListPage(list),
+                  ),
+                );
+              },
+              trailing: IconButton(
+                icon: const Icon(Icons.delete),
+                onPressed: () {
+                  removeList(list);
+                },
+              ),
+            );
+          }
 
           return ListTile(
             leading: Icon(icon),
@@ -187,7 +208,7 @@ class _ListsPageState extends State<ListsPage> {
       File file = File('${directory.path}/recipe_list.json');
 
       List<String> recipeFilenames =
-          recipes.map((recipe) => '${recipe.id}.json').toList();
+      recipes.map((recipe) => '${recipe.id}.json').toList();
       await file.writeAsString(json.encode(recipeFilenames));
 
       // Save each recipe
@@ -214,9 +235,9 @@ class _ListsPageState extends State<ListsPage> {
   Future<List<Recipe>> loadRecipes() async {
     try {
       String recipeListJson =
-          await rootBundle.loadString('assets/recipes/recipe_list.json');
+      await rootBundle.loadString('assets/recipes/recipe_list.json');
       List<String> recipeFilenames =
-          List<String>.from(json.decode(recipeListJson));
+      List<String>.from(json.decode(recipeListJson));
 
       List<Recipe> recipes = [];
       for (String filename in recipeFilenames) {
@@ -248,8 +269,12 @@ class RecipesInListPage extends StatelessWidget {
 
   const RecipesInListPage(this.listName, {super.key});
 
+
   @override
   Widget build(BuildContext context) {
+
+
+
     return FutureBuilder<List<Recipe>>(
       future: loadRecipes(),
       builder: (context, snapshot) {
@@ -280,7 +305,6 @@ class RecipesInListPage extends StatelessWidget {
                     itemCount: recipesInList.length,
                     itemBuilder: (context, index) {
                       Recipe recipe = recipesInList[index];
-
                       return buildRecipeCard(recipe);
                     },
                   );
@@ -302,13 +326,13 @@ class RecipesInListPage extends StatelessWidget {
         // If the recipe list file doesn't exist in the document directory,
         // load it from the assets and save it to the document directory
         String recipeListJson =
-            await rootBundle.loadString('assets/recipes/recipe_list.json');
+        await rootBundle.loadString('assets/recipes/recipe_list.json');
         listFile.writeAsStringSync(recipeListJson);
       }
 
       String recipeListJson = await listFile.readAsString();
       List<String> recipeFilenames =
-          List<String>.from(json.decode(recipeListJson));
+      List<String>.from(json.decode(recipeListJson));
 
       List<Recipe> recipes = [];
       for (String filename in recipeFilenames) {
