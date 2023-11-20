@@ -37,4 +37,19 @@ class Recipe {
       photoPath: json['photoPath'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'rating': rating,
+      'estimatedTime': estimatedTime,
+      'servings': servings,
+      'numOfCalories': numOfCalories,
+      'ingredients': ingredients,
+      'steps': steps,
+      'lists': lists,
+      'photoPath': photoPath,
+    };
+  }
 }
