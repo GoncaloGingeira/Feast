@@ -4,12 +4,12 @@ import 'package:feast/recipe.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter/material.dart';
 
 class ListsPage extends StatefulWidget {
   const ListsPage({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _ListsPageState createState() => _ListsPageState();
 }
 
@@ -28,21 +28,19 @@ class _ListsPageState extends State<ListsPage> {
       File file = File('${directory.path}/lists.json');
 
       if (file.existsSync()) {
-        // If the file exists in the documents directory, load from there
         String listsJson = await file.readAsString();
         List<String> loadedLists = List<String>.from(json.decode(listsJson));
 
         setState(() {
-          lists = loadedLists; // Update the state with the loaded lists
+          lists = loadedLists;
         });
       } else {
-        // If the file doesn't exist in the documents directory, load from the asset
         String listsJson =
             await rootBundle.loadString('assets/recipes/lists.json');
         List<String> loadedLists = List<String>.from(json.decode(listsJson));
 
         setState(() {
-          lists = loadedLists; // Update the state with the loaded lists
+          lists = loadedLists;
         });
       }
     } catch (e) {
@@ -103,7 +101,7 @@ class _ListsPageState extends State<ListsPage> {
             onChanged: (value) {
               newListName = value;
             },
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: 'Enter list name',
             ),
           ),
@@ -142,17 +140,18 @@ class _ListsPageState extends State<ListsPage> {
       lists = lists.where((l) => l != list).toList();
       await saveListsToFile(lists);
 
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('$list removed'),
         ),
       );
 
-      // Refresh the ListsPage by popping the current page and pushing a new instance
+      // ignore: use_build_context_synchronously
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => ListsPage(),
+          builder: (context) => const ListsPage(),
         ),
       );
     } catch (e) {
@@ -174,7 +173,7 @@ class _ListsPageState extends State<ListsPage> {
 
 void main() {
   runApp(
-    MaterialApp(
+    const MaterialApp(
       home: ListsPage(),
     ),
   );
