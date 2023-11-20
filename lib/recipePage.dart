@@ -1,4 +1,5 @@
 import 'package:feast/recipeExecute.dart';
+
 import 'package:flutter/material.dart';
 import 'package:feast/recipe.dart';
 import 'package:feast/recipePage.dart';
@@ -166,6 +167,7 @@ class _RecipePageState extends State<RecipePage> {
                             Text('Start'),
                           ],
                         ),
+
                       ),
                     )),
                 Container(
@@ -217,6 +219,7 @@ class _RecipePageState extends State<RecipePage> {
                       Text('Rate : '),
                       SizedBox(width: 8),
                       getRateIconWidgets(),
+
                     ],
                   ),
                 ),
@@ -226,11 +229,13 @@ class _RecipePageState extends State<RecipePage> {
               height: 10,
             ),
             const Text('Ingredients : '),
+
             const SizedBox(
               height: 10,
             ),
             Container(
               width: 330,
+
               // Adjust the width as needed
               height: 300,
               // Adjust the height as needed
@@ -301,6 +306,7 @@ class _RecipePageState extends State<RecipePage> {
         children: [
           Icon(icon),
           const SizedBox(height: 8),
+
           Text(text),
         ],
       ),
@@ -324,4 +330,5 @@ class _RecipePageState extends State<RecipePage> {
 
     return new Row(children: list);
   }
+
 }

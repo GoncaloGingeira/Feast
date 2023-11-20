@@ -55,6 +55,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 style: TextStyle(color: Color.fromARGB(255, 81, 35, 19)),
               ),
               trailing: Switch(
+                activeTrackColor: Color.fromARGB(255, 251, 227, 5),
                 value: privateAccount,
                 onChanged: (bool value) {
                   setState(() {
@@ -87,6 +88,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               trailing: Switch(
                 value: followsNotification,
+                activeTrackColor: Color.fromARGB(255, 251, 227, 5),
                 onChanged: (bool value) {
                   setState(() {
                     followsNotification = value;
@@ -107,6 +109,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               trailing: Switch(
                 value: ratingsNotification,
+                activeTrackColor: Color.fromARGB(255, 251, 227, 5),
                 onChanged: (bool value) {
                   setState(() {
                     ratingsNotification = value;
@@ -127,6 +130,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               trailing: Switch(
                 value: followerPostsNotification,
+                activeTrackColor: Color.fromARGB(255, 251, 227, 5),
                 onChanged: (bool value) {
                   setState(() {
                     followerPostsNotification = value;

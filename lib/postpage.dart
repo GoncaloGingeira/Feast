@@ -13,6 +13,7 @@ import 'dart:math';
 import 'add_ingredients.dart';
 import 'add_ingredients_post.dart';
 
+
 class PostPage extends StatefulWidget {
   PostPage({Key? key}) : super(key: key);
 
@@ -49,6 +50,7 @@ class _PostPageState extends State<PostPage> {
     'steps': [],
     'tags': [],
     'lists': [], // List id's
+
     'photo': '',
     'rating': 5.0,
     'numbOfCalories': 0,
@@ -505,6 +507,7 @@ class _PostPageState extends State<PostPage> {
                   .showSnackBar(snackBar);
               return;
             }
+
             String jsonString = json.encode(data);
             saveJsonToFile(jsonString);
             print(jsonString);

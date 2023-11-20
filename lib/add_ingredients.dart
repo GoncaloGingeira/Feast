@@ -1,3 +1,4 @@
+
 import 'dart:io';
 
 import 'package:feast/digital_fridge.dart';
@@ -27,6 +28,7 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
   void initState() {
     super.initState();
     _loadRegionsData();
+
     readJsonFromFile();
   }
 
@@ -154,6 +156,7 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
       print('Error saving JSON to file: $e');
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -473,7 +476,4 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
       ),
     );
   }
-
-
-
 }

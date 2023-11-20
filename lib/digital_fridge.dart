@@ -1,5 +1,5 @@
-import 'dart:io';
 
+import 'dart:io';
 import 'package:feast/add_ingredients.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -45,7 +45,6 @@ class _DigitalFridgePageState extends State<DigitalFridgePage> {
       print('Error reading JSON from file: $e');
     }
   }
-
 
   Future<void> removeIngredient(String regionName, String ingredientToRemove) async {
     int regionIndex = regionsData.indexWhere(
@@ -269,6 +268,7 @@ class _DigitalFridgePageState extends State<DigitalFridgePage> {
               onPressed: () {
                 removeIngredient(regionName, ingredientName);
                 saveJsonToFile();
+
                 Navigator.of(context).pop();
               },
               child: Text(
