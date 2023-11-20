@@ -48,7 +48,7 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
         selectedIngredients.remove(ingredient);
         ingredientSelectionState[ingredient] = false;
       } else {
-        selectedIngredients.add(ingredient);
+          selectedIngredients.add(ingredient);
         ingredientSelectionState[ingredient] = true;
       }
     });
@@ -260,17 +260,29 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                    color: const Color.fromARGB(255, 81, 35, 19),
+                                    color: ingredientSelectionState.containsKey(ingredient) &&
+                                        ingredientSelectionState[ingredient] == true
+                                        ? Colors.brown
+                                        : const Color.fromARGB(255, 81, 35, 19),
                                     width: 1.0,
                                   ),
+                                  color: ingredientSelectionState.containsKey(ingredient) &&
+                                      ingredientSelectionState[ingredient] == true
+                                      ? const Color.fromARGB(255, 81, 35, 19)
+                                      : Colors.transparent,
                                 ),
                                 child: Center(
                                   child: ingredientSelectionState.containsKey(ingredient) &&
                                       ingredientSelectionState[ingredient] == true
-                                      ? Icon(Icons.check, color: const Color.fromARGB(255, 81, 35, 19), size: 16,)
+                                      ? Icon(
+                                    Icons.check,
+                                    color: Colors.white,
+                                    size: 16,
+                                  )
                                       : null,
                                 ),
                               ),
+
                             ],
                           ),
                         ),
@@ -307,17 +319,29 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                    color: const Color.fromARGB(255, 81, 35, 19),
+                                    color: ingredientSelectionState.containsKey(ingredient) &&
+                                        ingredientSelectionState[ingredient] == true
+                                        ? Colors.brown
+                                        : const Color.fromARGB(255, 81, 35, 19),
                                     width: 1.0,
                                   ),
+                                  color: ingredientSelectionState.containsKey(ingredient) &&
+                                      ingredientSelectionState[ingredient] == true
+                                      ? const Color.fromARGB(255, 81, 35, 19)
+                                      : Colors.transparent,
                                 ),
                                 child: Center(
                                   child: ingredientSelectionState.containsKey(ingredient) &&
                                       ingredientSelectionState[ingredient] == true
-                                      ? Icon(Icons.check, color: const Color.fromARGB(255, 81, 35, 19), size: 16,)
+                                      ? Icon(
+                                    Icons.check,
+                                    color: Colors.white, // Change checkmark color when selected
+                                    size: 16,
+                                  )
                                       : null,
                                 ),
                               ),
+
                             ],
                           ),
                         ),
@@ -329,7 +353,22 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
             ),
           ),
         ),
-        bottomNavigationBar: Container(
+        bottomNavigationBar: selectedIngredients.isEmpty
+            ? Container(
+          padding: EdgeInsets.all(16.0),
+          color: Color.fromARGB(100, 246, 240, 232), // Adjusted transparency
+          child: ElevatedButton(
+            onPressed: null, // Disable button functionality
+            child: Text(
+              'CONFIRM SELECTION',
+              style: TextStyle(
+                fontSize: 13,
+                color: Colors.grey, // Adjusted text color for disabled state
+              ),
+            ),
+          ),
+        )
+            : Container(
           padding: EdgeInsets.all(16.0),
           color: Color.fromARGB(255, 246, 240, 232),
           child: ElevatedButton(
@@ -346,6 +385,7 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
             ),
           ),
         ),
+
       ),
     );
   }
