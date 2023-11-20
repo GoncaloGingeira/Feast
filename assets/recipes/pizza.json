@@ -1,0 +1,55 @@
+{
+  "id": "margherita-pizza",
+  "name": "Margherita Pizza",
+  "rating": 4.7,
+  "time": 20,
+  "servings": 2,
+  "numOfCalories": 300,
+  "photo": "assets/recipes/recipe-images/margherita-pizza.png",
+  "tags": ["italian", "pizza", "vegetarian"],
+  "ingredients": [
+    {
+      "name": "Pizza Dough",
+      "quantity": 1,
+      "unit": "lb"
+    },
+    {
+      "name": "Tomatoes",
+      "quantity": 2,
+      "unit": ""
+    },
+    {
+      "name": "Fresh Mozzarella",
+      "quantity": 1,
+      "unit": "ball"
+    },
+    {
+      "name": "Fresh Basil",
+      "quantity": 1,
+      "unit": "cup"
+    },
+    {
+      "name": "Olive Oil",
+      "quantity": 2,
+      "unit": "tbsp"
+    },
+    {
+      "name": "Salt",
+      "quantity": 1,
+      "unit": "tsp"
+    },
+    {
+      "name": "Black Pepper",
+      "quantity": 1,
+      "unit": "tsp"
+    }
+  ],
+  "steps": [
+    "Preheat oven to 475°F (245°C).",
+    "Roll out pizza dough on a floured surface. Transfer to a baking sheet or pizza stone.",
+    "Brush olive oil over the dough. Arrange tomato and mozzarella slices on top.",
+    "Bake in the preheated oven for 12-15 minutes or until the crust is golden and cheese is melted.",
+    "Remove from the oven, sprinkle with fresh basil leaves, salt, and black pepper.",
+    "Slice and serve your delicious Margherita Pizza!"
+  ]
+}
