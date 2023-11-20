@@ -9,7 +9,6 @@ class ListsPage extends StatefulWidget {
   const ListsPage({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _ListsPageState createState() => _ListsPageState();
 }
 
@@ -138,16 +137,21 @@ class _ListsPageState extends State<ListsPage> {
   Future<void> removeList(String list) async {
     try {
       lists = lists.where((l) => l != list).toList();
+
+      // Update the lists.json file
       await saveListsToFile(lists);
 
-      // ignore: use_build_context_synchronously
+      // Update the recipes to remove the deleted list
+      await updateRecipeLists(list);
+
+      // Show a Snackbar as a confirmation
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('$list removed'),
         ),
       );
 
-      // ignore: use_build_context_synchronously
+      // Refresh the current page
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -159,6 +163,43 @@ class _ListsPageState extends State<ListsPage> {
     }
   }
 
+  Future<void> updateRecipeLists(String removedList) async {
+    try {
+      List<Recipe> allRecipes = await loadRecipes();
+
+      // Update the recipes to remove the deleted list
+      for (Recipe recipe in allRecipes) {
+        if (recipe.lists.contains(removedList)) {
+          recipe.lists.remove(removedList);
+        }
+      }
+
+      // Save the updated recipes
+      await saveRecipes(allRecipes);
+    } catch (e) {
+      print('Error updating recipe lists: $e');
+    }
+  }
+
+  Future<void> saveRecipes(List<Recipe> recipes) async {
+    try {
+      Directory directory = await getApplicationDocumentsDirectory();
+      File file = File('${directory.path}/recipe_list.json');
+
+      List<String> recipeFilenames =
+          recipes.map((recipe) => '${recipe.id}.json').toList();
+      await file.writeAsString(json.encode(recipeFilenames));
+
+      // Save each recipe
+      for (Recipe recipe in recipes) {
+        File recipeFile = File('${directory.path}/${recipe.id}.json');
+        await recipeFile.writeAsString(json.encode(recipe.toJson()));
+      }
+    } catch (e) {
+      print('Error saving recipes: $e');
+    }
+  }
+
   Future<void> saveListsToFile(List<String> lists) async {
     try {
       Directory directory = await getApplicationDocumentsDirectory();
@@ -167,6 +208,29 @@ class _ListsPageState extends State<ListsPage> {
       print(json.encode(lists));
     } catch (e) {
       print('Error saving lists to file: $e');
+    }
+  }
+
+  Future<List<Recipe>> loadRecipes() async {
+    try {
+      String recipeListJson =
+          await rootBundle.loadString('assets/recipes/recipe_list.json');
+      List<String> recipeFilenames =
+          List<String>.from(json.decode(recipeListJson));
+
+      List<Recipe> recipes = [];
+      for (String filename in recipeFilenames) {
+        File recipeFile = File(
+            '${(await getApplicationDocumentsDirectory()).path}/$filename');
+        String recipeJson = await recipeFile.readAsString();
+        Map<String, dynamic> recipeMap = json.decode(recipeJson);
+        recipes.add(Recipe.fromJson(recipeMap));
+      }
+
+      return recipes;
+    } catch (e) {
+      print('Error loading recipes: $e');
+      return []; // Return an empty list or handle the error accordingly
     }
   }
 }
@@ -216,20 +280,26 @@ class RecipesInListPage extends StatelessWidget {
   }
 
   Future<List<Recipe>> loadRecipes() async {
-    String recipeListJson =
-        await rootBundle.loadString('assets/recipes/recipe_list.json');
-    List<String> recipeFilenames =
-        List<String>.from(json.decode(recipeListJson));
+    try {
+      String recipeListJson =
+          await rootBundle.loadString('assets/recipes/recipe_list.json');
+      List<String> recipeFilenames =
+          List<String>.from(json.decode(recipeListJson));
 
-    List<Recipe> recipes = [];
-    for (String filename in recipeFilenames) {
-      String recipeJson =
-          await rootBundle.loadString('assets/recipes/$filename');
-      Map<String, dynamic> recipeMap = json.decode(recipeJson);
-      recipes.add(Recipe.fromJson(recipeMap));
+      List<Recipe> recipes = [];
+      for (String filename in recipeFilenames) {
+        File recipeFile = File(
+            '${(await getApplicationDocumentsDirectory()).path}/$filename');
+        String recipeJson = await recipeFile.readAsString();
+        Map<String, dynamic> recipeMap = json.decode(recipeJson);
+        recipes.add(Recipe.fromJson(recipeMap));
+      }
+
+      return recipes;
+    } catch (e) {
+      print('Error loading recipes: $e');
+      return []; // Return an empty list or handle the error accordingly
     }
-
-    return recipes;
   }
 
   List<Recipe> filterRecipesByList(String listName, List<Recipe> allRecipes) {
