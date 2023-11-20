@@ -483,7 +483,6 @@ class _PostPageState extends State<PostPage> {
                   .showSnackBar(snackBar);
               return;
             }
-            // TODO: Transform data into json
             String jsonString = json.encode(data);
             saveJsonToFile(jsonString);
             print(jsonString);

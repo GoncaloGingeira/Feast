@@ -14,6 +14,8 @@ class RecipePage extends StatefulWidget {
   State<RecipePage> createState() => _RecipePageState();
 }
 
+int _currentRate = 0;
+
 class _RecipePageState extends State<RecipePage> {
   @override
   Widget build(BuildContext context) {
@@ -210,15 +212,11 @@ class _RecipePageState extends State<RecipePage> {
                       ),
                     ],
                   ),
-                  child: const Row(
-                    children: [
+                  child: Row(
+                    children: <Widget>[
                       Text('Rate : '),
                       SizedBox(width: 8),
-                      Icon(Icons.star_border),
-                      Icon(Icons.star_border),
-                      Icon(Icons.star_border),
-                      Icon(Icons.star_border),
-                      Icon(Icons.star_border),
+                      getRateIconWidgets(),
                     ],
                   ),
                 ),
@@ -232,7 +230,7 @@ class _RecipePageState extends State<RecipePage> {
               height: 10,
             ),
             Container(
-              width: 400,
+              width: 330,
               // Adjust the width as needed
               height: 300,
               // Adjust the height as needed
@@ -307,5 +305,24 @@ class _RecipePageState extends State<RecipePage> {
         ],
       ),
     );
+  }
+  Widget getRateIconWidgets()
+  {
+    List<Widget> list = List<Widget>.generate(5, (int index) {
+      return GestureDetector(
+        onTap: () {
+          setState(() {
+            // TODO Update rate in recipe JSON
+            _currentRate = index + 1;
+          });
+        },
+        child: Icon(
+          index < _currentRate ? Icons.star : Icons.star_border,
+          color: Colors.black,
+        ),
+      );
+    });
+
+    return new Row(children: list);
   }
 }
