@@ -45,15 +45,14 @@ class _PostPageState extends State<PostPage> {
     'id': '',
     'name': '',
     'servings': 2, // Default value
-    'time': '', // In minutes
+    'time': 0, // In minutes
     'ingredients': [],
     'steps': [],
     'tags': [],
     'lists': [], // List id's
-
     'photo': '',
     'rating': 5.0,
-    'numbOfCalories': 0,
+    'numOfCalories': 0,
   };
 
   var timeController = TextEditingController(text: '');
@@ -497,7 +496,8 @@ class _PostPageState extends State<PostPage> {
           onPressed: () {
             HapticFeedback.lightImpact();
             data['name'] = nameController.text;
-            data['time'] = timeController.text;
+            data['time'] = int.parse(timeController.text);
+            data['numOfCalories'] = 150 + random.nextInt(1000 - 150 + 1); // Random number between 150 and 1000
             if(data['name'] == '' || data['time'] == '' || data['ingredients'].length == 0 || data['steps'].length == 0 || data['tags'].length == 0 || data['photo'] == '') {
               const snackBar = SnackBar(
                 content: Text('Please fill in all fields'),
@@ -524,7 +524,7 @@ class _PostPageState extends State<PostPage> {
               data['steps'] = [];
               data['tags'] = [];
               data['photo'] = '';
-              data['numbOfCalories'] = 150 + random.nextInt(1000 - 150 + 1); // Random number between 150 and 1000
+              data['numOfCalories'] = 150 + random.nextInt(1000 - 150 + 1); // Random number between 150 and 1000
               _imageFile = null;
               _currentValue = 2;
             });
@@ -553,16 +553,47 @@ class _PostPageState extends State<PostPage> {
     return digest.toString();
   }
 
+  Future<void> copyAssetToFile(String assetPath, File file) async {
+    final ByteData data = await rootBundle.load(assetPath);
+    final List<int> bytes = data.buffer.asUint8List();
+    await file.writeAsBytes(bytes);
+  }
+
   Future<void> saveJsonToFile(String jsonString) async {
     try {
       final Directory directory = await getApplicationDocumentsDirectory();
       String hash = generateHash(jsonString);
       final File file = File('${directory.path}/$hash.json');
+      print('${directory.path}');
+      print(file.path);
+      //String jsonFileNames = await rootBundle.loadString('assets/recipes/my_posts_list.json');
+
+      final File fileNamesFile = File('${directory.path}/my_posts_list.json');
+      String jsonFileNames = await fileNamesFile.readAsString();
+
+      print("jsonFileNames: $jsonFileNames");
+
+      List<dynamic> jsonFileNamesList = jsonDecode(jsonFileNames);
+
+      print("jsonFileNamesList: $jsonFileNamesList");
+
+      jsonFileNamesList.add('$hash.json');
+
+      print("jsonFileNamesList: $jsonFileNamesList");
+
+      String jsonStringFileNames = jsonEncode(jsonFileNamesList);
+
+      print("jsonStringFileNames: $jsonStringFileNames");
+
+
+      print("fileNamesFile: $fileNamesFile");
+
+      await fileNamesFile.writeAsString(jsonStringFileNames);
 
       // Write the JSON string to the file
       await file.writeAsString(jsonString);
 
-      print('JSON saved to file: ${file.path}');
+      print('JSON saved to file: ${file.path} and ${fileNamesFile.path}');
     } catch (e) {
       print('Error saving JSON to file: $e');
     }

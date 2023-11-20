@@ -4,6 +4,9 @@ import 'package:feast/recipe.dart';
 import 'package:feast/recipePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:io';
+
+import 'package:path_provider/path_provider.dart';
 
 class MyPosts extends StatefulWidget {
   const MyPosts({super.key});
@@ -23,9 +26,20 @@ class _MyPostsState extends State<MyPosts> {
 
   Future<void> loadRecipeFiles() async {
     try {
-      String jsonFileNames =
-          await rootBundle.loadString('assets/recipes/recipe_list.json');
+
+      final Directory directory = await getApplicationDocumentsDirectory();
+      final File fileNamesFile = File('${directory.path}/my_posts_list.json');
+      String jsonFileNames = await fileNamesFile.readAsString();
+
+      print('--- jsonFileNames: $jsonFileNames');
+      //String jsonFileNames =
+      //    await rootBundle.loadString('assets/recipes/my_posts_list.json');
+
+      print('before');
       List<dynamic> dynamicFileNames = json.decode(jsonFileNames);
+      print('--- dynamicFileNames: $dynamicFileNames');
+
+      print(dynamicFileNames);
 
       List<String> fileNames = [];
 
@@ -38,9 +52,9 @@ class _MyPostsState extends State<MyPosts> {
       }
 
       for (String fileName in fileNames) {
-        String assetPath = 'assets/recipes/$fileName';
-        ByteData data = await rootBundle.load(assetPath);
-        String jsonString = utf8.decode(data.buffer.asUint8List());
+        String recipePath = '${directory.path}/$fileName';
+        File recipeFile = File(recipePath);
+        String jsonString = await recipeFile.readAsString();
         Map<String, dynamic> recipeData = json.decode(jsonString);
 
         // Ensure that the loaded data has the correct structure
@@ -114,7 +128,7 @@ class _MyPostsState extends State<MyPosts> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   image: DecorationImage(
-                    image: AssetImage(recipe['photo'] ?? ''),
+                    image: FileImage(File(recipe['photo'] ?? '')),
                     fit: BoxFit.cover,
                   ),
                 ),

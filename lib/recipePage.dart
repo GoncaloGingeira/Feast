@@ -74,12 +74,7 @@ class _RecipePageState extends State<RecipePage> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       // Adjust the border radius
-                      child: Image.asset(
-                        widget.recipe.photoPath,
-                        width: 200,
-                        height: 200,
-                        fit: BoxFit.cover,
-                      ),
+                      child: getImage(),
                     ),
                   ),
                   Positioned(
@@ -329,6 +324,29 @@ class _RecipePageState extends State<RecipePage> {
     });
 
     return new Row(children: list);
+  }
+
+  Widget getImage() {
+    if(widget.recipe.photoPath.contains('assets')){
+      Widget image = Image.asset(
+        widget.recipe.photoPath,
+        width: 200,
+        height: 200,
+        fit: BoxFit.cover,
+      );
+      print('COULD DO IT');
+      return image;
+    }
+    else{
+      print('COULD NOT DO IT');
+      return Image.file(
+        File(widget.recipe.photoPath),
+        width: 200,
+        height: 200,
+        fit: BoxFit.cover,
+      );
+    }
+
   }
 
 }
