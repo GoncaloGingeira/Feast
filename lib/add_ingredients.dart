@@ -1,6 +1,10 @@
+import 'dart:io';
+
+import 'package:feast/digital_fridge.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 
 class AddIngredientsPage extends StatefulWidget {
   const AddIngredientsPage({Key? key});
@@ -23,6 +27,7 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
   void initState() {
     super.initState();
     _loadRegionsData();
+    readJsonFromFile();
   }
 
   @override
@@ -72,6 +77,82 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
       }
     }
     return filteredList;
+  }
+
+  Future<void> readJsonFromFile() async {
+    try {
+      final Directory directory = await getApplicationDocumentsDirectory();
+      final File file = File('${directory.path}/myingredients.json');
+
+      if (await file.exists()) {
+        String jsonString = await file.readAsString();
+        Map<String, dynamic> data = json.decode(jsonString);
+
+        setState(() {
+          for (var region in data['regions']) {
+            for (var ingredient in region['ingredients']) {
+                selectedIngredients.add(ingredient);
+                ingredientSelectionState[ingredient] = true;
+            }
+          }
+        });
+        print('Read data from file: ${file.path}');
+      } else {
+        setState(() {
+          selectedIngredients = [];
+          ingredientSelectionState = {};
+        });
+        print('File does not exist, initialized empty values');
+      }
+    } catch (e) {
+      print('Error reading JSON from file: $e');
+    }
+  }
+
+  Map<String, List<String>> organizeIngredientsByType() {
+    Map<String, List<String>> organizedData = {};
+    for (var region in regionsData) {
+      String regionName = region['name'];
+      organizedData[regionName] = [];
+    }
+
+    for (var ingredient in selectedIngredients) {
+      for (var region in regionsData) {
+        List<dynamic> ingredients = region['ingredients'];
+        if (ingredients.contains(ingredient)) {
+          String regionName = region['name'];
+          organizedData[regionName]?.add(ingredient);
+        }
+      }
+    }
+
+    return organizedData;
+  }
+
+
+  Future<void> saveJsonToFile() async {
+    try {
+      Map<String, dynamic> data = {
+        'regions': [],
+      };
+      Map<String, List<String>> organizedData = organizeIngredientsByType();
+      for (var regionName in organizedData.keys) {
+        data['regions'].add({
+          'name': regionName,
+          'ingredients': organizedData[regionName],
+        });
+      }
+      String jsonString = jsonEncode(data);
+      final Directory directory = await getApplicationDocumentsDirectory();
+
+      final File file = File('${directory.path}/myingredients.json');
+
+      await file.writeAsString(jsonString);
+
+      print('JSON saved to file: ${file.path}');
+    } catch (e) {
+      print('Error saving JSON to file: $e');
+    }
   }
 
   @override
@@ -373,8 +454,11 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
           color: Color.fromARGB(255, 246, 240, 232),
           child: ElevatedButton(
             onPressed: () {
-              _confirmSelection();
-              Navigator.pop(context);
+              saveJsonToFile();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => DigitalFridgePage()),
+              );
             },
             child: Text(
               'CONFIRM SELECTION',
@@ -390,7 +474,6 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
     );
   }
 
-  void _confirmSelection() {
-    //guardar no json
-  }
+
+
 }
