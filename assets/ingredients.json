@@ -1,0 +1,211 @@
+{
+  "regions": [
+    {
+      "name": "Vegetables",
+      "ingredients": [
+        "Carrot",
+        "Broccoli",
+        "Tomato",
+        "Spinach",
+        "Onion",
+        "Garlic",
+        "Potato",
+        "Cucumber",
+        "Lettuce",
+        "Mushroom"
+      ]
+    },
+    {
+      "name": "Fruits",
+      "ingredients": [
+        "Apple",
+        "Banana",
+        "Orange",
+        "Grapes",
+        "Strawberry",
+        "Blueberry",
+        "Avocado",
+        "Lemon",
+        "Lime",
+        "Pineapple",
+        "Watermelon"
+      ]
+    },
+    {
+      "name": "Dairy & Eggs",
+      "ingredients": [
+        "Milk",
+        "Cheese",
+        "Yogurt",
+        "Eggs",
+        "Butter",
+        "Cream",
+        "Tofu",
+        "Blue Cheese",
+        "Feta Cheese",
+        "Greek Yogurt"
+      ]
+    },
+    {
+      "name": "Deli",
+      "ingredients": [
+        "Ham",
+        "Pancetta",
+        "Salami",
+        "Prosciutto"
+      ]
+    },
+    {
+      "name": "Meat & Seafood",
+      "ingredients": [
+        "Bacon",
+        "Beef",
+        "Chicken",
+        "Cod",
+        "Salmon",
+        "Shrimp",
+        "Turkey",
+        "Pork",
+        "Lamb",
+        "Beef Steak"
+      ]
+    },
+    {
+      "name": "Bakery",
+      "ingredients": [
+        "Bagel",
+        "Bread",
+        "Bread Roll",
+        "Tortilla",
+        "Buns"
+      ]
+    },
+    {
+      "name": "Pasta and Grains",
+      "ingredients": [
+        "Pasta",
+        "White Rice",
+        "Quinoa",
+        "Couscous",
+        "Tortellini",
+        "Gnocchi"
+      ]
+    },
+    {
+      "name": "Sauces & Condiments",
+      "ingredients": [
+        "Cooking Wine",
+        "Apple Sauce",
+        "Barbecue Sauce",
+        "Ketchup",
+        "Mayonnaise",
+        "Mustard",
+        "Peanut Butter",
+        "Soy Sauce",
+        "Tomato Sauce",
+        "Yellow Mustard"
+      ]
+    },
+    {
+      "name": "Cans & Jars",
+      "ingredients": [
+        "Anchovy",
+        "Artichoke Hearts",
+        "Baked Beans",
+        "Black Beans",
+        "Canned Corn",
+        "Canned Tuna",
+        "Canned Tomatoes",
+        "Chickpeas",
+        "Coconut Cream",
+        "Mushroom Soup"
+      ]
+    },
+    {
+      "name": "Baking",
+      "ingredients": [
+        "Baking Powder",
+        "Baking Soda",
+        "Brown Sugar",
+        "Chocolate Chips",
+        "Cocoa Powder",
+        "Coconut Milk",
+        "Corn Starch",
+        "Oats",
+        "Flour",
+        "Sugar",
+        "Vanilla Extract",
+        "Yeast"
+      ]
+    },
+    {
+      "name": "Oils & Dressings",
+      "ingredients": [
+        "Apple Cider Vinegar",
+        "Balsamic Vinegar",
+        "Coconut Oil",
+        "Olive Oil",
+        "Oil",
+        "Red Wine Vinegar",
+        "Sesame Oil"
+      ]
+    },
+    {
+      "name": "Spices & Seasonings",
+      "ingredients": [
+        "Bay Leaf",
+        "Chili Powder",
+        "Cinnamon Stick",
+        "Cumin Seeds",
+        "Curry Powder",
+        "Dried Basil",
+        "Dried Oregano",
+        "Garlic Powder",
+        "Ground Cinnamon",
+        "Ground Cloves",
+        "Ground Coriander",
+        "Onion Powder",
+        "Paprika",
+        "Salt"
+      ]
+    },
+    {
+      "name": "Snacks",
+      "ingredients": [
+        "Almonds",
+        "Cashews Nuts",
+        "Chocolate",
+        "Crackers",
+        "Dark Chocolate",
+        "Hazel Nuts",
+        "Peanuts",
+        "Pecan Nuts",
+        "Potato Chips",
+        "Pumpkin Seeds",
+        "Pistachios",
+        "Walnuts",
+        "White Chocolate"
+      ]
+    },
+    {
+      "name": "Alcohol & Beverages",
+      "ingredients": [
+        "Apple Cider",
+        "Apple Juice",
+        "Beer",
+        "Coconut Water",
+        "Coffee",
+        "Gin",
+        "Ice",
+        "Lemon Juice",
+        "Orange Juice",
+        "Red Wine",
+        "Rum",
+        "Tequila",
+        "Vodka",
+        "Water",
+        "White Wine"
+      ]
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import 'package:feast/my_diet.dart';
+import 'package:feast/digital_fridge.dart';
 import 'package:flutter/material.dart';
 import 'settings.dart';
 
@@ -29,13 +30,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
                       children: [
                         SizedBox(width: 20),
                         ClipOval(
-                          child: Image.network(
-                            'https://img.freepik.com/premium-vector/burger-king-vector-logo-design-burger-with-crown-icon-logo-concept_617472-644.jpg?w=2000',
-                            width: 60,
-                            height: 60,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                            child: Image.asset(
+                          'assets/avatar.png',
+                          width: 60,
+                          height: 60,
+                          fit: BoxFit.cover,
+                        )),
                         SizedBox(width: 20),
                         Column(
                           //mainAxisAlignment: MainAxisAlignment.center,
@@ -171,7 +171,16 @@ class _MyProfilePageState extends State<MyProfilePage> {
 
   Widget _buildSquareTR() {
     return GestureDetector(
-      onTap: () {},
+
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => DigitalFridgePage(
+                    key: widget.key,
+                  )),
+        );
+      },
       child: Container(
         width: 150,
         height: 150,

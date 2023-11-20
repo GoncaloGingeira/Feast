@@ -12,6 +12,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_boxicons: ^3.0.0
   path: ^1.8.0
+  path_provider: ^2.1.1
   numberpicker: ^2.1.2
   flutter_number_picker: ^1.0.1
 
@@ -24,6 +25,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+    - assets/myfridge.json
     - assets/recipes/
     - assets/recipes/recipe_list.json
   fonts:
