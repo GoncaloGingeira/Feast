@@ -7,6 +7,8 @@
   "numOfCalories": 450,
   "photo": "assets/recipes/recipe-images/chicken-alfredo.png",
   "tags": ["italian", "pasta", "chicken"],
+  "lists": [
+  ],
   "ingredients": [
     {
       "name": "Fettuccine Pasta",

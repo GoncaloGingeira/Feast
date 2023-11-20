@@ -4,6 +4,7 @@ import 'package:feast/digital_fridge.dart';
 import 'package:feast/my_posts.dart';
 
 import 'package:flutter/material.dart';
+import 'lists_page.dart';
 import 'settings.dart';
 
 class MyProfilePage extends StatefulWidget {
@@ -234,7 +235,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
 
   Widget _buildSquareML() {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ListsPage()),
+        );
+      },
       child: Container(
         width: 150,
         height: 150,

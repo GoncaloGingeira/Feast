@@ -8,6 +8,7 @@ class Recipe {
   List<dynamic> ingredients;
   List<String> instructions;
   String photoPath;
+  List<String> lists;
 
   Recipe({
     required this.id,
@@ -18,7 +19,8 @@ class Recipe {
     required this.numOfCalories,
     required this.ingredients,
     required this.instructions,
-    required this.photoPath
+    required this.photoPath,
+    required this.lists
   });
 
   factory Recipe.fromJson(Map<String, dynamic> json) {
@@ -32,6 +34,22 @@ class Recipe {
         numOfCalories: json['numOfCalories'],
         ingredients: json['ingredients'].cast<Map<String, dynamic>>(),
         instructions: json['steps'].cast<String>(),
+        lists: json['lists'].cast<String>(),
         photoPath: json['photo']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'rating': rating,
+      'time': estimatedTime,
+      'servings': servings,
+      'numOfCalories': numOfCalories,
+      'ingredients': ingredients,
+      'steps': instructions,
+      'lists': lists,
+      'photo': photoPath,
+    };
   }
 }

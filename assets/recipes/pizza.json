@@ -7,6 +7,8 @@
   "numOfCalories": 300,
   "photo": "assets/recipes/recipe-images/margherita-pizza.png",
   "tags": ["italian", "pizza", "vegetarian"],
+  "lists": [
+  ],
   "ingredients": [
     {
       "name": "Pizza Dough",

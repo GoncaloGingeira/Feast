@@ -7,6 +7,8 @@
   "numOfCalories": 210,
   "photo": "assets/recipes/recipe-images/pancakes.png",
   "tags": ["breakfast", "vegetarian"],
+  "lists": [
+  ],
   "ingredients": [
     {
       "name": "All-Purpose Flour",
