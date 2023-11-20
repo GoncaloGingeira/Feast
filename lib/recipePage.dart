@@ -1,9 +1,11 @@
 import 'package:feast/recipeExecute.dart';
 import 'package:flutter/material.dart';
 import 'package:feast/recipe.dart';
-import 'package:feast/recipePage.dart';
-import 'package:feast/recipe.dart';
+import 'package:flutter/services.dart';
 import 'dart:io';
+import 'dart:async';
+import 'dart:convert';
+import 'package:path_provider/path_provider.dart';
 
 class RecipePage extends StatefulWidget {
   final Recipe recipe;
@@ -17,6 +19,14 @@ class RecipePage extends StatefulWidget {
 int _currentRate = 0;
 
 class _RecipePageState extends State<RecipePage> {
+  List<String> lists = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadLists();
+  }
+
   @override
   Widget build(BuildContext context) {
     String path = widget.recipe.photoPath;
@@ -36,10 +46,7 @@ class _RecipePageState extends State<RecipePage> {
               iconSize: 35.0,
               icon: const Icon(Icons.bookmark_border),
               onPressed: () {
-                // Add save functionality
-                // This is where you can save the recipe or perform other save-related actions
-                // For example, you can save the recipe to a file or database
-                // Once saved, you might want to show a confirmation message
+                _showAddToListDialog();
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Recipe saved!'),
@@ -306,8 +313,8 @@ class _RecipePageState extends State<RecipePage> {
       ),
     );
   }
-  Widget getRateIconWidgets()
-  {
+
+  Widget getRateIconWidgets() {
     List<Widget> list = List<Widget>.generate(5, (int index) {
       return GestureDetector(
         onTap: () {
@@ -323,5 +330,130 @@ class _RecipePageState extends State<RecipePage> {
     });
 
     return new Row(children: list);
+  }
+
+  void _showAddToListDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Add to List'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: lists.map((list) {
+              return ListTile(
+                title: Text(list),
+                onTap: () {
+                  addRecipeToList(list, widget.recipe);
+                  Navigator.pop(context);
+                },
+              );
+            }).toList(),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> addRecipeToList(String listName, Recipe recipe) async {
+    try {
+      // Add the listName to the recipe's lists
+      recipe.lists.add(listName);
+
+      // Update the recipe's JSON file
+      await updateRecipeList(recipe);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Recipe added to list'),
+        ),
+      );
+    } catch (e) {
+      print('Error adding recipe to list: $e');
+    }
+  }
+
+  Future<void> updateRecipeList(Recipe recipe) async {
+    try {
+      // Load all recipes
+      List<Recipe> allRecipes = await loadRecipes();
+
+      // Find and update the recipe in the list
+      int index = allRecipes.indexWhere((r) => r.id == recipe.id);
+      if (index != -1) {
+        allRecipes[index] = recipe;
+      }
+
+      // Save the updated list of recipes
+      await saveRecipes(allRecipes);
+    } catch (e) {
+      print('Error updating recipe list: $e');
+    }
+  }
+
+  Future<List<Recipe>> loadRecipes() async {
+    try {
+      String recipeListJson =
+          await rootBundle.loadString('assets/recipes/recipe_list.json');
+      List<String> recipeFilenames =
+          List<String>.from(json.decode(recipeListJson));
+
+      List<Recipe> recipes = [];
+      for (String filename in recipeFilenames) {
+        String recipeJson =
+            await rootBundle.loadString('assets/recipes/$filename');
+        Map<String, dynamic> recipeMap = json.decode(recipeJson);
+        recipes.add(Recipe.fromJson(recipeMap));
+      }
+
+      return recipes;
+    } catch (e) {
+      print('Error loading recipes: $e');
+      return []; // Return an empty list or handle the error accordingly
+    }
+  }
+
+  Future<void> saveRecipes(List<Recipe> recipes) async {
+    try {
+      Directory directory = await getApplicationDocumentsDirectory();
+      File file = File('${directory.path}/recipe_list.json');
+
+      List<String> recipeFilenames =
+          recipes.map((recipe) => '${recipe.id}.json').toList();
+      await file.writeAsString(json.encode(recipeFilenames));
+      // Save each recipe
+      for (Recipe recipe in recipes) {
+        File recipeFile = File('${directory.path}/${recipe.id}.json');
+        await recipeFile.writeAsString(json.encode(recipe.toJson()));
+      }
+    } catch (e) {
+      print('Error saving recipes: $e');
+    }
+  }
+
+  Future<void> loadLists() async {
+    try {
+      Directory directory = await getApplicationDocumentsDirectory();
+      File file = File('${directory.path}/lists.json');
+
+      if (file.existsSync()) {
+        String listsJson = await file.readAsString();
+        List<String> loadedLists = List<String>.from(json.decode(listsJson));
+
+        setState(() {
+          lists = loadedLists;
+        });
+      } else {
+        String listsJson =
+            await rootBundle.loadString('assets/recipes/lists.json');
+        List<String> loadedLists = List<String>.from(json.decode(listsJson));
+
+        setState(() {
+          lists = loadedLists;
+        });
+      }
+    } catch (e) {
+      print('Error loading lists: $e');
+    }
   }
 }

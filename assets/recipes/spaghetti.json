@@ -2,7 +2,7 @@
     "id": "spaghetti-bolognese",
     "name": "Spaghetti Bolognese",
     "rating": 4.6,
-    "estimatedTime": 45,
+    "time": 45,
     "servings": 6,
     "numOfCalories": 380,
     "tags": [
@@ -10,7 +10,7 @@
       "pasta",
       "meat"
     ],
-    "photoPath": "",
+    "photo": "",
     "ingredients": [
       {
         "name": "Ground Beef",

@@ -257,20 +257,34 @@ class RecipesInListPage extends StatelessWidget {
           return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
+        } else if (!snapshot.hasData) {
+          return Text('No data available');
         } else {
-          List<Recipe> recipesInList =
-              filterRecipesByList(listName, snapshot.data!);
-
           return Scaffold(
             appBar: AppBar(
               title: Text(listName),
             ),
-            body: ListView.builder(
-              itemCount: recipesInList.length,
-              itemBuilder: (context, index) {
-                Recipe recipe = recipesInList[index];
+            body: FutureBuilder<List<Recipe>>(
+              future: filterRecipesByList(listName),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (!snapshot.hasData) {
+                  return Text('No recipes in the list');
+                } else {
+                  List<Recipe> recipesInList = snapshot.data!;
 
-                return buildRecipeCard(recipe);
+                  return ListView.builder(
+                    itemCount: recipesInList.length,
+                    itemBuilder: (context, index) {
+                      Recipe recipe = recipesInList[index];
+
+                      return buildRecipeCard(recipe);
+                    },
+                  );
+                }
               },
             ),
           );
@@ -281,15 +295,24 @@ class RecipesInListPage extends StatelessWidget {
 
   Future<List<Recipe>> loadRecipes() async {
     try {
-      String recipeListJson =
-          await rootBundle.loadString('assets/recipes/recipe_list.json');
+      Directory directory = await getApplicationDocumentsDirectory();
+      File listFile = File('${directory.path}/recipe_list.json');
+
+      if (!listFile.existsSync()) {
+        // If the recipe list file doesn't exist in the document directory,
+        // load it from the assets and save it to the document directory
+        String recipeListJson =
+            await rootBundle.loadString('assets/recipes/recipe_list.json');
+        listFile.writeAsStringSync(recipeListJson);
+      }
+
+      String recipeListJson = await listFile.readAsString();
       List<String> recipeFilenames =
           List<String>.from(json.decode(recipeListJson));
 
       List<Recipe> recipes = [];
       for (String filename in recipeFilenames) {
-        File recipeFile = File(
-            '${(await getApplicationDocumentsDirectory()).path}/$filename');
+        File recipeFile = File('${directory.path}/$filename');
         String recipeJson = await recipeFile.readAsString();
         Map<String, dynamic> recipeMap = json.decode(recipeJson);
         recipes.add(Recipe.fromJson(recipeMap));
@@ -302,10 +325,38 @@ class RecipesInListPage extends StatelessWidget {
     }
   }
 
-  List<Recipe> filterRecipesByList(String listName, List<Recipe> allRecipes) {
-    return allRecipes
-        .where((recipe) => recipe.lists.contains(listName))
-        .toList();
+  Future<List<Recipe>> filterRecipesByList(String listName) async {
+    try {
+      List<Recipe> allRecipes = await loadRecipes();
+      List<Recipe> recipes = [];
+
+      Directory directory = await getApplicationDocumentsDirectory();
+
+      for (Recipe recipe in allRecipes) {
+        File recipeFile = File('${directory.path}/${recipe.id}.json');
+        Recipe r = await loadRecipeFromFile(recipeFile);
+        recipes.add(r);
+      }
+
+      return recipes
+          .where((recipe) => recipe.lists.contains(listName))
+          .toList();
+    } catch (e) {
+      print('Error filtering recipes by list: $e');
+      return []; // Return an empty list or handle the error accordingly
+    }
+  }
+
+  Future<Recipe> loadRecipeFromFile(File recipeFile) async {
+    try {
+      String recipeJson = await recipeFile.readAsString();
+      Map<String, dynamic> recipeMap = json.decode(recipeJson);
+      Recipe recipe = Recipe.fromJson(recipeMap);
+      return recipe;
+    } catch (e) {
+      print('Error loading recipe from file: $e');
+      throw e;
+    }
   }
 
   Widget buildRecipeCard(Recipe recipe) {
