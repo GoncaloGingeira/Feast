@@ -45,6 +45,7 @@ class _PostPageState extends State<PostPage> {
     'ingredients': [],
     'steps': [],
     'tags': [],
+    'lists': [], // List id's
     'photo': '',
     'rating': 5.0,
     'numbOfCalories': 0,
@@ -482,7 +483,6 @@ class _PostPageState extends State<PostPage> {
                   .showSnackBar(snackBar);
               return;
             }
-            // TODO: Transform data into json
             String jsonString = json.encode(data);
             saveJsonToFile(jsonString);
             print(jsonString);

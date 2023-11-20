@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:feast/add_ingredients.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 
 class DigitalFridgePage extends StatefulWidget {
   const DigitalFridgePage({Key? key});
@@ -11,21 +14,38 @@ class DigitalFridgePage extends StatefulWidget {
 }
 
 class _DigitalFridgePageState extends State<DigitalFridgePage> {
-  late List<dynamic> regionsData;
+  late List<dynamic> regionsData = [];
 
   @override
   void initState() {
     super.initState();
-    _loadRegionsData();
+    readJsonFromFile();
   }
 
-  Future<void> _loadRegionsData() async {
-    String jsonString = await rootBundle.loadString('assets/myfridge.json');
-    Map<String, dynamic> data = json.decode(jsonString);
-    setState(() {
-      regionsData = data['regions'];
-    });
+  Future<void> readJsonFromFile() async {
+    try {
+      final Directory directory = await getApplicationDocumentsDirectory();
+      final File file = File('${directory.path}/myingredients.json');
+
+      if (await file.exists()) {
+        String jsonString = await file.readAsString();
+        Map<String, dynamic> data = json.decode(jsonString);
+
+        setState(() {
+          regionsData = data['regions'] ?? [];
+        });
+        print('Read data from file: ${file.path}');
+      } else {
+        setState(() {
+          regionsData = [];
+        });
+        print('File does not exist, initialized empty values');
+      }
+    } catch (e) {
+      print('Error reading JSON from file: $e');
+    }
   }
+
 
   Future<void> removeIngredient(String regionName, String ingredientToRemove) async {
     int regionIndex = regionsData.indexWhere(
@@ -43,6 +63,24 @@ class _DigitalFridgePageState extends State<DigitalFridgePage> {
       setState(() {
         regionsData = List.from(regionsData);
       });
+    }
+  }
+
+  Future<void> saveJsonToFile() async {
+    try {
+      Map<String, dynamic> data = {
+        'regions': regionsData,
+      };
+      String jsonString = jsonEncode(data);
+      final Directory directory = await getApplicationDocumentsDirectory();
+
+      final File file = File('${directory.path}/myingredients.json');
+
+      await file.writeAsString(jsonString);
+
+      print('JSON saved to file: ${file.path}');
+    } catch (e) {
+      print('Error saving JSON to file: $e');
     }
   }
 
@@ -113,9 +151,9 @@ class _DigitalFridgePageState extends State<DigitalFridgePage> {
           color: Color.fromARGB(255, 246, 240, 232),
           child: ElevatedButton(
             onPressed: () {
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => AddIngredientsPage(key: widget.key,)),
+                MaterialPageRoute(builder: (context) => AddIngredientsPage()),
               );
             },
             child: Text(
@@ -230,6 +268,7 @@ class _DigitalFridgePageState extends State<DigitalFridgePage> {
             TextButton(
               onPressed: () {
                 removeIngredient(regionName, ingredientName);
+                saveJsonToFile();
                 Navigator.of(context).pop();
               },
               child: Text(
