@@ -36,6 +36,7 @@ class _FiltersPageState extends State<FiltersPage> {
     'steps': [],
     'diets': '',
     'intolerances': [],
+    'blacklist': [],
   };
 
   var timeController = TextEditingController(text: '');
@@ -45,6 +46,7 @@ class _FiltersPageState extends State<FiltersPage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> ingredientWidgets = [];
+    List<Widget> blacklistWidgets = [];
 
     if (data['ingredients'] != null && data['ingredients'] is List) {
       ingredientWidgets = List.generate(
@@ -76,6 +78,58 @@ class _FiltersPageState extends State<FiltersPage> {
       // Process 'diets' as a string
     } else {
       print('Diets data is missing or not a String');
+    }
+
+    if (data['intolerances'] != null && data['intolerances'] is List) {
+      intoleranceWidgets = List.generate(
+        data['intolerances'].length,
+        (index) {
+          String intolerance = data['intolerances'][index];
+          if (intolerance != null && intolerance is String) {
+            return IntoleranceWidget(
+              name: intolerance,
+              onDelete: () {
+                setState(() {
+                  data['intolerances'].remove(intolerance);
+                });
+              },
+            );
+          } else {
+            // Handle the case when an intolerance is null or not a String
+            return SizedBox.shrink(); // or any other placeholder widget
+          }
+        },
+      );
+    } else {
+      // Handle the case when 'intolerances' is null or not a List
+      print('Intolerances data is missing or not a List');
+    }
+
+    if (data['blacklist'] != null && data['blacklist'] is List) {
+      blacklistWidgets = List.generate(
+        data['blacklist'].length,
+        (index) {
+          Map<String, String>? blacklistItem =
+              data['blacklist'][index] as Map<String, String>?;
+
+          if (blacklistItem != null && blacklistItem['name'] != null) {
+            return BlacklistWidget(
+              name: blacklistItem['name']!,
+              index: index,
+              onDelete: (int index) {
+                setState(() {
+                  data['blacklist'].removeAt(index);
+                });
+              },
+            );
+          } else {
+            print('Invalid blacklist item at index $index: $blacklistItem');
+            return SizedBox.shrink();
+          }
+        },
+      );
+    } else {
+      print('Blacklist data is missing or not a List');
     }
 
     return Scaffold(
@@ -324,7 +378,44 @@ class _FiltersPageState extends State<FiltersPage> {
             ),
             const SizedBox(height: 10),
             header('Blacklist'),
-            addInput("Add Ingredients you don't want to see", () {}),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5), // Shadow color
+                    spreadRadius: 2, // Spread radius
+                    blurRadius: 5, // Blur radius
+                    offset: Offset(0, 3), // Offset in x and y directions
+                  )
+                ],
+              ),
+              child: Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      _showBlacklistAdd(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5), // Adjust button padding
+                    ),
+                    child: Icon(Icons.add),
+                  ),
+                  blacklistWidgets.isNotEmpty
+                      ? Expanded(
+                          child: ListView(
+                            shrinkWrap: true,
+                            children: blacklistWidgets,
+                          ),
+                        )
+                      : SizedBox.shrink(),
+                ],
+              ),
+            ),
             const SizedBox(height: 10),
           ],
         ),
@@ -685,6 +776,92 @@ class _FiltersPageState extends State<FiltersPage> {
         });
   }
 
+  /*
+    BLACKLIST CODE
+  */
+
+  void _showBlacklistAdd(BuildContext context) async {
+    final nameController = TextEditingController();
+    showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setModalState) {
+            return Padding(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: Container(
+                  height: 300.0,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.all(8),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (nameController.text.isNotEmpty) {
+                              data.update(
+                                  'blacklist',
+                                  (value) =>
+                                      value! +
+                                      [
+                                        {
+                                          'name': nameController.text,
+                                        }
+                                      ]);
+                              setState(() {});
+                              setModalState(() {});
+                              print(data['blacklist']);
+                              Navigator.pop(context);
+                            } else {
+                              const snackBar = SnackBar(
+                                content: Text('Please fill in all fields'),
+                                duration: Duration(seconds: 1),
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                              Navigator.pop(context);
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 5), // Adjust button padding
+                          ),
+                          child: const Text('Done'),
+                        ),
+                      ),
+                      Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 20),
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12)),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.search),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                  child: TextFormField(
+                                controller: nameController,
+                                decoration: const InputDecoration(
+                                  hintText: 'Ingredient',
+                                  border: InputBorder.none,
+                                ),
+                              ))
+                            ],
+                          )),
+                      const SizedBox(height: 10),
+                    ],
+                  )),
+            );
+          });
+        });
+  }
+
   void _showNumberSelectionMin(
       BuildContext context, void Function(int) callback) async {
     int? value = await showModalBottomSheet<int>(
@@ -825,7 +1002,7 @@ class _FiltersPageState extends State<FiltersPage> {
   Widget divider() {
     return Container(
       height: 1, // Height of the divider
-      color: Colors.purple[100], // Color of the divider
+      color: Colors.brown[100], // Color of the divider
       margin: EdgeInsets.all(15), // Adjust vertical margin
     );
   }
@@ -991,6 +1168,53 @@ class IngredientWidget extends StatelessWidget {
   final Function(int) onDelete;
 
   const IngredientWidget(
+      {required this.name, required this.index, required this.onDelete});
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+        onPressed: () {
+          final RenderBox button = context.findRenderObject() as RenderBox;
+          final Offset offset = button.localToGlobal(Offset.zero);
+          final RelativeRect position = RelativeRect.fromRect(
+            Rect.fromPoints(
+              offset,
+              offset.translate(button.size.width - 70, button.size.height),
+            ),
+            Offset.zero & MediaQuery.of(context).size,
+          );
+          showMenu(
+            context: context,
+            position: position,
+            items: [
+              const PopupMenuItem(
+                value: 'delete',
+                child: Text('Delete'),
+              ),
+            ],
+            elevation: 8.0,
+          ).then((value) {
+            if (value == 'delete') {
+              // Handle delete action
+              onDelete(index);
+              print('Deleting item at index $index');
+            }
+          });
+        },
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(
+              horizontal: 10, vertical: 5), // Adjust button padding
+        ),
+        child: Text(name));
+  }
+}
+
+class BlacklistWidget extends StatelessWidget {
+  final int index;
+  final String name;
+  final Function(int) onDelete;
+
+  const BlacklistWidget(
       {required this.name, required this.index, required this.onDelete});
 
   @override
