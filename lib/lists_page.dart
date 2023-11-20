@@ -139,16 +139,20 @@ class _ListsPageState extends State<ListsPage> {
 
   Future<void> removeList(String list) async {
     try {
-      // Update the lists by excluding the removed list
       lists = lists.where((l) => l != list).toList();
-
-      // Update the lists.json file
       await saveListsToFile(lists);
 
-      // Show a Snackbar as a confirmation
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('$list removed'),
+        ),
+      );
+
+      // Refresh the ListsPage by popping the current page and pushing a new instance
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ListsPage(),
         ),
       );
     } catch (e) {
