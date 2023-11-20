@@ -1,6 +1,10 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:path_provider/path_provider.dart';
 
 class FiltersPage extends StatefulWidget {
   @override
@@ -29,7 +33,6 @@ class _FiltersPageState extends State<FiltersPage> {
 
   // TODO Data to be converted to json
   Map<String, dynamic> data = {
-    'name': '',
     'servings': 2, // Default value
     'time': 0, // In minutes
     'ingredients': [],
@@ -38,6 +41,22 @@ class _FiltersPageState extends State<FiltersPage> {
     'intolerances': [],
     'blacklist': [],
   };
+
+  Future<void> saveJsonToFile() async {
+    try {
+      String jsonString = jsonEncode(data);
+      final Directory directory = await getApplicationDocumentsDirectory();
+      //String hash = generateHash(jsonString);
+      final File file = File('${directory.path}/filters.json');
+
+      await file.writeAsString(jsonString);
+
+      print('JSON saved to file: ${file.path}');
+      print('DATA: $data');
+    } catch (e) {
+      print('Error saving JSON to file: $e');
+    }
+  }
 
   var timeController = TextEditingController(text: '');
 
@@ -426,6 +445,7 @@ class _FiltersPageState extends State<FiltersPage> {
         child: ElevatedButton(
           onPressed: () {
             if (_currentValueMax >= _currentValueMin) {
+              saveJsonToFile();
               HapticFeedback.lightImpact();
               Navigator.pop(context);
             } else {
