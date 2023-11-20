@@ -39,8 +39,8 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             ListTile(
               leading: ClipOval(
-                child: Image.network(
-                  'https://img.freepik.com/premium-vector/burger-king-vector-logo-design-burger-with-crown-icon-logo-concept_617472-644.jpg?w=2000',
+                child: Image.asset(
+                  'assets/avatar.png',
                   width: 60,
                   height: 60,
                   fit: BoxFit.cover,

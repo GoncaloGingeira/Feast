@@ -1,0 +1,84 @@
+{
+    "id": "lemon-garlic-shrimp-pasta",
+    "name": "Lemon Garlic Shrimp Pasta",
+    "rating": 4.8,
+    "time": 30,
+    "servings": 2,
+    "numOfCalories": 380,
+    "photo": "assets/recipes/recipe-images/lemon-shrimp.jpg",
+    "tags": [
+        "dinner",
+        "pescatarian",
+        "pasta"
+    ],
+    "ingredients": [
+        {
+            "name": "Linguine pasta",
+            "quantity": 200,
+            "unit": "g"
+        },
+        {
+            "name": "Shrimp",
+            "quantity": 250,
+            "unit": "g",
+            "comment": "peeled and deveined"
+        },
+        {
+            "name": "Olive oil",
+            "quantity": 2,
+            "unit": "tbsp"
+        },
+        {
+            "name": "Garlic",
+            "quantity": 3,
+            "unit": "cloves",
+            "comment": "minced"
+        },
+        {
+            "name": "Cherry tomatoes",
+            "quantity": 1,
+            "unit": "cup",
+            "comment": "halved"
+        },
+        {
+            "name": "Baby spinach",
+            "quantity": 2,
+            "unit": "cups"
+        },
+        {
+            "name": "Lemon",
+            "quantity": 1,
+            "unit": "zested and juiced"
+        },
+        {
+            "name": "Red pepper flakes",
+            "quantity": 1,
+            "unit": "pinch"
+        },
+        {
+            "name": "Salt",
+            "quantity": 1,
+            "unit": "tsp"
+        },
+        {
+            "name": "Black pepper",
+            "quantity": 1,
+            "unit": "tsp"
+        },
+        {
+            "name": "Fresh parsley",
+            "quantity": 2,
+            "unit": "tbsp",
+            "comment": "chopped, for garnish"
+        }
+    ],
+    "steps": [
+        "Cook linguine pasta according to package instructions. Reserve a cup of pasta water before draining.",
+        "In a large pan, heat olive oil over medium heat. Add minced garlic and red pepper flakes; sauté until fragrant.",
+        "Add shrimp and cook until they turn pink, about 2-3 minutes per side.",
+        "Stir in cherry tomatoes, baby spinach, lemon zest, lemon juice, salt, and black pepper. Cook until spinach wilts.",
+        "Add the cooked pasta to the pan, tossing to combine. If needed, add reserved pasta water to reach desired consistency.",
+        "Garnish with fresh parsley and additional lemon zest.",
+        "Serve immediately and enjoy your delicious lemon garlic shrimp pasta!"
+    ]
+}

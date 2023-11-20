@@ -1,0 +1,87 @@
+{
+    "id": "paleo-grilled-salmon",
+    "name": "Paleo Grilled Salmon with Roasted Vegetables",
+    "rating": 4.9,
+    "time": 30,
+    "servings": 2,
+    "numOfCalories": 420,
+    "photo": "assets/recipes/recipe-images/salmon.jpeg",
+    "tags": [
+        "dinner",
+        "paleo",
+        "seafood"
+    ],
+    "ingredients": [
+        {
+            "name": "Salmon fillets",
+            "quantity": 2,
+            "unit": ""
+        },
+        {
+            "name": "Asparagus",
+            "quantity": 1,
+            "unit": "bunch",
+            "comment": "trimmed"
+        },
+        {
+            "name": "Zucchini",
+            "quantity": 2,
+            "unit": "medium, sliced"
+        },
+        {
+            "name": "Cherry tomatoes",
+            "quantity": 1,
+            "unit": "cup",
+            "comment": "halved"
+        },
+        {
+            "name": "Red onion",
+            "quantity": 1,
+            "unit": "medium, sliced"
+        },
+        {
+            "name": "Garlic",
+            "quantity": 2,
+            "unit": "cloves",
+            "comment": "minced"
+        },
+        {
+            "name": "Lemon",
+            "quantity": 1,
+            "unit": "sliced",
+            "comment": "for garnish"
+        },
+        {
+            "name": "Olive oil",
+            "quantity": 3,
+            "unit": "tbsp"
+        },
+        {
+            "name": "Fresh rosemary",
+            "quantity": 1,
+            "unit": "tbsp",
+            "comment": "chopped"
+        },
+        {
+            "name": "Salt",
+            "quantity": 1,
+            "unit": "tsp",
+            "comment": "to taste"
+        },
+        {
+            "name": "Black pepper",
+            "quantity": 1,
+            "unit": "tsp",
+            "comment": "to taste"
+        }
+    ],
+    "steps": [
+        "Preheat the grill to medium-high heat.",
+        "Rub salmon fillets with olive oil, minced garlic, chopped rosemary, salt, and black pepper.",
+        "In a bowl, toss asparagus, zucchini, cherry tomatoes, and red onion with olive oil, salt, and black pepper.",
+        "Place the salmon fillets on the grill and cook for 4-5 minutes per side or until the salmon is cooked through and has grill marks.",
+        "While the salmon is grilling, spread the vegetable mixture on a baking sheet and roast in the oven at 400°F (200°C) for 15-20 minutes or until vegetables are tender.",
+        "Arrange grilled salmon on a plate with roasted vegetables, garnish with lemon slices, and serve hot.",
+        "Enjoy your Paleo-friendly grilled salmon with roasted vegetables!"
+    ]
+}

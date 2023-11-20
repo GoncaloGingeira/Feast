@@ -1,0 +1,123 @@
+{
+    "id": "chickpea-vegetable-curry",
+    "name": "Chickpea and Vegetable Curry",
+    "rating": 4.7,
+    "time": 40,
+    "servings": 4,
+    "numOfCalories": 320,
+    "photo": "assets/recipes/recipe-images/chickpea.jpg",
+    "tags": [
+        "dinner",
+        "vegan",
+        "curry"
+    ],
+    "ingredients": [
+        {
+            "name": "Chickpeas",
+            "quantity": 2,
+            "unit": "cups",
+            "comment": "cooked or canned"
+        },
+        {
+            "name": "Coconut milk",
+            "quantity": 1,
+            "unit": "can",
+            "comment": "full fat"
+        },
+        {
+            "name": "Vegetable broth",
+            "quantity": 1,
+            "unit": "cup"
+        },
+        {
+            "name": "Sweet potato",
+            "quantity": 1,
+            "unit": "large, diced"
+        },
+        {
+            "name": "Carrots",
+            "quantity": 2,
+            "unit": "medium, sliced"
+        },
+        {
+            "name": "Bell peppers",
+            "quantity": 2,
+            "unit": "sliced",
+            "comment": "assorted colors"
+        },
+        {
+            "name": "Onion",
+            "quantity": 1,
+            "unit": "large, diced"
+        },
+        {
+            "name": "Garlic",
+            "quantity": 3,
+            "unit": "cloves",
+            "comment": "minced"
+        },
+        {
+            "name": "Ginger",
+            "quantity": 1,
+            "unit": "tbsp",
+            "comment": "minced"
+        },
+        {
+            "name": "Curry powder",
+            "quantity": 2,
+            "unit": "tsp"
+        },
+        {
+            "name": "Turmeric",
+            "quantity": 1,
+            "unit": "tsp"
+        },
+        {
+            "name": "Cumin",
+            "quantity": 1,
+            "unit": "tsp"
+        },
+        {
+            "name": "Red chili flakes",
+            "quantity": 1,
+            "unit": "pinch"
+        },
+        {
+            "name": "Salt",
+            "quantity": 1,
+            "unit": "tsp",
+            "comment": "or to taste"
+        },
+        {
+            "name": "Black pepper",
+            "quantity": 1,
+            "unit": "tsp",
+            "comment": "to taste"
+        },
+        {
+            "name": "Fresh cilantro",
+            "quantity": 2,
+            "unit": "tbsp",
+            "comment": "chopped, for garnish"
+        },
+        {
+            "name": "Lime wedges",
+            "quantity": 1,
+            "unit": "for serving"
+        },
+        {
+            "name": "Cooked rice",
+            "quantity": 2,
+            "unit": "cups",
+            "comment": "for serving"
+        }
+    ],
+    "steps": [
+        "In a large pot, sauté onions, garlic, and ginger until softened.",
+        "Add curry powder, turmeric, cumin, red chili flakes, salt, and black pepper. Stir to combine.",
+        "Add sweet potatoes, carrots, bell peppers, chickpeas, coconut milk, and vegetable broth. Bring to a simmer.",
+        "Simmer for 20-25 minutes or until vegetables are tender. Adjust seasoning if needed.",
+        "Serve the curry over cooked rice, garnished with fresh cilantro and lime wedges.",
+        "Enjoy your delicious and hearty vegan chickpea and vegetable curry!"
+    ]
+}

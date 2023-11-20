@@ -1,0 +1,87 @@
+{
+    "id": "quinoa-vegetable-stir-fry",
+    "name": "Quinoa and Vegetable Stir-Fry with Cashew Sauce",
+    "rating": 4.6,
+    "time": 30,
+    "servings": 4,
+    "numOfCalories": 380,
+    "photo": "assets/recipes/recipe-images/quinoa.jpg",
+    "tags": [
+        "dinner",
+        "quinoa",
+        "vegetarian",
+        "stir-fry"
+    ],
+    "ingredients": [
+        {
+            "name": "Quinoa",
+            "quantity": 1,
+            "unit": "cup",
+            "comment": "uncooked"
+        },
+        {
+            "name": "Broccoli florets",
+            "quantity": 2,
+            "unit": "cups"
+        },
+        {
+            "name": "Carrots",
+            "quantity": 2,
+            "unit": "medium, julienned"
+        },
+        {
+            "name": "Red bell pepper",
+            "quantity": 1,
+            "unit": "sliced"
+        },
+        {
+            "name": "Snow peas",
+            "quantity": 1,
+            "unit": "cup"
+        },
+        {
+            "name": "Cashews",
+            "quantity": 1,
+            "unit": "cup",
+            "comment": "roasted"
+        },
+        {
+            "name": "Green onions",
+            "quantity": 4,
+            "unit": "sliced"
+        },
+        {
+            "name": "Sesame oil",
+            "quantity": 2,
+            "unit": "tbsp"
+        },
+        {
+            "name": "Soy sauce",
+            "quantity": 3,
+            "unit": "tbsp"
+        },
+        {
+            "name": "Ginger",
+            "quantity": 1,
+            "unit": "tsp",
+            "comment": "minced"
+        },
+        {
+            "name": "Garlic",
+            "quantity": 2,
+            "unit": "cloves",
+            "comment": "minced"
+        }
+    ],
+    "steps": [
+        "Rinse quinoa under cold water. Cook quinoa according to package instructions.",
+        "In a wok or large pan, heat sesame oil over medium-high heat.",
+        "Add ginger and garlic, sauté for 1 minute until fragrant.",
+        "Add broccoli, carrots, red bell pepper, and snow peas. Stir-fry until vegetables are tender-crisp.",
+        "Stir in cooked quinoa and soy sauce. Toss to combine.",
+        "In a blender, combine roasted cashews with water to create a creamy cashew sauce.",
+        "Pour cashew sauce over the stir-fry and toss until well coated.",
+        "Garnish with sliced green onions and additional cashews.",
+        "Serve hot over rice or noodles."
+    ]
+}

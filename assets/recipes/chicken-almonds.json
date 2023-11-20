@@ -1,0 +1,89 @@
+{
+    "id": "chicken-almond-stir-fry",
+    "name": "Chicken Almond Stir-Fry",
+    "rating": 4.5,
+    "time": 25,
+    "servings": 3,
+    "numOfCalories": 400,
+    "photo": "assets/recipes/recipe-images/chicken-almonds.jpg",
+    "tags": [
+        "dinner",
+        "chicken",
+        "stir-fry"
+    ],
+    "ingredients": [
+        {
+            "name": "Chicken breast",
+            "quantity": 400,
+            "unit": "g"
+        },
+        {
+            "name": "Soy sauce",
+            "quantity": 3,
+            "unit": "tbsp"
+        },
+        {
+            "name": "Honey",
+            "quantity": 2,
+            "unit": "tbsp"
+        },
+        {
+            "name": "Sesame oil",
+            "quantity": 1,
+            "unit": "tbsp"
+        },
+        {
+            "name": "Cornstarch",
+            "quantity": 2,
+            "unit": "tsp"
+        },
+        {
+            "name": "Almonds",
+            "quantity": 1,
+            "unit": "cup",
+            "comment": "toasted"
+        },
+        {
+            "name": "Broccoli florets",
+            "quantity": 200,
+            "unit": "g"
+        },
+        {
+            "name": "Carrots",
+            "quantity": 2,
+            "unit": "medium, sliced"
+        },
+        {
+            "name": "Garlic",
+            "quantity": 2,
+            "unit": "cloves",
+            "comment": "minced"
+        },
+        {
+            "name": "Ginger",
+            "quantity": 1,
+            "unit": "tsp",
+            "comment": "minced"
+        },
+        {
+            "name": "Green onions",
+            "quantity": 4,
+            "unit": "sliced"
+        },
+        {
+            "name": "Cooked rice",
+            "quantity": 2,
+            "unit": "cups",
+            "comment": "for serving"
+        }
+    ],
+    "steps": [
+        "In a bowl, mix soy sauce, honey, sesame oil, and cornstarch to create the marinade.",
+        "Slice chicken into thin strips and marinate in the mixture for 15 minutes.",
+        "Heat a wok or large pan over medium-high heat. Add a bit of oil.",
+        "Add marinated chicken and stir-fry until browned and cooked through.",
+        "Add broccoli, carrots, garlic, and ginger. Continue stir-frying until vegetables are tender-crisp.",
+        "Stir in toasted almonds and sliced green onions.",
+        "Serve over cooked rice and enjoy!"
+    ]
+}
