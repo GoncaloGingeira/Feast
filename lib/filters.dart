@@ -242,82 +242,86 @@ class _FiltersPageState extends State<FiltersPage> {
             const SizedBox(height: 10),
             header('Intolerances'),
             Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5), // Shadow color
-                        spreadRadius: 2, // Spread radius
-                        blurRadius: 5, // Blur radius
-                        offset: Offset(0, 3), // Offset in x and y directions
-                      )
-                    ]),
-                child: Row(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        _showIngredientAdd(context);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 5), // Adjust button padding
-                      ),
-                      child: Icon(Icons.add),
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3),
+                  )
+                ],
+              ),
+              child: Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      _showIntoleranceAdd(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
                     ),
-                    ingredientWidgets.isNotEmpty
-                        ? Expanded(
-                            child: ListView(
-                              shrinkWrap: true,
-                              children: ingredientWidgets,
-                            ),
-                          )
-                        : SizedBox.shrink(),
-                  ],
-                )),
-            const SizedBox(height: 10),
+                    child: Icon(Icons.add),
+                  ),
+                  intoleranceWidgets.isNotEmpty
+                      ? Expanded(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: intoleranceWidgets.length,
+                            itemBuilder: (context, index) {
+                              return intoleranceWidgets[index];
+                            },
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                ],
+              ),
+            ),
             divider(),
             header('🍱 Ingredients'),
             Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5), // Shadow color
-                        spreadRadius: 2, // Spread radius
-                        blurRadius: 5, // Blur radius
-                        offset: Offset(0, 3), // Offset in x and y directions
-                      )
-                    ]),
-                child: Row(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        _showIngredientAdd(context);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 5), // Adjust button padding
-                      ),
-                      child: Icon(Icons.add),
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5), // Shadow color
+                    spreadRadius: 2, // Spread radius
+                    blurRadius: 5, // Blur radius
+                    offset: Offset(0, 3), // Offset in x and y directions
+                  )
+                ],
+              ),
+              child: Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      _showIngredientAdd(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5), // Adjust button padding
                     ),
-                    ingredientWidgets.isNotEmpty
-                        ? Expanded(
-                            child: ListView(
-                              shrinkWrap: true,
-                              children: ingredientWidgets,
-                            ),
-                          )
-                        : SizedBox.shrink(),
-                  ],
-                )),
+                    child: Icon(Icons.add),
+                  ),
+                  ingredientWidgets.isNotEmpty
+                      ? Expanded(
+                          child: ListView(
+                            shrinkWrap: true,
+                            children: ingredientWidgets,
+                          ),
+                        )
+                      : SizedBox.shrink(),
+                ],
+              ),
+            ),
             const SizedBox(height: 10),
             header('Blacklist'),
             addInput("Add Ingredients you don't want to see", () {}),
@@ -492,6 +496,108 @@ class _FiltersPageState extends State<FiltersPage> {
   /*
     INTOLERANCES CODE
    */
+
+  void _showIntoleranceAdd(BuildContext context) async {
+    final intoleranceController = TextEditingController();
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setModalState) {
+            return Padding(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: Container(
+                height: 300.0,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.all(8),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (intoleranceController.text.isNotEmpty) {
+                            setState(() {
+                              data.update(
+                                'intolerances',
+                                (value) =>
+                                    List<String>.from(value) +
+                                    [intoleranceController.text],
+                              );
+
+                              // Create a widget for the new intolerance
+                              Widget intoleranceWidget = IntoleranceWidget(
+                                name: intoleranceController.text,
+                                onDelete: () {
+                                  setState(() {
+                                    data['intolerances']
+                                        .remove(intoleranceController.text);
+                                    intoleranceWidgets.removeWhere((widget) =>
+                                        widget is IntoleranceWidget &&
+                                        widget.name ==
+                                            intoleranceController.text);
+                                  });
+                                },
+                              );
+
+                              // Add the widget to the list
+                              intoleranceWidgets.add(intoleranceWidget);
+                            });
+
+                            setModalState(() {}); // Trigger a rebuild
+                            Navigator.pop(context);
+                          } else {
+                            const snackBar = SnackBar(
+                              content: Text('Please fill in all fields'),
+                              duration: Duration(seconds: 1),
+                            );
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                        ),
+                        child: const Text('Done'),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.search),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: TextFormField(
+                              controller: intoleranceController,
+                              decoration: const InputDecoration(
+                                hintText: 'Intolerance',
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
 
   /*
     INGREDIENTS CODE
@@ -826,7 +932,55 @@ class DietWidget extends StatelessWidget {
           vertical: 5,
         ),
       ),
-      child: Text('$diet'),
+      child: Text(diet),
+    );
+  }
+}
+
+class IntoleranceWidget extends StatelessWidget {
+  final String name;
+  final VoidCallback onDelete;
+
+  const IntoleranceWidget({
+    required this.name,
+    required this.onDelete,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        final RenderBox button = context.findRenderObject() as RenderBox;
+        final Offset offset = button.localToGlobal(Offset.zero);
+        final RelativeRect position = RelativeRect.fromRect(
+          Rect.fromPoints(
+            offset,
+            offset.translate(button.size.width - 70, button.size.height),
+          ),
+          Offset.zero & MediaQuery.of(context).size,
+        );
+        showMenu(
+          context: context,
+          position: position,
+          items: [
+            const PopupMenuItem(
+              value: 'delete',
+              child: Text('Delete'),
+            ),
+          ],
+          elevation: 8.0,
+        ).then((value) {
+          if (value == 'delete') {
+            // Handle delete action by invoking the onDelete callback
+            onDelete();
+          }
+        });
+      },
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(
+            horizontal: 10, vertical: 5), // Adjust button padding
+      ),
+      child: Text(name),
     );
   }
 }
@@ -874,6 +1028,6 @@ class IngredientWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(
               horizontal: 10, vertical: 5), // Adjust button padding
         ),
-        child: Text('$name'));
+        child: Text(name));
   }
 }
