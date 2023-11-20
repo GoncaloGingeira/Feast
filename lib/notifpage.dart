@@ -28,9 +28,9 @@ class _NotifPageState extends State<NotifPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
+        centerTitle: false,
         title: const Text(
-          'Feast',
+          'Notifications',
           style: TextStyle(color: Color.fromARGB(255, 81, 35, 19)),
         ),
         actions: [

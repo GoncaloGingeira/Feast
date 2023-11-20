@@ -1,0 +1,66 @@
+{
+    "id": "pasta-tomato-sauce",
+    "name": "Pasta with Tomato Sauce",
+    "rating": 4.2,
+    "time": 30,
+    "servings": 4,
+    "numOfCalories": 320,
+    "photo": "assets/recipes/recipe-images/pasta.jpeg",
+    "tags": [
+        "dinner",
+        "italian",
+        "easy"
+    ],
+    "ingredients": [
+        {
+            "name": "Pasta",
+            "quantity": 8,
+            "unit": "oz"
+        },
+        {
+            "name": "Tomato Sauce",
+            "quantity": 2,
+            "unit": "cups"
+        },
+        {
+            "name": "Garlic",
+            "quantity": 2,
+            "unit": "cloves",
+            "preparation": "minced"
+        },
+        {
+            "name": "Olive Oil",
+            "quantity": 2,
+            "unit": "tbsp"
+        },
+        {
+            "name": "Basil",
+            "quantity": 1,
+            "unit": "tsp",
+            "preparation": "chopped"
+        },
+        {
+            "name": "Parmesan Cheese",
+            "quantity": 1,
+            "unit": "tbsp",
+            "preparation": "grated"
+        },
+        {
+            "name": "Salt",
+            "quantity": 1,
+            "unit": "tsp"
+        },
+        {
+            "name": "Black Pepper",
+            "quantity": 0.5,
+            "unit": "tsp"
+        }
+    ],
+    "steps": [
+        "Cook the pasta according to package instructions.",
+        "In a pan, heat olive oil and sauté minced garlic until fragrant.",
+        "Add tomato sauce, salt, and black pepper. Simmer for 10 minutes.",
+        "Combine the cooked pasta with the tomato sauce.",
+        "Serve topped with chopped basil and grated Parmesan cheese."
+    ]
+}

@@ -86,7 +86,7 @@ class _MyDietPageState extends State<MyDietPage> {
                       height: 20,
                     ),
                     Text(
-                      'Are you intolerant or allergic to this?',
+                      'Are you intolerant or allergic to any of these ingredients?',
                       style: TextStyle(
                         fontSize: 18,
                         color: const Color.fromARGB(255, 81, 35, 19),

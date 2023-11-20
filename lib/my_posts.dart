@@ -1,18 +1,18 @@
 import 'dart:convert';
+
 import 'package:feast/recipe.dart';
 import 'package:feast/recipePage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'dart:typed_data';
+import 'package:flutter/services.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+class MyPosts extends StatefulWidget {
+  const MyPosts({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<MyPosts> createState() => _MyPostsState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _MyPostsState extends State<MyPosts> {
   List<Map<String, dynamic>> recipes = [];
 
   @override
@@ -61,66 +61,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Image.asset(
-          'assets/Logo.png',
-          height: 100, // Double the height to resize the image
+        appBar: AppBar(
+          title: const Text('My Posts'),
         ),
-        backgroundColor:
-            Colors.transparent, // Set the background color to transparent
-        elevation: 0, // Remove the shadow
-      ),
-      body: Column(
-        children: [
-          const SizedBox(height: 10),
-          Container(
-            color: Colors.transparent, // Set the color to transparent
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        recipes.shuffle();
-                      });
-                    },
-                    child: const Text('Recommended'),
-                    style: ElevatedButton.styleFrom(
-                      primary: Color.fromARGB(255, 255, 255, 255),
-                      onPrimary: Colors.black,
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        recipes.shuffle();
-                      });
-                    },
-                    child: const Text('Recent'),
-                    style: ElevatedButton.styleFrom(
-                      primary: const Color.fromARGB(255, 255, 255, 255),
-                      onPrimary: Colors.black,
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        recipes.shuffle();
-                      });
-                    },
-                    child: const Text('Following'),
-                    style: ElevatedButton.styleFrom(
-                      primary: const Color.fromARGB(255, 255, 255, 255),
-                      onPrimary: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+        body: Column(children: [
           const SizedBox(height: 30),
           Expanded(
             child: ListView.builder(
@@ -131,9 +75,7 @@ class _HomePageState extends State<HomePage> {
               },
             ),
           ),
-        ],
-      ),
-    );
+        ]));
   }
 
   Widget buildRecipeCard(Map<String, dynamic> recipe) {

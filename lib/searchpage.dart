@@ -1,227 +1,91 @@
+import 'package:feast/filters.dart';
 import 'package:flutter/material.dart';
 
 class SearchPage extends StatefulWidget {
-  SearchPage({Key? key}) : super(key: key);
-
   @override
-  State<SearchPage> createState() => _SearchPageState();
+  _SearchPageState createState() => _SearchPageState();
 }
 
 class _SearchPageState extends State<SearchPage> {
+  String _searchQuery = '';
+  bool _useMyDiet = false;
+  bool _digitalFridge = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true, // Center the title
-        title: const Text(
-          'Feast', // Display 'Feast' as the app bar title
-          style: TextStyle(color: Colors.black),
-        ),
+        title: const Text('Recipe Search'),
       ),
       body: Column(
         children: [
-          const SizedBox(height: 20),
-          Center(
-            child: Container(
-              width: 400,
-              height: 80,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: const Offset(0, 3), // changes position of shadow
-                  ),
-                ],
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              decoration: const InputDecoration(
+                hintText: 'Search for recipes',
+                suffixIcon: Icon(Icons.search),
               ),
-              child: Row(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.fastfood,
-                    ),
-                  ),
-                  Center(
-                    child: Container(
-                      width: 0.5, // Width of the vertical bar
-                      height: 30, // Height of the vertical bar
-                      color: Colors.black, // Color of the vertical bar
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        "Frango Assado",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        "Duração 30 mins",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                        ),
-                      ),
-                      Text(
-                        "Tags: Italian",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+              onChanged: (value) {
+                setState(() {
+                  _searchQuery = value;
+                });
+              },
             ),
           ),
-          const SizedBox(height: 30),
-          Center(
-            child: Container(
-              width: 400,
-              height: 80,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: const Offset(0, 3), // changes position of shadow
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.fastfood,
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  height: MediaQuery.of(context).size.width * 0.1,
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => FiltersPage()),
+                      );
+                    },
+                    backgroundColor: Colors.white,
+                    child: const Text(
+                      'Filters',
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
                     ),
                   ),
-                  Center(
-                    child: Container(
-                      width: 0.5, // Width of the vertical bar
-                      height: 30, // Height of the vertical bar
-                      color: Colors.black, // Color of the vertical bar
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        "Frango Assado",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        "Duração 30 mins",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                        ),
-                      ),
-                      Text(
-                        "Tags: Italian",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 30),
-          Center(
-            child: Container(
-              width: 400,
-              height: 80,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: const Offset(0, 3), // changes position of shadow
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.fastfood,
-                    ),
-                  ),
-                  Center(
-                    child: Container(
-                      width: 0.5, // Width of the vertical bar
-                      height: 30, // Height of the vertical bar
-                      color: Colors.black, // Color of the vertical bar
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        "Frango Assado",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        "Duração 30 mins",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                        ),
-                      ),
-                      Text(
-                        "Tags: Italian",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                ),
+                SizedBox(width: 10),
+                Switch(
+                  value: _useMyDiet,
+                  onChanged: (value) {
+                    setState(() {
+                      _useMyDiet = value;
+                    });
+                  },
+                  activeColor: Colors.white,
+                  inactiveThumbColor: Colors.grey,
+                  inactiveTrackColor: Colors.grey[300],
+                  activeTrackColor: Color.fromARGB(255, 251, 227, 5),
+                ),
+                const Text('My Diet'),
+                SizedBox(width: 10),
+                Switch(
+                  value: _digitalFridge,
+                  onChanged: (value) {
+                    setState(() {
+                      _digitalFridge = value;
+                    });
+                  },
+                  activeColor: Colors.white,
+                  inactiveThumbColor: Colors.grey,
+                  inactiveTrackColor: Colors.grey[300],
+                  activeTrackColor: Color.fromARGB(255, 251, 227, 5),
+                ),
+                const Text('Digital \nFridge'),
+              ],
             ),
           ),
         ],
