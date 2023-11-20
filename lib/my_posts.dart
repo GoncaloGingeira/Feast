@@ -1,18 +1,21 @@
 import 'dart:convert';
+
 import 'package:feast/recipe.dart';
 import 'package:feast/recipePage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'dart:typed_data';
+import 'package:flutter/services.dart';
+import 'dart:io';
 
-class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+import 'package:path_provider/path_provider.dart';
+
+class MyPosts extends StatefulWidget {
+  const MyPosts({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<MyPosts> createState() => _MyPostsState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _MyPostsState extends State<MyPosts> {
   List<Map<String, dynamic>> recipes = [];
 
   @override
@@ -23,9 +26,20 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> loadRecipeFiles() async {
     try {
-      String jsonFileNames =
-          await rootBundle.loadString('assets/recipes/recipe_list.json');
+
+      final Directory directory = await getApplicationDocumentsDirectory();
+      final File fileNamesFile = File('${directory.path}/my_posts_list.json');
+      String jsonFileNames = await fileNamesFile.readAsString();
+
+      print('--- jsonFileNames: $jsonFileNames');
+      //String jsonFileNames =
+      //    await rootBundle.loadString('assets/recipes/my_posts_list.json');
+
+      print('before');
       List<dynamic> dynamicFileNames = json.decode(jsonFileNames);
+      print('--- dynamicFileNames: $dynamicFileNames');
+
+      print(dynamicFileNames);
 
       List<String> fileNames = [];
 
@@ -38,9 +52,9 @@ class _HomePageState extends State<HomePage> {
       }
 
       for (String fileName in fileNames) {
-        String assetPath = 'assets/recipes/$fileName';
-        ByteData data = await rootBundle.load(assetPath);
-        String jsonString = utf8.decode(data.buffer.asUint8List());
+        String recipePath = '${directory.path}/$fileName';
+        File recipeFile = File(recipePath);
+        String jsonString = await recipeFile.readAsString();
         Map<String, dynamic> recipeData = json.decode(jsonString);
 
         // Ensure that the loaded data has the correct structure
@@ -61,66 +75,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Image.asset(
-          'assets/Logo.png',
-          height: 100, // Double the height to resize the image
+        appBar: AppBar(
+          title: const Text('My Posts'),
         ),
-        backgroundColor:
-            Colors.transparent, // Set the background color to transparent
-        elevation: 0, // Remove the shadow
-      ),
-      body: Column(
-        children: [
-          const SizedBox(height: 10),
-          Container(
-            color: Colors.transparent, // Set the color to transparent
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        recipes.shuffle();
-                      });
-                    },
-                    child: const Text('Recommended'),
-                    style: ElevatedButton.styleFrom(
-                      primary: Color.fromARGB(255, 255, 255, 255),
-                      onPrimary: Colors.black,
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        recipes.shuffle();
-                      });
-                    },
-                    child: const Text('Recent'),
-                    style: ElevatedButton.styleFrom(
-                      primary: const Color.fromARGB(255, 255, 255, 255),
-                      onPrimary: Colors.black,
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        recipes.shuffle();
-                      });
-                    },
-                    child: const Text('Following'),
-                    style: ElevatedButton.styleFrom(
-                      primary: const Color.fromARGB(255, 255, 255, 255),
-                      onPrimary: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+        body: Column(children: [
           const SizedBox(height: 30),
           Expanded(
             child: ListView.builder(
@@ -131,9 +89,7 @@ class _HomePageState extends State<HomePage> {
               },
             ),
           ),
-        ],
-      ),
-    );
+        ]));
   }
 
   Widget buildRecipeCard(Map<String, dynamic> recipe) {
@@ -172,7 +128,7 @@ class _HomePageState extends State<HomePage> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   image: DecorationImage(
-                    image: AssetImage(recipe['photo'] ?? ''),
+                    image: FileImage(File(recipe['photo'] ?? '')),
                     fit: BoxFit.cover,
                   ),
                 ),

@@ -1,5 +1,8 @@
 import 'package:feast/my_diet.dart';
 import 'package:feast/digital_fridge.dart';
+
+import 'package:feast/my_posts.dart';
+
 import 'package:flutter/material.dart';
 import 'settings.dart';
 
@@ -127,7 +130,15 @@ class _MyProfilePageState extends State<MyProfilePage> {
 
   Widget _buildSquareTL() {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MyPosts(
+                    key: widget.key,
+                  )),
+        );
+      },
       child: Container(
         width: 150,
         height: 150,
@@ -171,7 +182,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
 
   Widget _buildSquareTR() {
     return GestureDetector(
-
       onTap: () {
         Navigator.push(
           context,

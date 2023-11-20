@@ -16,9 +16,9 @@ class RecipeExecutePage extends StatefulWidget {
 class _RecipeExecutePageState extends State<RecipeExecutePage> {
   int _currentStep = 1;
   int _timerSeconds = 5;
-  final CountdownController _timerController = CountdownController();
-  var timeController = TextEditingController(text: '');
   bool _showingTimer = false;
+  var timeController = TextEditingController(text: '');
+  final CountdownController _timerController = CountdownController();
 
   final Color _counterButtonsColor = Color.fromRGBO(79, 32, 13, 1);
 
@@ -289,10 +289,13 @@ class _RecipeExecutePageState extends State<RecipeExecutePage> {
                             TextButton(
                               onPressed: () {
                                 _showingTimer = true;
-                                setState(() {});
                                 _timerSeconds = int.parse(timeController.text);
-                                _timerController.start();
-                                Navigator.pop(context);
+                                setState(() {});
+                                WidgetsBinding.instance.addPostFrameCallback((_) {
+                                  // This callback is called after the widget is rendered on the screen.
+                                  _timerController.start();
+                                  Navigator.pop(context);
+                                });
                               },
                               child: const Text('Start'),
                             ),

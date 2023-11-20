@@ -1,4 +1,5 @@
 import 'package:feast/recipeExecute.dart';
+
 import 'package:flutter/material.dart';
 import 'package:feast/recipe.dart';
 import 'package:feast/recipePage.dart';
@@ -73,12 +74,7 @@ class _RecipePageState extends State<RecipePage> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       // Adjust the border radius
-                      child: Image.asset(
-                        widget.recipe.photoPath,
-                        width: 200,
-                        height: 200,
-                        fit: BoxFit.cover,
-                      ),
+                      child: getImage(),
                     ),
                   ),
                   Positioned(
@@ -166,6 +162,7 @@ class _RecipePageState extends State<RecipePage> {
                             Text('Start'),
                           ],
                         ),
+
                       ),
                     )),
                 Container(
@@ -217,6 +214,7 @@ class _RecipePageState extends State<RecipePage> {
                       Text('Rate : '),
                       SizedBox(width: 8),
                       getRateIconWidgets(),
+
                     ],
                   ),
                 ),
@@ -226,11 +224,13 @@ class _RecipePageState extends State<RecipePage> {
               height: 10,
             ),
             const Text('Ingredients : '),
+
             const SizedBox(
               height: 10,
             ),
             Container(
               width: 330,
+
               // Adjust the width as needed
               height: 300,
               // Adjust the height as needed
@@ -301,6 +301,7 @@ class _RecipePageState extends State<RecipePage> {
         children: [
           Icon(icon),
           const SizedBox(height: 8),
+
           Text(text),
         ],
       ),
@@ -324,4 +325,28 @@ class _RecipePageState extends State<RecipePage> {
 
     return new Row(children: list);
   }
+
+  Widget getImage() {
+    if(widget.recipe.photoPath.contains('assets')){
+      Widget image = Image.asset(
+        widget.recipe.photoPath,
+        width: 200,
+        height: 200,
+        fit: BoxFit.cover,
+      );
+      print('COULD DO IT');
+      return image;
+    }
+    else{
+      print('COULD NOT DO IT');
+      return Image.file(
+        File(widget.recipe.photoPath),
+        width: 200,
+        height: 200,
+        fit: BoxFit.cover,
+      );
+    }
+
+  }
+
 }
