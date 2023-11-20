@@ -24,6 +24,8 @@ class _FiltersPageState extends State<FiltersPage> {
   int _currentValueMin = 2;
   int _currentValueMax = 3;
   String currentUnit = 'grams';
+  List<String> intolerances = [];
+  List<Widget> intoleranceWidgets = [];
 
   // TODO Data to be converted to json
   Map<String, dynamic> data = {
@@ -32,28 +34,26 @@ class _FiltersPageState extends State<FiltersPage> {
     'time': 0, // In minutes
     'ingredients': [],
     'steps': [],
+    'diets': '',
+    'intolerances': [],
   };
 
   var timeController = TextEditingController(text: '');
 
+  String selectedDiet = ''; // Store the selected diet
+
   @override
   Widget build(BuildContext context) {
     List<Widget> ingredientWidgets = [];
-    List<Widget> dietWidgets = [];
 
     if (data['ingredients'] != null && data['ingredients'] is List) {
       ingredientWidgets = List.generate(
         data['ingredients'].length,
         (index) {
           Map ingredient = data['ingredients'][index];
-          if (ingredient != null &&
-              ingredient['name'] is String &&
-              ingredient['quantity'] is String &&
-              ingredient['unit'] is String) {
+          if (ingredient != null && ingredient['name'] is String) {
             return IngredientWidget(
               name: ingredient['name'],
-              quantity: ingredient['quantity'],
-              unit: ingredient['unit'],
               index: index,
               onDelete: (int index) {
                 setState(() {
@@ -72,27 +72,10 @@ class _FiltersPageState extends State<FiltersPage> {
       print('Ingredients data is missing or not a List');
     }
 
-    if (data['diets'] != null && data['diets'] is List) {
-      dietWidgets = List.generate(
-        data['diets'].length,
-        (index) {
-          String diet = data['diets'][index];
-          if (diet != null && diet is String) {
-            return DietWidget(
-              diet: diet,
-              onDelete: (int index) {
-                setState(() {
-                  data['diets'].removeAt(index);
-                });
-              },
-            );
-          } else {
-            return SizedBox.shrink();
-          }
-        },
-      );
+    if (data['diets'] != null && data['diets'] is String) {
+      // Process 'diets' as a string
     } else {
-      print('Diets data is missing or not a List');
+      print('Diets data is missing or not a String');
     }
 
     return Scaffold(
@@ -219,10 +202,82 @@ class _FiltersPageState extends State<FiltersPage> {
             divider(),
             const SizedBox(height: 10),
             header('Diets'),
-            addInput('Add Diets', () {}),
+            Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5), // Shadow color
+                        spreadRadius: 2, // Spread radius
+                        blurRadius: 5, // Blur radius
+                        offset: Offset(0, 3), // Offset in x and y directions
+                      )
+                    ]),
+                child: Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        _showDietAdd(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.white, // background color
+                        onPrimary: Colors.black, // text color
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 5,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          SizedBox(width: 8),
+                          Text(selectedDiet.isNotEmpty ? selectedDiet : "None"),
+                        ],
+                      ),
+                    ),
+                  ],
+                )),
             const SizedBox(height: 10),
             header('Intolerances'),
-            addInput('Add Intolerances', () {}),
+            Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5), // Shadow color
+                        spreadRadius: 2, // Spread radius
+                        blurRadius: 5, // Blur radius
+                        offset: Offset(0, 3), // Offset in x and y directions
+                      )
+                    ]),
+                child: Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        _showIngredientAdd(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 5), // Adjust button padding
+                      ),
+                      child: Icon(Icons.add),
+                    ),
+                    ingredientWidgets.isNotEmpty
+                        ? Expanded(
+                            child: ListView(
+                              shrinkWrap: true,
+                              children: ingredientWidgets,
+                            ),
+                          )
+                        : SizedBox.shrink(),
+                  ],
+                )),
             const SizedBox(height: 10),
             divider(),
             header('🍱 Ingredients'),
@@ -253,7 +308,7 @@ class _FiltersPageState extends State<FiltersPage> {
                       ),
                       child: Icon(Icons.add),
                     ),
-                    ingredientWidgets.length > 0
+                    ingredientWidgets.isNotEmpty
                         ? Expanded(
                             child: ListView(
                               shrinkWrap: true,
@@ -263,6 +318,7 @@ class _FiltersPageState extends State<FiltersPage> {
                         : SizedBox.shrink(),
                   ],
                 )),
+            const SizedBox(height: 10),
             header('Blacklist'),
             addInput("Add Ingredients you don't want to see", () {}),
             const SizedBox(height: 10),
@@ -297,9 +353,152 @@ class _FiltersPageState extends State<FiltersPage> {
     );
   }
 
+/*
+    DIETS CODE
+*/
+  void _showDietAdd(BuildContext context) async {
+    await showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setModalState) {
+            return Container(
+              height: 500.0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _buildDietFilterContainer(setModalState),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        // Store the selected diet in the 'data' map
+                        data['diets'] = selectedDiet;
+                      });
+                      Navigator.pop(context);
+                    },
+                    child: Text('Done'),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildDietFilterContainer(StateSetter setModalState) {
+    return Container(
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildSquare(setModalState, 'None', 'assets/none.png'),
+              SizedBox(width: 15),
+              _buildSquare(
+                  setModalState, 'Vegetarian', 'assets/vegetarian.png'),
+              SizedBox(width: 15),
+              _buildSquare(setModalState, 'Vegan', 'assets/vegan.png'),
+            ],
+          ),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildSquare(
+                  setModalState, 'Pescatarian', 'assets/pescatarian.png'),
+              SizedBox(width: 15),
+              _buildSquare(setModalState, 'Paleo', 'assets/paleo.png'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSquare(
+      StateSetter setModalState, String diet, String imagePath) {
+    bool isSelected = selectedDiet == diet;
+
+    return GestureDetector(
+      onTap: () {
+        setModalState(() {
+          if (isSelected) {
+            selectedDiet = '';
+          } else {
+            selectedDiet = diet;
+          }
+        });
+      },
+      child: Container(
+        width: 95,
+        height: 125,
+        child: Stack(
+          children: [
+            // Background container with rounded corners
+            Container(
+              width: 95,
+              height: 125,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+                image: DecorationImage(
+                  image: AssetImage(imagePath),
+                  alignment: Alignment.topCenter, // Align asset at the top
+                ),
+              ),
+            ),
+            // Border overlay
+            if (isSelected)
+              Positioned.fill(
+                child: Container(
+                  width: 90,
+                  height: 125,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(
+                      color: const Color.fromARGB(255, 81, 35, 19),
+                      width: 2.0,
+                    ),
+                  ),
+                ),
+              ),
+            // Text
+            Positioned(
+              bottom: 5.0,
+              left: 1.0,
+              right: 1.0,
+              child: Container(
+                //alignment: Alignment.bottomCenter,
+                child: Text(
+                  diet,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: const Color.fromARGB(255, 81, 35, 19),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /*
+    INTOLERANCES CODE
+   */
+
+  /*
+    INGREDIENTS CODE
+  */
+
   void _showIngredientAdd(BuildContext context) async {
     final nameController = TextEditingController();
-    final amountController = TextEditingController();
     showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -320,8 +519,7 @@ class _FiltersPageState extends State<FiltersPage> {
                         padding: const EdgeInsets.all(8),
                         child: ElevatedButton(
                           onPressed: () {
-                            if (nameController.text.isNotEmpty &&
-                                amountController.text.isNotEmpty) {
+                            if (nameController.text.isNotEmpty) {
                               data.update(
                                   'ingredients',
                                   (value) =>
@@ -329,8 +527,6 @@ class _FiltersPageState extends State<FiltersPage> {
                                       [
                                         {
                                           'name': nameController.text,
-                                          'quantity': amountController.text,
-                                          'unit': currentUnit,
                                         }
                                       ]);
                               print(data);
@@ -376,55 +572,6 @@ class _FiltersPageState extends State<FiltersPage> {
                             ],
                           )),
                       const SizedBox(height: 10),
-                      Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 20),
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12)),
-                          child: Row(
-                            children: [
-                              const Icon(Icons.scale),
-                              const SizedBox(width: 7),
-                              Expanded(
-                                  child: TextFormField(
-                                controller: amountController,
-                                keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
-                                  hintText: 'Quantity',
-                                  border: InputBorder.none,
-                                ),
-                              )),
-                              Container(
-                                width: 90,
-                                child: DropdownButton(
-                                  isExpanded: true,
-                                  // Initial Value
-                                  value: currentUnit,
-
-                                  // Down Arrow Icon
-                                  icon: const Icon(Icons.arrow_drop_down),
-
-                                  // Array list of items
-                                  items: weightUnits.map((String items) {
-                                    return DropdownMenuItem(
-                                      value: items,
-                                      child: Text(items,
-                                          style: TextStyle(fontSize: 12)),
-                                    );
-                                  }).toList(),
-                                  // After selecting the desired option,it will
-                                  // change button value to selected value
-                                  onChanged: (String? newValue) {
-                                    setModalState(() {
-                                      currentUnit = newValue!;
-                                    });
-                                  },
-                                ),
-                              ),
-                            ],
-                          )),
-                      //  TODO
                     ],
                   )),
             );
@@ -687,16 +834,10 @@ class DietWidget extends StatelessWidget {
 class IngredientWidget extends StatelessWidget {
   final int index;
   final String name;
-  final String quantity;
-  final String unit;
   final Function(int) onDelete;
 
-  IngredientWidget(
-      {required this.name,
-      required this.quantity,
-      required this.unit,
-      required this.index,
-      required this.onDelete});
+  const IngredientWidget(
+      {required this.name, required this.index, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -733,6 +874,6 @@ class IngredientWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(
               horizontal: 10, vertical: 5), // Adjust button padding
         ),
-        child: Text('$name ($quantity $unit)'));
+        child: Text('$name'));
   }
 }
