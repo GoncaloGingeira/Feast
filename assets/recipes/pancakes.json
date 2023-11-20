@@ -1,0 +1,62 @@
+{
+    "id": "pancakes",
+    "name": "Pancakes",
+    "rating": "4.8",
+    "estimatedTime": "20",
+    "servings": "4",
+    "calories": "210",
+    "tags": ["breakfast" , "vegetarian"],
+    "ingredients": [
+      {
+        "name": "All-Purpose Flour",
+        "quantity": 1,
+        "unit": "cup",
+        "notes": ""
+      },
+      {
+        "name": "Baking Powder",
+        "quantity": 2,
+        "unit": "tsp",
+        "notes": ""
+      },
+      {
+        "name": "Sugar",
+        "quantity": 2,
+        "unit": "tbsp",
+        "notes": ""
+      },
+      {
+        "name": "Salt",
+        "quantity": 1,
+        "unit": "pinch",
+        "notes": ""
+      },
+      {
+        "name": "Milk",
+        "quantity": 1,
+        "unit": "cup",
+        "notes": ""
+      },
+      {
+        "name": "Egg",
+        "quantity": 1,
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "Butter",
+        "quantity": 2,
+        "unit": "tbsp",
+        "notes": "melted"
+      }
+    ],
+    "instructions": [
+      "In a large mixing bowl, whisk together the flour, baking powder, sugar, and salt.",
+      "In a separate bowl, whisk together the milk, egg, and melted butter.",
+      "Pour the wet ingredients into the dry ingredients and stir until just combined. Do not overmix; a few lumps are okay.",
+      "Heat a griddle or non-stick pan over medium heat.",
+      "Pour 1/4 cup of batter onto the griddle for each pancake.",
+      "Cook until bubbles form on the surface, then flip and cook until the other side is golden brown.",
+      "Serve warm with your favorite toppings."
+    ]
+  }
