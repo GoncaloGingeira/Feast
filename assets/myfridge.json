@@ -1,0 +1,87 @@
+{
+  "regions": [
+    {
+      "name": "Vegetables",
+      "ingredients": [
+        "Carrot",
+        "Broccoli",
+        "Tomato",
+        "Spinach"
+      ]
+    },
+    {
+      "name": "Fruits",
+      "ingredients": [
+        "Apple",
+        "Banana",
+        "Orange",
+        "Grapes",
+        "Strawberry",
+        "Blueberry"
+      ]
+    },
+    {
+      "name": "Dairy & Eggs",
+      "ingredients": [
+        "Milk",
+        "Cheese",
+        "Yogurt"
+      ]
+    },
+    {
+      "name": "Deli",
+      "ingredients": [
+      ]
+    },
+    {
+      "name": "Meat & Seafood",
+      "ingredients": [
+      ]
+    },
+    {
+      "name": "Bakery",
+      "ingredients": [
+      ]
+    },
+    {
+      "name": "Pasta and Grains",
+      "ingredients": [
+      ]
+    },
+    {
+      "name": "Sauces & Condiments",
+      "ingredients": [
+      ]
+    },
+    {
+      "name": "Cans & Jars",
+      "ingredients": [
+      ]
+    },
+    {
+      "name": "Baking",
+      "ingredients": [
+      ]
+    },
+    {
+      "name": "Oils & Dressings",
+      "ingredients": [
+      ]
+    },
+    {
+      "name": "Spices & Seasonings",
+      "ingredients": [
+      ]
+    },
+    {
+      "name": "Snacks",
+      "ingredients": [
+      ]
+    },
+    {
+      "name": "Alcohol & Beverages",
+      "ingredients": [
+      ]
+    }
+  ]
+}
