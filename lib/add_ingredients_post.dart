@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:feast/digital_fridge.dart';
@@ -7,14 +6,14 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 
-class AddIngredientsPage extends StatefulWidget {
-  const AddIngredientsPage({Key? key});
+class AddIngredientsPagePost extends StatefulWidget {
+  const AddIngredientsPagePost({Key? key});
 
   @override
-  State<AddIngredientsPage> createState() => _AddIngredientsPageState();
+  State<AddIngredientsPagePost> createState() => _AddIngredientsPageState();
 }
 
-class _AddIngredientsPageState extends State<AddIngredientsPage> {
+class _AddIngredientsPageState extends State<AddIngredientsPagePost> {
   late List<dynamic> regionsData;
   List<String> filteredIngredients = [];
   List<String> ingredientTypes = [];
@@ -23,12 +22,27 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
   List<String> selectedIngredients = [];
   Map<String, bool> ingredientSelectionState = {};
 
+  TextEditingController amountController = TextEditingController();
+
+  var currentUnit = 'grams';
+  String selectedIngredient = '';
+  var weightUnits = [
+    'grams',
+    'kilograms',
+    'pounds',
+    'ounces',
+    'milliliters',
+    'liters',
+    'teaspoons',
+    'tablespoons',
+    'cups',
+    'fluid ounces',
+  ];
 
   @override
   void initState() {
     super.initState();
     _loadRegionsData();
-
     readJsonFromFile();
   }
 
@@ -59,6 +73,10 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
         ingredientSelectionState[ingredient] = true;
       }
     });
+  }
+
+  void _addIngredient(String ingredient) {
+    Navigator.pop(context, [ingredient, amountController.text, currentUnit]);
   }
 
   List<String> _getIngredientsByType(String type) {
@@ -156,7 +174,6 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
       print('Error saving JSON to file: $e');
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -316,7 +333,11 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
                         .map((ingredient) {
                       return GestureDetector(
                         onTap: () {
-                          _toggleIngredientSelection(ingredient);
+                          setState(() {
+                            selectedIngredient = ingredient;
+                          });
+                          //_addIngredient(selectedIngredient);
+                          //_toggleIngredientSelection(ingredient);
                         },
                         child: Container(
                           padding: EdgeInsets.all(10.0),
@@ -344,20 +365,17 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                    color: ingredientSelectionState.containsKey(ingredient) &&
-                                        ingredientSelectionState[ingredient] == true
+                                    color: selectedIngredient == ingredient
                                         ? Colors.brown
                                         : const Color.fromARGB(255, 81, 35, 19),
                                     width: 1.0,
                                   ),
-                                  color: ingredientSelectionState.containsKey(ingredient) &&
-                                      ingredientSelectionState[ingredient] == true
+                                  color: selectedIngredient == ingredient
                                       ? const Color.fromARGB(255, 81, 35, 19)
                                       : Colors.transparent,
                                 ),
                                 child: Center(
-                                  child: ingredientSelectionState.containsKey(ingredient) &&
-                                      ingredientSelectionState[ingredient] == true
+                                  child: selectedIngredient == ingredient
                                       ? Icon(
                                     Icons.check,
                                     color: Colors.white,
@@ -375,7 +393,9 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
                         : filteredIngredients.map((ingredient) {
                       return GestureDetector(
                         onTap: () {
-                          _toggleIngredientSelection(ingredient);
+                          setState(() {
+                            selectedIngredient = ingredient;
+                          });
                         },
                         child: Container(
                           padding: EdgeInsets.all(10.0),
@@ -403,20 +423,17 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                    color: ingredientSelectionState.containsKey(ingredient) &&
-                                        ingredientSelectionState[ingredient] == true
+                                    color: selectedIngredient == ingredient
                                         ? Colors.brown
                                         : const Color.fromARGB(255, 81, 35, 19),
                                     width: 1.0,
                                   ),
-                                  color: ingredientSelectionState.containsKey(ingredient) &&
-                                      ingredientSelectionState[ingredient] == true
+                                  color: selectedIngredient == ingredient
                                       ? const Color.fromARGB(255, 81, 35, 19)
                                       : Colors.transparent,
                                 ),
                                 child: Center(
-                                  child: ingredientSelectionState.containsKey(ingredient) &&
-                                      ingredientSelectionState[ingredient] == true
+                                  child: selectedIngredient == ingredient
                                       ? Icon(
                                     Icons.check,
                                     color: Colors.white, // Change checkmark color when selected
@@ -425,19 +442,80 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
                                       : null,
                                 ),
                               ),
-
                             ],
                           ),
                         ),
                       );
                     }).toList(),
                   ),
-                )
+                ),
+                SizedBox(height: 10),
+                Divider(
+                  color: const Color.fromARGB(255, 81, 35, 19),
+                  thickness: 0.5,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                SizedBox(height: 10),
+                Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Colors.grey)),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.scale),
+                        const SizedBox(width: 7),
+                        Expanded(
+                            child: TextFormField(
+                              controller: amountController,
+                              keyboardType: TextInputType.number,
+                              onChanged: (value) {
+                                setState(() {
+                                  amountController.text = value;
+                                });
+                              },
+                              decoration: const InputDecoration(
+                                hintText: 'Quantity',
+                                border: InputBorder.none,
+                              ),
+                            )),
+                        Container(
+                          width: 90,
+                          child: DropdownButton(
+                            isExpanded: true,
+                            // Initial Value
+                            value: currentUnit,
+
+                            // Down Arrow Icon
+                            icon: const Icon(Icons.arrow_drop_down),
+
+                            // Array list of items
+                            items: weightUnits.map((String items) {
+                              return DropdownMenuItem(
+                                value: items,
+                                child: Text(items,
+                                    style: TextStyle(fontSize: 12)),
+                              );
+                            }).toList(),
+                            // After selecting the desired option,it will
+                            // change button value to selected value
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                currentUnit = newValue!;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    )),
+                // TODO put quantity selector
               ],
             ),
           ),
         ),
-        bottomNavigationBar: selectedIngredients.isEmpty
+        bottomNavigationBar: (selectedIngredient == '' || amountController.text == '')
             ? Container(
           padding: EdgeInsets.all(16.0),
           color: Color.fromARGB(100, 246, 240, 232), // Adjusted transparency
@@ -457,11 +535,7 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
           color: Color.fromARGB(255, 246, 240, 232),
           child: ElevatedButton(
             onPressed: () {
-              saveJsonToFile();
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => DigitalFridgePage()),
-              );
+              _addIngredient(selectedIngredient);
             },
             child: Text(
               'CONFIRM SELECTION',
@@ -472,8 +546,10 @@ class _AddIngredientsPageState extends State<AddIngredientsPage> {
             ),
           ),
         ),
-
       ),
     );
   }
+
+
+
 }

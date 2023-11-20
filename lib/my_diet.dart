@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
 class MyDietPage extends StatefulWidget {
   const MyDietPage({Key? key});
@@ -8,8 +12,14 @@ class MyDietPage extends StatefulWidget {
 }
 
 class _MyDietPageState extends State<MyDietPage> {
-  String selectedDiet = ''; // Store the selected diet
-  List<String> selectedAllergies = []; // Store the selected allergies
+  String selectedDiet = '';
+  List<String> selectedAllergies = [];
+
+  @override
+  void initState() {
+    super.initState();
+    readJsonFromFile();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,6 +161,7 @@ class _MyDietPageState extends State<MyDietPage> {
           color: Color.fromARGB(255, 246, 240, 232),
           child: ElevatedButton(
             onPressed: () {
+              saveJsonToFile();
               Navigator.pop(context);
             },
             child: Text(
@@ -164,6 +175,53 @@ class _MyDietPageState extends State<MyDietPage> {
         ),
       ),
     );
+  }
+
+  Future<void> saveJsonToFile() async {
+    try {
+
+      Map<String, dynamic> data = {
+        'diet': selectedDiet,
+        'allergies': selectedAllergies,
+      };
+
+      String jsonString = jsonEncode(data);
+      final Directory directory = await getApplicationDocumentsDirectory();
+      //String hash = generateHash(jsonString);
+      final File file = File('${directory.path}/mydiet.json');
+
+      await file.writeAsString(jsonString);
+
+      print('JSON saved to file: ${file.path}');
+    } catch (e) {
+      print('Error saving JSON to file: $e');
+    }
+  }
+
+  Future<void> readJsonFromFile() async {
+    try {
+      final Directory directory = await getApplicationDocumentsDirectory();
+      final File file = File('${directory.path}/mydiet.json');
+
+      if (await file.exists()) {
+        String jsonString = await file.readAsString();
+        Map<String, dynamic> data = json.decode(jsonString);
+
+        setState(() {
+          selectedDiet = data['diet'];
+          selectedAllergies = List<String>.from(data['allergies']);
+        });
+        print('Read data from file: ${file.path}');
+      } else {
+        setState(() {
+          selectedDiet = 'None';
+          selectedAllergies = [];
+        });
+        print('File does not exist, initialized empty values');
+      }
+    } catch (e) {
+      print('Error reading JSON from file: $e');
+    }
   }
 
   Widget _buildIntoleranceButton(String text) {
@@ -219,13 +277,12 @@ class _MyDietPageState extends State<MyDietPage> {
         });
       },
       child: Container(
-        width: 95,
+        width: 100,
         height: 125,
         child: Stack(
           children: [
-            // Background container with rounded corners
             Container(
-              width: 95,
+              width: 100,
               height: 125,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -267,6 +324,7 @@ class _MyDietPageState extends State<MyDietPage> {
                   ),
                 ),
               ),
+
             ),
           ],
         ),

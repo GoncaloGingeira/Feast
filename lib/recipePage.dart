@@ -1,3 +1,5 @@
+import 'package:feast/recipeExecute.dart';
+
 import 'package:flutter/material.dart';
 import 'package:feast/recipe.dart';
 import 'package:feast/recipePage.dart';
@@ -12,6 +14,8 @@ class RecipePage extends StatefulWidget {
   @override
   State<RecipePage> createState() => _RecipePageState();
 }
+
+int _currentRate = 0;
 
 class _RecipePageState extends State<RecipePage> {
   @override
@@ -144,13 +148,26 @@ class _RecipePageState extends State<RecipePage> {
                         ),
                       ],
                     ),
-                    child: const IntrinsicWidth(
-                      child: Row(
-                        children: [
-                          Icon(Icons.play_arrow),
-                          SizedBox(width: 8),
-                          Text('Start'),
-                        ],
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RecipeExecutePage(
+                              recipe: widget.recipe,
+                            ),
+                          ),
+                        );
+                      },
+                      child: const IntrinsicWidth(
+                        child: Row(
+                          children: [
+                            Icon(Icons.play_arrow),
+                            SizedBox(width: 8),
+                            Text('Start'),
+                          ],
+                        ),
+
                       ),
                     )),
                 Container(
@@ -198,14 +215,11 @@ class _RecipePageState extends State<RecipePage> {
                     ],
                   ),
                   child: Row(
-                    children: [
+                    children: <Widget>[
                       Text('Rate : '),
                       SizedBox(width: 8),
-                      Icon(Icons.star_border),
-                      Icon(Icons.star_border),
-                      Icon(Icons.star_border),
-                      Icon(Icons.star_border),
-                      Icon(Icons.star_border),
+                      getRateIconWidgets(),
+
                     ],
                   ),
                 ),
@@ -214,12 +228,14 @@ class _RecipePageState extends State<RecipePage> {
             const SizedBox(
               height: 10,
             ),
-            Text('Ingredients : '),
+            const Text('Ingredients : '),
+
             const SizedBox(
               height: 10,
             ),
             Container(
-              width: 400,
+              width: 330,
+
               // Adjust the width as needed
               height: 300,
               // Adjust the height as needed
@@ -289,10 +305,30 @@ class _RecipePageState extends State<RecipePage> {
       child: Column(
         children: [
           Icon(icon),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
+
           Text(text),
         ],
       ),
     );
   }
+  Widget getRateIconWidgets()
+  {
+    List<Widget> list = List<Widget>.generate(5, (int index) {
+      return GestureDetector(
+        onTap: () {
+          setState(() {
+            _currentRate = index + 1;
+          });
+        },
+        child: Icon(
+          index < _currentRate ? Icons.star : Icons.star_border,
+          color: Colors.black,
+        ),
+      );
+    });
+
+    return new Row(children: list);
+  }
+
 }
